@@ -70,6 +70,12 @@
 (require 'easycrypt-ext-consts)
 
 
+;;; Silence, byte compiler
+(defvar easycrypt-ext-goals-mode)
+(defvar easycrypt-ext-response-mode)
+(defvar easycrypt-ext-mode-map)
+
+
 ;;; Constants
 (defconst ece--dir
   (file-name-directory (or load-file-name buffer-file-name))
@@ -876,7 +882,8 @@ for EasyCrypt (executable, not proof shell)."
 (defun ece--exec-execute (subcommand &optional args sync)
   "Executes SUBCOMMAND of EasyCrypt in a separate process. If SYNC is non-nil
 (resp. `nil'), the process is executed synchronously (resp. asynchronously).
-ARGS is a string that is concatenated to SUBCOMMAND (separated by a space) as is."
+ARGS is a string that is concatenated to SUBCOMMAND (separated by a space) as
+is."
   (unless (or (null args) (stringp args))
     (error "ece--exec-execute: ARGS (%s) should be nil or a string" args))
   (ece--exec-validate-subcommand subcommand)
@@ -940,12 +947,12 @@ string and is concatenated to the command as is."
 
 ;;;###autoload
 (defun ece-exec-compile (srcs &optional subdirs options)
-  "Executes `easycrypt compile' asynchronously, checking the EasyCrypt file SRCS or,
-if SRCS is a directory, EasyCrypt files in (sub-directories of) SRCS. In
-the latter case, sub-directories are considered if SUBDIRS is non-nil.
-SRCS can be absolute or relative. A relative path (for SRCS) is
-interpreted with respect to `default-directory'. OPTIONS, if
-provided, should be a string and is concatenated to the command as is."
+  "Executes `easycrypt compile' asynchronously, checking the EasyCrypt file SRCS
+or, if SRCS is a directory, EasyCrypt files in (sub-directories of) SRCS. In the
+latter case, sub-directories are considered if SUBDIRS is non-nil. SRCS can be
+absolute or relative. A relative path (for SRCS) is interpreted with respect to
+`default-directory'. OPTIONS, if provided, should be a string and is
+concatenated to the command as is."
   (interactive
    (let* ((projcr (project-current))
           (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
@@ -1138,7 +1145,7 @@ files, asks to provide a root directory instead."
                       (read-directory-name (format-prompt "EasyCrypt source (root) directory" "") nil nil t)))))
           (rootp (project-current nil root))
           (rootd (or (when rootp (file-name-as-directory (expand-file-name (project-root rootp))))
-                     rootd))
+                     root))
           (rootr (file-relative-name root rootd))
           (defout (expand-file-name rootr (expand-file-name ece-exec-docgen-default-outdir rootd)))
           (outdir (file-name-as-directory
@@ -1201,7 +1208,8 @@ the test file are interpreted with respect to the working directory)."
                                    (concat " -jobs " (number-to-string jobs)))
                                  (unless (or (null report) (string-empty-p report))
                                    (concat " -report " (expand-file-name report)))
-                                 options)))))
+                                 options)
+                         sync))))
 
 ;;;###autoload
 (defun ece-exec-runtest (testfile scenario &optional jobs report options workdir)
@@ -1209,10 +1217,10 @@ the test file are interpreted with respect to the working directory)."
 specified in TESTFILE using JOBS concurrent processes, writing a final report to
 REPORT. TESTFILE can be absolute or relative. A relative path (for TESTFILE) is
 interpreted with respect to `default-directory'. OPTIONS, if non-nil, should be
-a string and is concatenated to the command as is. WORKDIR, if non-nil, should be
-a string that specifies the working directory for the command (this is relevant
-because relative paths in the test file are interpreted with respect to the
-working directory)."
+a string and is concatenated to the command as is. WORKDIR, if non-nil, should
+be a string that specifies the working directory for the command (this is
+relevant because relative paths in the test file are interpreted with respect to
+the working directory)."
   (interactive
    (let* ((projcr (project-current))
           (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
@@ -1710,7 +1718,7 @@ mode-specific maps."
   `(easy-menu-define ,symb ,map
      ,@(let* ((mmd (concat "EasyCrypt Ext" (if (stringp submode) (format " (%s)" submode) "")))
               (mms (format "easycrypt-ext%s-mode" (if (stringp submode) (concat "-" submode) "")))
-              (mmc (intern-soft mms))
+              (mmc (intern mms))
               (hmd (concat "Disable " mmd)))
          (append
           `(,(concat "Menu bar and mode line menu (clickable) for " mms))
@@ -1826,20 +1834,20 @@ characters. Particularly, the following changes are applied:
     (modify-syntax-entry ?, ".")))
 
 (defun ece--restore-syntax-table ()
-  "Restores original syntax table, undoing the patch performed by `ece--patch-syntax-table',
-which see."
+  "Restores original syntax table, undoing the patch performed by
+`ece--patch-syntax-table', which see."
   (when original-syntax-table
     (set-syntax-table original-syntax-table)))
 
 ;;; Miscellaneous
 (defun ece--recenter-goals-window ()
   "Recenters window showing goals buffer.
-Default behavior is as follows:
+
 - If the goal is a program-logic one, center around the middle
 between (the start of) the precondition and (the start of) the
 post-condition.
-- Else, center around the line that separates the goal's context
-from its conclusion.
+- Else, center around the line that separates the context
+of the goal from its conclusion.
 
 Meant for 'proof-shell-handle-delayed-output-hook'."
   (when-let* ((proof-goals-window (get-buffer-window proof-goals-buffer t)))
