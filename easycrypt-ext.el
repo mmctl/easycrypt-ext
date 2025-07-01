@@ -1843,13 +1843,12 @@ characters. Particularly, the following changes are applied:
 (defun ece--recenter-goals-window ()
   "Recenters window showing goals buffer.
 
-- If the goal is a program-logic one, center around the middle
-between (the start of) the precondition and (the start of) the
-post-condition.
-- Else, center around the line that separates the context
-of the goal from its conclusion.
+- If the goal is a program-logic one, center around the middle between (the
+start of) the precondition and (the start of) the post-condition.
+- Else, center around the line that separates goal's context from its
+conclusion.
 
-Meant for 'proof-shell-handle-delayed-output-hook'."
+Meant for `proof-shell-handle-delayed-output-hook'."
   (when-let* ((proof-goals-window (get-buffer-window proof-goals-buffer t)))
     (with-selected-window proof-goals-window
       (goto-char (point-min))
