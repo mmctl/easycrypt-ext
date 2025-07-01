@@ -7,7 +7,7 @@
 ;; Created: 22 April 2025
 
 ;; Keywords: abbrev, convenience, mouse, tools
-;; URL: https://www.easycrypt.info/
+;; URL: https://github.com/mmctl/easycrypt-ext
 
 ;; This file is not part of GNU Emacs.
 
