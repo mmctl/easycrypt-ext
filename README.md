@@ -6,6 +6,10 @@
 
 ---
 
+# This README is outdated
+
+---
+
 At its core, [EasyCrypt](https://www.easycrypt.info/) is an interactive theorem
 prover with a front-end implemented in [Proof General](https://proofgeneral.github.io/),
 a generic framework for implementing such front-ends.
