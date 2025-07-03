@@ -1845,21 +1845,37 @@ characters. Particularly, the following changes are applied:
 
 - If the goal is a program-logic one, center around the middle between (the
 start of) the precondition and (the start of) the post-condition.
-- Else, center around the line that separates goal's context from its
-conclusion.
+- Else, center around the first line of the goal's conclusion.
 
 Meant for `proof-shell-handle-delayed-output-hook'."
   (when-let* ((proof-goals-window (get-buffer-window proof-goals-buffer t)))
     (with-selected-window proof-goals-window
       (goto-char (point-min))
       (re-search-forward "^-+$" nil t)
-      (when-let* ((pre (re-search-forward "^pre =" nil t))
-                  (post (re-search-forward "^post =" nil t)))
-        (goto-char (/ (+ pre post) 2)))
-      (goto-char (pos-bol))
+      (if-let* ((pre (re-search-forward "^pre =" nil t))
+                (post (re-search-forward "^post =" nil t)))
+          (goto-char (/ (+ pre post) 2))
+        (forward-line 1))
+      (back-to-indentation)
       (set-window-point (selected-window) (point))
       (recenter-top-bottom))))
 
+(defun ece--echo-remaining-goals ()
+  "Displays remaining goals in echo area, as reported by the last displayed
+goal. This is especially useful in conjunction with
+`ece--recenter-goals-window', as that may scroll the window such that the
+remaining goal information is not in view.
+
+Meant for `proof-shell-handle-delayed-output-hook'."
+  (when-let* ((last-output proof-shell-last-output)
+              (nrgoals (cond
+                        ((string-match "^Current goal (remaining: \\([0-9]+\\))" last-output)
+                         (match-string 1 last-output))
+                        ((string-match "^Current goal\\b" last-output)
+                         1)
+                        (t
+                         nil))))
+    (message "Remaining goals: %s" nrgoals)))
 
 ;;; Session setup/teardown
 ;;;###autoload
@@ -1916,13 +1932,15 @@ Meant for `proof-shell-handle-delayed-output-hook'."
 ;;;###autoload
 (defun ece-goals-setup ()
   "Sets up EasyCrypt extensions (goals)."
+  (add-hook 'proof-shell-handle-delayed-output-hook #'ece--echo-remaining-goals)
   (add-hook 'proof-shell-handle-delayed-output-hook #'ece--recenter-goals-window 90))
 
 ;;;###autoload
 (defun ece-goals-teardown ()
   "Tears down EasyCrypt extensions (goals)."
   (unless (ece--check-other-buffers-mode 'easycrypt-ext-goals-mode)
-    (remove-hook 'proof-shell-handle-delayed-output-hook #'ece--recenter-goals-window)))
+    (remove-hook 'proof-shell-handle-delayed-output-hook #'ece--recenter-goals-window)
+    (remove-hook 'proof-shell-handle-delayed-output-hook #'ece--echo-remaining-goals)))
 
 ;;; Minor modes
 ;; Regular
