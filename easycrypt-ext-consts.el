@@ -70,6 +70,9 @@
 (defconst ece-keywords-proof-spec-start
   '("equiv" "hoare" "lemma" "clone"))
 
+(defconst ece-keywords-lemma-start
+  (remove "clone" ece-keywords-proof-spec-start))
+
 (defconst ece-keywords-functional-spec-start
   '("abbrev" "abstract" "axiom" "class" "const" "eager"
     "ehoare" "equiv" "hoare" "inductive" "instance" "lemma"
