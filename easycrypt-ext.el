@@ -537,7 +537,7 @@ Here, fallback indentation refers to the indentation computed by
                            "Using fallback indentation.")
                   (setq indent-level (ece--indent-level-fallback))))))
          ;; Else, if we are looking at a (potentially terminated) proof starter (e.g., "proof." or "realize")
-         ((seq-some (lambda (kw) (looking-at-p (format "%s\\.?" (regexp-quote kw))))
+         ((seq-some (lambda (kw) (looking-at-p (format "%s\\b\\.?" (regexp-quote kw))))
                     ece-keywords-proof-start)
           (let ((bob nil))
             (progn
@@ -564,7 +564,7 @@ Here, fallback indentation refers to the indentation computed by
                 ;; Indent as per the fallback
                 (setq indent-level (ece--indent-level-fallback))))))
          ;; Else, if we are looking at a (potentially terminated) proof ender (i.e., "qed." or "qed")
-         ((seq-some (lambda (kw) (looking-at-p (format "%s\\.?" (regexp-quote kw))))
+         ((seq-some (lambda (kw) (looking-at-p (format "%s\\b\\.?" (regexp-quote kw))))
                     ece-keywords-proof-end)
           (let ((bob nil))
             (progn
@@ -831,36 +831,38 @@ corresponding to the choice upon confirmation."
   (call-interactively (intern-soft (format "ece-proofshell-prompt-%s" command))))
 
 ;; Non-prompted (based point location or mouse click)
-(defun ece--thing-at (event)
-  "If EVENT is a mouse event, tries to find a (reasonable) thing at mouse
-(ignoring any active region). Otherwise, takes the active region
-or tries to find a (reasonable) thing at point."
-  (if (mouse-event-p event)
-      (or (thing-at-mouse event 'symbol t)
-          (thing-at-mouse event 'sexp t)
-          (thing-at-mouse event 'word t))
-    (if (use-region-p)
-        (prog1
-            (buffer-substring-no-properties (region-beginning) (region-end))
-          ;; HACK: This prevents the whole buffer being marked
-          ;; in the goals/response buffers when issuing commands
-          ;; (at least those that update the response buffer)
-          ;; Better solution would, e.g., be to try and use some
-          ;; provided PG hooks for remarking region if applicable
-          (when (or easycrypt-ext-goals-mode easycrypt-ext-response-mode)
-            (deactivate-mark)))
+(defun ece--thing-at (event &optional noregion)
+  "IF NOREGION is nil and the region is active, takes the active region.
+Else, if EVENT is a mouse event, tries to find a (reasonable) thing at mouse.
+Otherwise, tries to find a (reasonable) thing at point."
+  (if (and (not noregion) (use-region-p))
+      (prog1
+          (buffer-substring-no-properties (region-beginning) (region-end))
+        ;; HACK: This prevents the whole buffer being marked
+        ;; in the goals/response buffers when issuing commands
+        ;; (at least those that update the response buffer)
+        ;; Better solution would, e.g., be to try and use some
+        ;; provided PG hooks for remarking region if applicable
+        (when (or easycrypt-ext-goals-mode easycrypt-ext-response-mode)
+          (deactivate-mark)))
+    (if (mouse-event-p event)
+        (or (thing-at-mouse event 'symbol t)
+            (thing-at-mouse event 'sexp t)
+            (thing-at-mouse event 'word t))
       (or (thing-at-point 'symbol t)
           (thing-at-point 'sexp t)
           (thing-at-point 'word t)))))
 
-(defun ece--command (command event)
-  "If EVENT is a mouse event, tries to find a (reasonable) thing at mouse
-(ignoring any active region). Otherwise, takes the active region or tries to
-find a (reasonable) thing at point. The result is used as an argument to the
-COMMAND command of EasyCrypt. If nothing (reasonable) is found, prints a message
-informing the user."
+(defun ece--proofshell-command (command event &optional noregion)
+  "Executes COMMAND (proofshell) command of EasyCrypt, with arguments defined by
+region, mouse, or point.
+IF NOREGION is nil and the region is active, takes the
+active region. Else, if EVENT is a mouse event, tries to find a (reasonable)
+thing at mouse. Otherwise, tries to find a (reasonable) thing at point. The
+result is used as an argument to the COMMAND command of EasyCrypt. If nothing
+(reasonable) is found, prints a message informing the user."
   (when (ece--proofshell-validate-command command)
-    (let ((arg (ece--thing-at event)))
+    (let ((arg (ece--thing-at event noregion)))
       (if arg
           (ece--proofshell-execute command arg)
         (user-error "No reasonable thing at %s found for command `%s'%s"
@@ -869,37 +871,46 @@ informing the user."
                     (if (mouse-event-p event) "" ". Try selecting the thing if automatic detection doesn't work"))))))
 
 ;;;###autoload
-(defun ece-proofshell-print (&optional event)
-  "If EVENT is a mouse event, tries to find a (reasonable) thing at mouse
-(ignoring any active region). Otherwise, takes the active region
-or tries to find a (reasonable) thing at point. Uses the result as an
-argument to the `print' command in EasyCrypt."
-  (interactive (list (if (mouse-event-p last-input-event)
-                         last-input-event
-                       nil)))
-  (ece--command "print" event))
+(defun ece-proofshell-print (&optional event noregion)
+  "Executes `print' (proofshell) command of EasyCrypt, with arguments defined by
+region, mouse, or point.
+IF NOREGION is nil and the region is active, takes the
+active region. Else, if EVENT is a mouse event, tries to find a (reasonable)
+thing at mouse. Otherwise, tries to find a (reasonable) thing at point. The
+result is used as an argument to the COMMAND command of EasyCrypt. If nothing
+(reasonable) is found, prints a message informing the user."
+  (interactive (if (mouse-event-p last-input-event)
+                   (list last-input-event t)
+                 (list nil nil)))
+  (ece--proofshell-command "print" event noregion))
 
 ;;;###autoload
-(defun ece-proofshell-search (&optional event)
-  "If EVENT is a mouse event, tries to find a (reasonable) thing at mouse
-(ignoring any active region). Otherwise, takes the active region
-or tries to find a (reasonable) thing at point. Uses the result as an
-argument to the `search' command in EasyCrypt."
-  (interactive (list (if (mouse-event-p last-input-event)
-                         last-input-event
-                       nil)))
-  (ece--command "search" event))
+(defun ece-proofshell-search (&optional event noregion)
+  "Executes `search' (proofshell) command of EasyCrypt, with arguments defined by
+region, mouse, or point.
+IF NOREGION is nil and the region is active, takes the
+active region. Else, if EVENT is a mouse event, tries to find a (reasonable)
+thing at mouse. Otherwise, tries to find a (reasonable) thing at point. The
+result is used as an argument to the COMMAND command of EasyCrypt. If nothing
+(reasonable) is found, prints a message informing the user."
+  (interactive (if (mouse-event-p last-input-event)
+                   (list last-input-event t)
+                 (list nil nil)))
+  (ece--proofshell-command "search" event noregion))
 
 ;;;###autoload
-(defun ece-proofshell-locate (&optional event)
-  "If EVENT is a mouse event, tries to find a (reasonable) thing at mouse
-(ignoring any active region). Otherwise, takes the active region
-or tries to find a (reasonable) thing at point. Uses the result as an
-argument to the `locate' command in EasyCrypt."
-  (interactive (list (if (mouse-event-p last-input-event)
-                         last-input-event
-                       nil)))
-  (ece--command "locate" event))
+(defun ece-proofshell-locate (&optional event noregion)
+  "Executes `locate' (proofshell) command of EasyCrypt, with arguments defined by
+region, mouse, or point.
+IF NOREGION is nil and the region is active, takes the
+active region. Else, if EVENT is a mouse event, tries to find a (reasonable)
+thing at mouse. Otherwise, tries to find a (reasonable) thing at point. The
+result is used as an argument to the COMMAND command of EasyCrypt. If nothing
+(reasonable) is found, prints a message informing the user."
+  (interactive (if (mouse-event-p last-input-event)
+                   (list last-input-event t)
+                 (list nil nil)))
+  (ece--proofshell-command "locate" event noregion))
 
 ;;;###autoload
 (defun ece-bufhist-prev (&optional n)
