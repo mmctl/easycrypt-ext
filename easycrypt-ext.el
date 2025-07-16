@@ -536,8 +536,8 @@ Here, fallback indentation refers to the indentation computed by
                            "This should not be possible, please report."
                            "Using fallback indentation.")
                   (setq indent-level (ece--indent-level-fallback))))))
-         ;; Else, if we are looking at a terminated proof starter (e.g., "proof." or "realize.")
-         ((seq-some (lambda (kw) (looking-at-p (format "%s\\." (regexp-quote kw))))
+         ;; Else, if we are looking at a (potentially terminated) proof starter (e.g., "proof." or "realize")
+         ((seq-some (lambda (kw) (looking-at-p (format "%s\\.?" (regexp-quote kw))))
                     ece-keywords-proof-start)
           (let ((bob nil))
             (progn
@@ -563,8 +563,8 @@ Here, fallback indentation refers to the indentation computed by
               (when bob
                 ;; Indent as per the fallback
                 (setq indent-level (ece--indent-level-fallback))))))
-         ;; Else, if we are looking at a terminated proof ender (i.e., "qed.")
-         ((seq-some (lambda (kw) (looking-at-p (format "%s\\." (regexp-quote kw))))
+         ;; Else, if we are looking at a (potentially terminated) proof ender (i.e., "qed." or "qed")
+         ((seq-some (lambda (kw) (looking-at-p (format "%s\\.?" (regexp-quote kw))))
                     ece-keywords-proof-end)
           (let ((bob nil))
             (progn
@@ -670,7 +670,7 @@ Meant for `post-self-insert-hook', which see."
                                              (regexp-opt (mapcar #'string
                                                                  (append ece-delimiters-code-close
                                                                          ece-delimiters-expression-close)))))
-                       (looking-at-p (format "^[[:blank:]]*%s\\.$" (regexp-opt ece-keywords-proof-delimit)))))
+                       (looking-at-p (format "^[[:blank:]]*%s\\.?$" (regexp-opt ece-keywords-proof-delimit)))))
                   (indent-level (ece--indent-level))
                   ((< 0 (- (current-indentation) indent-level)))) ; If we are de-indenting...
         ;; Go to the computed indent level...
@@ -681,7 +681,7 @@ Meant for `post-self-insert-hook', which see."
 (defvar-local original-imenu-generic-expression nil)
 
 (defun ece--imenu-re-search-backward-advice (rsb &rest args)
-  "Advice meant to be put around `re-seach-backward' for the duration
+  "Advice meant to be put around `re-search-backward' for the duration
 of `imenu-generic-function'. Moves point forward
 by one char if `re-search-backward' finds a match, allowing for the
 first char of the match to be considered for the next match.
@@ -733,9 +733,6 @@ some kind of items may only allow for a subset of them.
 - May not match the very first item if it is not preceded by a non-item
 sentence that ends in a period.
 - Nested comments are not dealt with properly."
-  ;; (format "^[[:blank:]]*%s%s \\_<\\(.*?\\)\\_>\\(?:.*?[[:space:]]\\)*?.*?\\."
-  ;; (format "\\.[[:space:]]*%s%s \\_<\\(.*?\\)\\_>\\(?:.*?[[:space:]]\\)*?.*?\\."
-  ;; (format "\\.\\(?:[[:space:]]\\|(\\*.*?\\*)\\)*?%s%s\\_<\\(.*?\\)\\_>\\(?:.\\|[[:space:]]\\)*?\\."
   (format "\\.\\(?:[[:space:]]\\|(\\*.*?\\*)\\)*?%s%s\\_<\\(.*?\\)\\_>\\(?:.\\|[[:space:]]\\)*?\\."
            (if scope (format "%s?[[:space:]]*?" (regexp-opt ece-keywords-scope)) "")
            (format "%s[[:space:]]*?"(regexp-opt (ensure-list items)))))
@@ -1455,10 +1452,10 @@ with functionality checks."
 (defun ece--enable-indentation ()
   (ece--ece-configure-global-from-local #'ece--set-indentation-settings-local)
   (keymap-set easycrypt-ext-mode-map "RET" #'newline-and-indent)
-  (keymap-set easycrypt-ext-mode-map "<return>" "RET")
+  (keymap-set easycrypt-ext-mode-map "<return>" #'newline-and-indent)
   (keymap-set easycrypt-ext-mode-map "S-<return>" #'newline)
   (keymap-set easycrypt-ext-mode-map "TAB" #'ece-basic-indent)
-  (keymap-set easycrypt-ext-mode-map "<tab>" "TAB")
+  (keymap-set easycrypt-ext-mode-map "<tab>" #'ece-basic-indent)
   (keymap-set easycrypt-ext-mode-map "<backtab>" #'ece-basic-deindent)
   (keymap-set easycrypt-ext-mode-map "M-i" #'indent-for-tab-command)
   (keymap-set easycrypt-ext-mode-map "M-I" #'ece-indent-for-tab-command-inverse-style))
@@ -1972,7 +1969,15 @@ Meant for `proof-shell-handle-delayed-output-hook'."
     (with-selected-window proof-goals-window
       (goto-char (point-min))
       (re-search-forward "^-+$" nil t)
-      (if-let* ((pre (re-search-forward "^pre =" nil t))
+      (if-let* ((pre (save-excursion
+                       (when (re-search-forward (concat "\\(?:"
+                                                        ece-goal-divider-regexp
+                                                        "\\|"
+                                                        ece-goal-program-logic-pre-start-regexp
+                                                        "\\)")
+                                                nil t)
+                         (unless (string-match-p ece-goal-divider-regexp (match-string 0))
+                           (match-beginning 0)))))
                 (post (re-search-forward "^post =" nil t)))
           (goto-char (/ (+ pre post) 2))
         (forward-line 1))

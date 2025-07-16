@@ -166,6 +166,18 @@
     "PrPo:pr:raw" "silent" "verbose" "-implicits" "+implicits"
     "-oldip" "+oldip" "-old_mem_restr" "+old_mem_restr"))
 
+
+;;; Pretty printing
+(defconst ece-goal-divider-regexp
+  "^[[:blank:]]*-+$")
+
+(defconst ece-goal-program-logic-pre-start-regexp
+  "^pre =")
+
+(defconst ece-goal-program-logic-post-start-regexp
+  "^post =")
+
+
 (provide 'easycrypt-ext-consts)
 
 ;;; easycrypt-ext-consts.el ends here
