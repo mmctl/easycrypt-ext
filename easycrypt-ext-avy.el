@@ -18,35 +18,35 @@
   t)
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-print-move (pt)
+(defun avy-action-ece-proofshell-print-move (pt)
   "Executes `ece-proofshell-print' at PT (selected with Avy), additionally
 moving point to PT."
   (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-print pt nil t))
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-print-stay (pt)
+(defun avy-action-ece-proofshell-print-stay (pt)
   "Executes `ece-proofshell-print' at PT (selected with Avy), leaving PT."
   (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-print pt nil t))
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-search-move (pt)
+(defun avy-action-ece-proofshell-search-move (pt)
   "Executes `ece-proofshell-search' at PT (selected with Avy), additionally
 moving point to PT."
   (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-search pt nil t))
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-search-stay (pt)
+(defun avy-action-ece-proofshell-search-stay (pt)
   "Executes `ece-proofshell-search' at PT (selected with Avy), leaving PT."
   (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-search pt nil t))
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-locate-move (pt)
+(defun avy-action-ece-proofshell-locate-move (pt)
   "Executes `ece-proofshell-search' at PT (selected with Avy), additionally
 moving point to PT."
   (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-locate pt nil t))
 
 ;;;###autoload
-(defsubst avy-action-ece-proofshell-locate-stay (pt)
+(defun avy-action-ece-proofshell-locate-stay (pt)
   "Executes `ece-proofshell-search' at PT (selected with Avy), leaving PT."
   (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-locate pt nil t))
 
