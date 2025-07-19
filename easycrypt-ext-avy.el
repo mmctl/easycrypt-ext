@@ -78,11 +78,11 @@ moving point to PT."
   "Adds (resp. removes) `ece-avy-dispatch-alist' dispatch actions to
 `avy-dispatch-alist', buffer-locally, when MODE is non-nil (resp. `nil')."
   (if (symbol-value mode)
-      (setq-local avy-dispatch-alist (append avy-dispatch-alist avy-ece-dal))
+      (setq-local avy-dispatch-alist (append avy-dispatch-alist ece-avy-dispatch-alist))
     (when (local-variable-p 'avy-dispatch-alist)
       (setq-local avy-dispatch-alist (delq nil
                                            (mapcar #'(lambda (dpa)
-                                                       (unless (member dpa avy-ece-dal) dpa))
+                                                       (unless (member dpa ece-avy-dispatch-alist) dpa))
                                                    avy-dispatch-alist)))
       (when (equal avy-dispatch-alist (default-value 'avy-dispatch-alist))
         (kill-local-variable 'avy-dispatch-alist)))))
