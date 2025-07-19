@@ -93,7 +93,7 @@
 
 ;;; Customization options
 (defgroup easycrypt-ext nil
-  "Customization group for EasyCrypt extension package."
+  "Main customization group for EasyCrypt Ext package."
   :prefix "ece-"
   :group 'easycrypt)
 
@@ -271,7 +271,6 @@ again de-indent line |ARG| times (respecting tab stops)."
         (let ((ind-region-start (save-excursion (goto-char (region-beginning))
                                                 (pos-bol)))
               (ind-region-stop (save-excursion (goto-char (region-end))
-                                               (when (bolp) (forward-line -1))
                                                (pos-eol))))
           ;; If it is inside region to indent within margins of indentation,
           ;; move to (end of) indentation
@@ -317,7 +316,7 @@ again de-indent line |ARG| times (respecting tab stops)."
               ;; Then, take stock of whitespace before point...
               (let* ((del-ub (min (* count tab-width) (- orig-point (pos-bol))))
                      (del (save-excursion
-                            (skip-chars-backward "[:space:]" (- orig-point del-ub))
+                            (skip-chars-backward "[:blank:]" (- orig-point del-ub))
                             (- orig-point (point)))))
                 ;; If there is at least some whitespace before point...
                 (if (< 0 del)
@@ -616,40 +615,6 @@ style that is currently not selected."
   (interactive)
   (let ((ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local)))
     (indent-for-tab-command)))
-
-;;;###autoload
-(defun ece-indent-on-insertion-closer ()
-  "Indent when (1) last input was one of }, ), ], and it is the
-first character on current line (as an exception, `)` may also directly
-be preceded by symbols that make it a comment closer), or (2) the last
-input was . and the current line starts/ends a proof. However, only
-allow de-indents (to prevent automatically indenting
-code that has been manually de-indented; this is a hack
-and a limitation of the localized ad-hoc computation
-of the indent level).
-Meant for `post-self-insert-hook'."
-  (when-let* ((line-before (buffer-substring-no-properties (pos-bol) (- (point) 1)))
-              ((or (and (memq last-command-event '(?\} ?\]))
-                        (string-match-p "^[[:blank:]]*$" line-before))
-                   (and (eq last-command-event ?\))
-                        (string-match-p
-                         (format "^[[:blank:]]*%s$" (regexp-opt (push (string ?\)) ece-delimiters-comments-close)))
-                         (concat line-before ")")))
-                   (and (eq last-command-event ?\.)
-                        (save-excursion
-                          (back-to-indentation)
-                          (seq-some (lambda (kw) (looking-at-p (format "%s\\b" (regexp-quote kw))))
-                                    ece-keywords-proof-delimit)))))
-              (orig-col (current-column))
-              (indent-level (ece--indent-level))
-              (indent-diff (- (current-indentation) indent-level)))
-    ;; If 0 < indent-diff, i.e., we are de-indenting...
-    (when (< 0 indent-diff)
-      ;; Go to the computed indent level...
-      (indent-line-to indent-level)
-      ;; And keep point in same relative position
-      ;; (`indent-line-to' moves it to end of indentation)
-      (move-to-column (- orig-col indent-diff)))))
 
 ;;;###autoload
 (defun ece-indent-closer-on-insertion-newline ()
