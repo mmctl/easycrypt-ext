@@ -103,21 +103,21 @@
   :type 'boolean
   :group 'easycrypt-ext)
 
-(defcustom ece-indentation-style 'local
-  "\='local or \='nonlocal to make local or non-local
-the default indentation style. The difference between the
-two styles mainly pertains to indentation inside
-enclosed expressions (e.g., between { and }, ( and ),
-or [ and ]): \='local indents w.r.t. previous
-non-blank line in the expression; \='non-local indents
-w.r.t. expression opener (e.g., { or ( or [).
-In any case, indentation using the opposite style is available
-through the command `ece-indent-for-tab-command-inverse-style', which see.
-Only has effect if `ece-indentation', which see, is non-nil."
-  :type '(choice
-          (const :tag "Local indentation style" local)
-          (const :tag "Non-local indentation style" nonlocal))
-  :group 'easycrypt-ext)
+;; (defcustom ece-indentation-style 'local
+;;   "\='local or \='nonlocal to make local or non-local
+;; the default indentation style. The difference between the
+;; two styles mainly pertains to indentation inside
+;; enclosed expressions (e.g., between { and }, ( and ),
+;; or [ and ]): \='local indents w.r.t. previous
+;; non-blank line in the expression; \='non-local indents
+;; w.r.t. expression opener (e.g., { or ( or [).
+;; In any case, indentation using the opposite style is available
+;; through the command `ece-indent-for-tab-command-inverse-style', which see.
+;; Only has effect if `ece-indentation', which see, is non-nil."
+;;   :type '(choice
+;;           (const :tag "Local indentation style" local)
+;;           (const :tag "Non-local indentation style" nonlocal))
+;;   :group 'easycrypt-ext)
 
 (defcustom ece-imenu t
   "Non-nil (resp. nil) to enable (resp. disable) improved Imenu integration for
@@ -125,11 +125,11 @@ EasyCrypt."
   :type 'boolean
   :group 'easycrypt-ext)
 
-(defcustom ece-keyword-completion nil
-  "Non-nil (resp. nil) to enable (resp. disable) completion for
-EasyCrypt keywords (depends on `cape')."
-  :type 'boolean
-  :group 'easycrypt-ext)
+;; (defcustom ece-keyword-completion nil
+;;   "Non-nil (resp. nil) to enable (resp. disable) completion for
+;; EasyCrypt keywords (depends on `cape')."
+;;   :type 'boolean
+;;   :group 'easycrypt-ext)
 
 (defcustom ece-templates nil
   "Non-nil (resp. `nil') to enable (resp. disable) code templates for
@@ -249,7 +249,7 @@ contains at that time)."
 
 ;; Basic indentation
 ;;;###autoload
-(defun ece-basic-indent (arg)
+(defun ece-basic-indent (&optional arg)
   "Indent (ARG > 0) resp. de-indent (ARG < 0) all lines touched by the
 active region by |ARG| tab stops.
 If no region is active and point is inside indentation,
@@ -329,7 +329,7 @@ again de-indent line |ARG| times (respecting tab stops)."
             (ece--insert-tabs-of-whitespace count)))))))
 
 ;;;###autoload
-(defun ece-basic-deindent (arg)
+(defun ece-basic-deindent (&optional arg)
   "Passes negation of ARG to `ece-basic-indent', which see."
   (interactive "p")
   (ece-basic-indent (- arg)))
@@ -380,7 +380,7 @@ previous non-blank line."
           ;; Else, align with that line (default)
           (current-indentation))))))
 
-(defun ece--indent-level ()
+(defun ece--indent-level (&optional nonlocal)
   "Returns desired indentation level of EasyCrypt code.
 In short, the default behavior is as follows.
 - If we are in a multi-line comment, align with the previous non-blank line in
@@ -426,7 +426,7 @@ Here, fallback indentation refers to the indentation computed by
                 ;; Then, align closer with the opener
                 (setq indent-level opcol)
               ;; Else, if indentation style is non-local...
-              (if (eq ece-indentation-style 'nonlocal)
+              (if nonlocal
                   ;; Then, align to opener + tab
                   (setq indent-level (+ opcol tab-width))
                 ;; Else (indentation style is local)...
@@ -458,7 +458,7 @@ Here, fallback indentation refers to the indentation computed by
                       ;; Then, align to column of opener
                       (setq indent-level opcol)
                     ;; Else, if indentation style is non-local...
-                    (if (eq ece-indentation-style 'nonlocal)
+                    (if nonlocal
                         ;; Then, align to opener + 1
                         (setq indent-level (+ opcol 1))
                       ;; Else (indentation style is local)...
@@ -499,7 +499,7 @@ Here, fallback indentation refers to the indentation computed by
                                 ;; Then, align to indentation of opening brace's line
                                 (setq indent-level opind)
                               ;; Else, if indentation style is non-local...
-                              (if (eq ece-indentation-style 'nonlocal)
+                              (if nonlocal
                                   ;; Then, align to indentation of opening brace's line + tab
                                   (setq indent-level (+ opind tab-width))
                                 ;; Else (indentation style is local)...
@@ -515,7 +515,7 @@ Here, fallback indentation refers to the indentation computed by
                           ;; if first char on our line is *not* a matching closer...
                           (unless (eq chcl (matching-paren chop))
                             ;; Else, if indentation style is non-local...
-                              (if (eq ece-indentation-style 'nonlocal)
+                              (if nonlocal
                                   ;; Then, align to recorded indentation of keyword's line + tab
                                   (setq indent-level (+ indent-level tab-width))
                                 ;; Else (indentation style is local)...
@@ -591,11 +591,12 @@ Here, fallback indentation refers to the indentation computed by
     indent-level))
 
 ;;;###autoload
-(defun ece-indent-line ()
-  "Indents line of EasyCrypt code as per `ece--indent-level', which see."
-  (interactive)
+(defun ece-indent-line (&optional nonlocal)
+  "Indents line of EasyCrypt code as per `ece--indent-level', which see,
+passing NONLOCAL directly."
+  (interactive "P")
   ;; Indent accordingly
-  (let ((indent-level (ece--indent-level)))
+  (let ((indent-level (ece--indent-level nonlocal)))
     ;; `indent-line-to' would move point to new indentation, and
     ;; we prevent this by `save-excursion' so point position remains consistent
     ;; (making templates more consistent as well)
@@ -606,14 +607,21 @@ Here, fallback indentation refers to the indentation computed by
       (back-to-indentation))))
 
 ;;;###autoload
-(defun ece-indent-for-tab-command-inverse-style ()
-  "Calls `indent-for-tab-command' with `ece-indentation-style' inverted.
-If `ece-indentation' is non-nil, `indent-line-function' will be set to
-`ece-indent-line', which is used by `indent-for-tab-command' to indent a line
-or region. So, this command essentially performs indentation according to the
-style that is currently not selected."
+;; (defun ece-indent-for-tab-command-nonlocal ()
+;;   "Calls `indent-for-tab-command' with `ece-indentation-style' inverted.
+;; If `ece-indentation' is non-nil, `indent-line-function' will be set to
+;; `ece-indent-line', which is used by `indent-for-tab-command' to indent a line
+;; or region. So, this command essentially performs indentation according to the
+;; style that is currently not selected."
+;;   (interactive)
+;;   (let ((ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local)))
+;;     (indent-for-tab-command)))
+(defun ece-indent-for-tab-command-nonlocal ()
+  "Calls `indent-for-tab-command' with `indent-line-function' bound
+to `ece-indent-line' with a non-nil argument, which see, essentially
+meaning it performs indentation with a non-local style."
   (interactive)
-  (let ((ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local)))
+  (let ((indent-line-function #'(lambda () (ece-indent-line 'nonlocal))))
     (indent-for-tab-command)))
 
 ;;;###autoload
@@ -1479,26 +1487,26 @@ with functionality checks."
    (if enable #'ece--enable-imenu-local #'ece--disable-imenu-local)))
 
 ;; Keyword completion
-(defun ece--enable-keyword-completion-local ()
-  (unless (and (local-variable-p ece-keyword-completion) ece-keyword-completion)
-    (add-to-list 'cape-keyword-list (cons 'easycrypt-mode ece-keywords))
-    (setq-local ece-keyword-completion t)))
+;; (defun ece--enable-keyword-completion-local ()
+;;   (unless (and (local-variable-p ece-keyword-completion) ece-keyword-completion)
+;;     (add-to-list 'cape-keyword-list (cons 'easycrypt-mode ece-keywords))
+;;     (setq-local ece-keyword-completion t)))
 
-(defun ece--disable-keyword-completion-local ()
-  (unless (and (local-variable-p ece-keyword-completion) (not ece-keyword-completion))
-    (setq-local ece-keyword-completion nil)
-    (setq-local cape-keyword-list (assq-delete-all 'easycrypt-mode cape-keyword-list))
-    (when (eq cape-keyword-list (default-value 'cape-keyword-list))
-      (kill-local-variable 'cape-keyword-list))))
+;; (defun ece--disable-keyword-completion-local ()
+;;   (unless (and (local-variable-p ece-keyword-completion) (not ece-keyword-completion))
+;;     (setq-local ece-keyword-completion nil)
+;;     (setq-local cape-keyword-list (assq-delete-all 'easycrypt-mode cape-keyword-list))
+;;     (when (eq cape-keyword-list (default-value 'cape-keyword-list))
+;;       (kill-local-variable 'cape-keyword-list))))
 
-(defsubst ece--configure-keyword-completion-local (enable)
-  (ece--check-feature 'cape-keyword)
-  (if enable (ece--enable-keyword-completion-local) (ece--disable-keyword-completion-local)))
+;; (defsubst ece--configure-keyword-completion-local (enable)
+;;   (ece--check-feature 'cape-keyword)
+;;   (if enable (ece--enable-keyword-completion-local) (ece--disable-keyword-completion-local)))
 
-(defsubst ece--configure-keyword-completion (enable)
-  (ece--check-feature 'cape-keyword)
-  (ece--ece-configure-global-from-local
-   (if enable #'ece--enable-keyword-completion-local #'ece--disable-keyword-completion-local)))
+;; (defsubst ece--configure-keyword-completion (enable)
+;;   (ece--check-feature 'cape-keyword)
+;;   (ece--ece-configure-global-from-local
+;;    (if enable #'ece--enable-keyword-completion-local #'ece--disable-keyword-completion-local)))
 
 ;; Templates
 (defvar-keymap ece-template-map
@@ -1570,12 +1578,12 @@ with functionality checks."
 
 ;;; Toggles
 ;;;###autoload
-(defun ece-toggle-indentation-style-local ()
-  "Toggles EasyCrypt Ext indentation style in this buffer."
-  (interactive)
-  (setq-local ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local))
-  (message "EasyCrypt Ext indentation style set to %s in this buffer!"
-           (if (eq ece-indentation-style 'local) "local" "non-local")))
+;; (defun ece-toggle-indentation-style-local ()
+;;   "Toggles EasyCrypt Ext indentation style in this buffer."
+;;   (interactive)
+;;   (setq-local ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local))
+;;   (message "EasyCrypt Ext indentation style set to %s in this buffer!"
+;;            (if (eq ece-indentation-style 'local) "local" "non-local")))
 
 ;;;###autoload
 (defun ece-toggle-imenu-local ()
