@@ -1,6 +1,7 @@
 (require 'easycrypt-ext)
 (require 'tempel)
 
+;; Customization
 (defcustom ece-tempel-keymap-templates
   '(("a" axiomn) ("A" abbrevn) ("b" byequiv) ("B" byphoare)
     ("c" conseq) ("C" conseqeqvhoahoa) ("d" doccommentn) ("D" declaremodule)
@@ -24,10 +25,15 @@ a symbol matching a template specified in the template file
   :group 'easycrypt-ext)
 
 
+;; Constants
+(defconst ece--templates-file
+  (expand-file-name "easycrypt-ext-templates.eld" ece--dir)
+  "File where code templates for EasyCrypt are stored.")
+
 ;; Utils
-(defun ece--tempel-template-file-read (file)
+(defun ece-tempel--template-file-read ()
   (let ((res '()))
-    (dolist (metatemps (tempel--file-read file))
+    (dolist (metatemps (tempel--file-read ece--templates-file))
       (let ((modes (car metatemps))
             (plist (cadr metatemps))
             (temps (cddr metatemps)))
@@ -35,8 +41,8 @@ a symbol matching a template specified in the template file
           (setq res (append res temps)))))
     res))
 
-(defsubst ece--templates-file-read ()
-  (ece--tempel-template-file-read ece--templates-file))
+;; (defsubst ece--templates-file-read ()
+;;   (ece--tempel-template-file-read ece--templates-file))
 
 ;; Keymap
 (defvar-keymap ece-template-map
@@ -50,13 +56,13 @@ a symbol matching a template specified in the template file
 
 
 ;; Setup and teardown
-(defun ece--enable-templates ()
+(defun ece-tempel--enable-templates ()
   (add-to-list 'tempel-user-elements #'ece--tempel-include)
   (add-to-list 'tempel-template-sources #'ece--templates-file-read)
   (when tempel-abbrev-mode
     (tempel-abbrev-mode 1)))
 
-(defun ece--disable-templates ()
+(defun ece-tempel--disable-templates ()
   (setq tempel-user-elements (remq #'ece--tempel-include tempel-user-elements))
   (setq tempel-template-sources
         (remq #'ece--templates-file-read tempel-template-sources))
@@ -68,5 +74,5 @@ a symbol matching a template specified in the template file
 
 Meant for `easycrypt-ext-mode-hook'."
   (if easycrypt-ext-mode
-      (ece--enable-templates)
-    (ece--disable-templates)))
+      (ece-tempel--enable-templates)
+    (ece-tempel--disable-templates)))
