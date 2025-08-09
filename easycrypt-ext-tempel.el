@@ -1,7 +1,13 @@
 (require 'easycrypt-ext)
 (require 'tempel)
 
-;; Customization
+
+;;; Customization
+(defgroup easycrypt-ext-tempel nil
+  "Customization group for EasyCrypt Ext integration with `tempel'."
+  :prefix "ece-tempel"
+  :group 'easycrypt-ext)
+
 (defcustom ece-tempel-keymap-templates
   '(("a" axiomn) ("A" abbrevn) ("b" byequiv) ("B" byphoare)
     ("c" conseq) ("C" conseqeqvhoahoa) ("d" doccommentn) ("D" declaremodule)
@@ -14,24 +20,30 @@
     ("u" Prmbnd) ("U" Prmrbnd) ("v" Prmeq) ("V" Prmreq)
     ("w" whiles) ("W" whileph) ("x" cloneimportaswith) ("X" requireimport)
     ("y" phoaren) ("Y" phoare1n) ("z" theory) ("Z" abstracttheory))
-  "Alist of (KEY TEMPLATE-NAME) pairs for which KEY
-should be bound to TEMPLATE-NAME in `ece-template-map'
-when templates are enabled (i.e., when `ece-templates'
-are non-nil). KEY should be a string satisfying
-`key-valid-p', which see, and TEMPLATE-NAME should be
-a symbol matching a template specified in the template file
-`eascyrypt-ext-templates'."
+  "Alist of (KEY TEMPLATE-NAME) pairs for which KEY should be bound to
+TEMPLATE-NAME in `ece-template-map'. KEY should be a string satisfying
+`key-valid-p', which see, and TEMPLATE-NAME should be a symbol matching a
+template specified in the template file `eascyrypt-ext-templates.eld'."
   :type '(alist :key-type key :value-type symbol)
-  :group 'easycrypt-ext)
+  :group 'easycrypt-ext-tempel)
 
 
-;; Constants
+;;; Constants
 (defconst ece--templates-file
   (expand-file-name "easycrypt-ext-templates.eld" ece--dir)
   "File where code templates for EasyCrypt are stored.")
 
-;; Utils
-(defun ece-tempel--template-file-read ()
+
+;;; Tempel elements
+(defun ece-tempel--include (elt)
+  "Defines `include' element (taken and slightly adjusted from TempEL github repo)
+that allows to include other templates by their name."
+  (when (eq (car-safe elt) 'i)
+    (when-let (template (alist-get (cadr elt) (tempel--templates)))
+      (cons 'l template))))
+
+;;; Utilities
+(defun ece-tempel--templates-file-read ()
   (let ((res '()))
     (dolist (metatemps (tempel--file-read ece--templates-file))
       (let ((modes (car metatemps))
@@ -41,34 +53,33 @@ a symbol matching a template specified in the template file
           (setq res (append res temps)))))
     res))
 
-;; (defsubst ece--templates-file-read ()
-;;   (ece--tempel-template-file-read ece--templates-file))
 
-;; Keymap
+;;; Keymap
 (defvar-keymap ece-template-map
   :doc "Keymap for EasyCrypt templates."
   :prefix 'ece-template-map-prefix)
 
-(dolist (keytemp ece-templates-bound)
+(dolist (keytemp ece-tempel-keymap-templates)
   (let ((key (car keytemp))
         (temp (cadr keytemp)))
     (eval `(tempel-key ,key ,temp ece-template-map))))
 
 
-;; Setup and teardown
+;;; Setup and teardown
 (defun ece-tempel--enable-templates ()
-  (add-to-list 'tempel-user-elements #'ece--tempel-include)
-  (add-to-list 'tempel-template-sources #'ece--templates-file-read)
+  (add-to-list 'tempel-user-elements #'ece-tempel--include)
+  (add-to-list 'tempel-template-sources #'ece-tempel--templates-file-read)
   (when tempel-abbrev-mode
     (tempel-abbrev-mode 1)))
 
 (defun ece-tempel--disable-templates ()
-  (setq tempel-user-elements (remq #'ece--tempel-include tempel-user-elements))
+  (setq tempel-user-elements (remq #'ece-tempel--include tempel-user-elements))
   (setq tempel-template-sources
-        (remq #'ece--templates-file-read tempel-template-sources))
+        (remq #'ece-tempel--templates-file-read tempel-template-sources))
   (when tempel-abbrev-mode
     (tempel-abbrev-mode 1)))
 
+;;;###autoload
 (defun easycrypt-ext-mode-tempel-setup ()
   "Sets up (and tears down) `tempel' integration for `easycrypt-ext-mode'.
 
@@ -76,3 +87,8 @@ Meant for `easycrypt-ext-mode-hook'."
   (if easycrypt-ext-mode
       (ece-tempel--enable-templates)
     (ece-tempel--disable-templates)))
+
+
+(provide 'easycrypt-ext-tempel)
+
+;;; easycrypt-ext-tempel.el ends here

@@ -23,13 +23,13 @@ which see."
 
 
 ;;; Dispatch actions
-(defun ece--avy-action-ece-proofshell-command-move (command pt &rest args)
+(defun ece-avy--action-ece-proofshell-command-move (command pt &rest args)
   "Moves point to PT (selected with `avy') and executes COMMAND with ARGS."
   (goto-char pt)
   (apply command args)
   t)
 
-(defun ece--avy-action-ece-proofshell-command-stay (command pt &rest args)
+(defun ece-avy--action-ece-proofshell-command-stay (command pt &rest args)
   "Exectutes COMMAND with ARGS at PT (selected with `avy'), leaving point."
   (unwind-protect
       (save-excursion
@@ -73,8 +73,8 @@ moving point to PT."
   (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-locate pt nil t))
 
 
-;;; Setup
-(defun ece--easycrypt-ext-avy-setup (mode)
+;;; Setup and teardown
+(defun ece-avy--easycrypt-ext-avy-setup (mode)
   "Adds (resp. removes) `ece-avy-dispatch-alist' dispatch actions to
 `avy-dispatch-alist', buffer-locally, when MODE is non-nil (resp. `nil')."
   (if (symbol-value mode)
@@ -92,21 +92,22 @@ moving point to PT."
   "Sets up `avy' integration for `easycrypt-ext-mode'.
 
 Meant for `easycrypt-ext-mode-hook'."
-  (ece--easycrypt-ext-avy-setup 'easycrypt-ext-mode))
+  (ece-avy--easycrypt-ext-avy-setup 'easycrypt-ext-mode))
 
 ;;;###autoload
 (defun easycrypt-ext-goals-mode-avy-setup ()
   "Sets up `avy' integration for `easycrypt-ext-goals-mode'.
 
 Meant for `easycrypt-ext-goals-mode-hook'."
-  (ece--easycrypt-ext-avy-setup 'easycrypt-ext-goals-mode))
+  (ece-avy--easycrypt-ext-avy-setup 'easycrypt-ext-goals-mode))
 
 ;;;###autoload
 (defun easycrypt-ext-response-mode-avy-setup ()
   "Sets up `avy' integration for `easycrypt-ext-response-mode'.
 
 Meant for `easycrypt-ext-response-mode-hook'."
-  (ece--easycrypt-ext-avy-setup 'easycrypt-ext-response-mode))
+  (ece-avy--easycrypt-ext-avy-setup 'easycrypt-ext-response-mode))
+
 
 (provide 'easycrypt-ext-avy)
 
