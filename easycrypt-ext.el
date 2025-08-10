@@ -1150,6 +1150,28 @@ of specifying OPTIONS is given."
   (ece--exec-compile-internal root t options))
 
 ;; Subcommand: docgen
+(defun ece--exec-docgen-output-directory (srcs)
+  "Determines the output directory for the `docgen' command. Defaults to the
+same relative path with respect to `ece-exec-docgen-default-outdir' as SRCS has
+with respect to its project root (or simply its parent directory if no project
+is found). Here, `ece-exec-docgen-default-outdir' is relative to the project
+root (or the parent directory of SRCS if no project is found).
+
+For example, if SRCS equals `.../root/dir/file', where `root' is the project
+root, then the default output directory is
+`.../root/ece-exec-docgen-default-outdir/dir/'."
+  (let* ((pardir (file-name-directory srcs))
+         (proj (project-current nil pardir))
+         (dir (or (when proj (file-name-as-directory (expand-file-name (project-root proj))))
+                     pardir))
+         (reldir (file-name-directory (file-relative-name srcs dir)))
+         (default (expand-file-name (or reldir "")
+                                    (expand-file-name ece-exec-docgen-default-outdir dir))))
+    (file-name-as-directory
+     (expand-file-name
+      (read-directory-name (format-prompt "Output directory" default)
+                           dir default nil)))))
+
 (defun ece--exec-docgen-internal (srcs &optional outdir subdirs sync)
   "Executes `easycrypt docgen' using `ece--execute-subcommand' (passing SYNC
 directly), which see, generating documentation file(s) for the EasyCrypt file
@@ -1213,20 +1235,8 @@ or relative. Relative paths are with respect to `default-directory',
 which is also the default value for the output directory (if OUTDIR is
 nil or the empty string)."
   (interactive
-   (let* ((projcr (project-current))
-          (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-                      default-directory))
-          (srcs (read-file-name (format-prompt "EasyCrypt source file or directory" defdir)
-                                defdir defdir t))
-          (projsr (project-current nil (file-name-directory srcs)))
-          (srcd (or (when projsr (file-name-as-directory (expand-file-name (project-root projsr))))
-                    (file-name-directory srcs)))
-          (srcr (file-name-directory (file-relative-name srcs srcd)))
-          (defout (expand-file-name (or srcr "") (expand-file-name ece-exec-docgen-default-outdir srcd)))
-          (outdir (file-name-as-directory
-                   (expand-file-name
-                    (read-directory-name (format-prompt "Output directory" defout)
-                                         srcd defout nil))))
+   (let* ((srcs (ece--exec-source-location))
+          (outdir (ece--exec-docgen-output-directory srcs))
           (subdirs (when (file-directory-p srcs) (yes-or-no-p "Include sub-directories?"))))
      (list srcs outdir subdirs)))
   (ece--exec-docgen-internal srcs outdir subdirs))
@@ -1242,23 +1252,8 @@ Interactively, FILE defaults to the file visited by the current buffer
 or, if the current buffer is not visiting such a file, asks to specify a
 file instead."
   (interactive
-   (let* ((projcr (project-current))
-          (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-                      default-directory))
-          (buffn (buffer-file-name))
-          (file (if (and buffn (string-match-p "^[^.].*\\.eca?$" (file-name-nondirectory buffn)))
-                     buffn
-                   (read-file-name (format-prompt "EasyCrypt source file" "")
-                                   defdir nil t nil (apply-partially #'string-match-p "^[^.].*\\.eca?$"))))
-          (projfl (project-current nil (file-name-directory file)))
-          (filed (or (when projfl (file-name-as-directory (expand-file-name (project-root projfl))))
-                     (file-name-directory file)))
-          (filer (file-name-directory (file-relative-name file filed)))
-          (defout (expand-file-name (or filer "") (expand-file-name ece-exec-docgen-default-outdir filed)))
-          (outdir (file-name-as-directory
-                   (expand-file-name
-                    (read-directory-name (format-prompt "Output directory" defout)
-                                         filed defout nil)))))
+   (let* ((file (ece--exec-source-location 'file))
+          (outdir (ece--exec-docgen-output-directory file)))
      (list file outdir)))
   (ece--exec-docgen-internal file outdir))
 
@@ -1275,23 +1270,8 @@ a root. With a prefix argument, ROOT instead defaults to `default-directory' or,
 if that does not contain any EasyCrypt source files, asks to provide a root
 directory instead."
   (interactive
-   (let* ((projcr (when (null current-prefix-arg) (project-current t)))
-          (root (or (when projcr
-                      (file-name-as-directory (expand-file-name (project-root projcr))))
-                    (when (directory-files-recursively default-directory "^[^.].*\\.eca?$" nil t t)
-                      default-directory)
-                    (file-name-as-directory
-                     (expand-file-name
-                      (read-directory-name (format-prompt "EasyCrypt source (root) directory" "") nil nil t)))))
-          (rootp (project-current nil root))
-          (rootd (or (when rootp (file-name-as-directory (expand-file-name (project-root rootp))))
-                     root))
-          (rootr (file-relative-name root rootd))
-          (defout (expand-file-name rootr (expand-file-name ece-exec-docgen-default-outdir rootd)))
-          (outdir (file-name-as-directory
-                   (expand-file-name
-                    (read-directory-name (format-prompt "Output directory" defout)
-                                         rootd defout nil)))))
+   (let* ((root (ece--exec-source-location (if current-prefix-arg 'directory 'project)))
+          (outdir (ece--exec-docgen-output-directory root)))
      (list root outdir)))
   (ece--exec-docgen-internal root outdir t))
 
