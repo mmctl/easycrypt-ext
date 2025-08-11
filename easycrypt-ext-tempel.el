@@ -1,3 +1,4 @@
+;;; easycrypt-ext-tempel.el --- Tempel Integration for EasyCrypt Extensions -*- lexical-binding: t; -*-
 (require 'easycrypt-ext)
 (require 'tempel)
 

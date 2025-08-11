@@ -49,11 +49,6 @@
 ;; - `easycrypt-ext-goals-mode', for `easycrypt-goals-mode'; and
 ;; - `easycrypt-ext-response-mode', for `easycrypt-response-mode'.
 ;;
-;; The default values for the user options are customizable via Emacs's
-;; usual customization interface, but all options can additionally
-;; be enabled/disabled/toggled via commands accessible through
-;; key bindings and the appropriate menus (menu bar and mode line).
-;;
 ;; For setup and usage instructions, see: https://github.com/mmctl/easycrypt-ext
 ;;
 ;;; Code:
@@ -1259,6 +1254,7 @@ command corresponding to the choice upon confirmation."
   (unless nomap
     (keymap-set easycrypt-ext-mode-map "RET" #'newline-and-indent)
     (keymap-set easycrypt-ext-mode-map "<return>" #'newline-and-indent)
+    (keymap-set easycrypt-ext-mode-map "S-RET" #'newline)
     (keymap-set easycrypt-ext-mode-map "S-<return>" #'newline)
     (keymap-set easycrypt-ext-mode-map "<backtab>" #'ece-indent-for-tab-command-nonlocal)
     (keymap-set easycrypt-ext-mode-map "M-i" #'ece-basic-indent)
@@ -1268,6 +1264,7 @@ command corresponding to the choice upon confirmation."
   (unless nomap
     (keymap-unset easycrypt-ext-mode-map "RET")
     (keymap-unset easycrypt-ext-mode-map "<return>")
+    (keymap-unset easycrypt-ext-mode-map "S-RET")
     (keymap-unset easycrypt-ext-mode-map "S-<return>")
     (keymap-unset easycrypt-ext-mode-map "<backtab>")
     (keymap-unset easycrypt-ext-mode-map "M-i")

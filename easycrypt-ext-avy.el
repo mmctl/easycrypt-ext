@@ -1,3 +1,4 @@
+;;; easycrypt-ext-tempel.el --- Avy Integration for EasyCrypt Extensions -*- lexical-binding: t; -*-
 (require 'easycrypt-ext)
 (require 'avy)
 
@@ -43,34 +44,34 @@ which see."
 (defun avy-action-ece-proofshell-print-move (pt)
   "Executes `ece-proofshell-print' at PT (selected with `avy'), additionally
 moving point to PT."
-  (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-print pt nil t))
+  (ece-avy--action-ece-proofshell-command-move #'ece-proofshell-print pt nil t))
 
 ;;;###autoload
 (defun avy-action-ece-proofshell-print-stay (pt)
   "Executes `ece-proofshell-print' at PT (selected with `avy'), leaving PT."
-  (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-print pt nil t))
+  (ece-avy--action-ece-proofshell-command-stay #'ece-proofshell-print pt nil t))
 
 ;;;###autoload
 (defun avy-action-ece-proofshell-search-move (pt)
   "Executes `ece-proofshell-search' at PT (selected with `avy'), additionally
 moving point to PT."
-  (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-search pt nil t))
+  (ece-avy--action-ece-proofshell-command-move #'ece-proofshell-search pt nil t))
 
 ;;;###autoload
 (defun avy-action-ece-proofshell-search-stay (pt)
   "Executes `ece-proofshell-search' at PT (selected with `avy'), leaving PT."
-  (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-search pt nil t))
+  (ece-avy--action-ece-proofshell-command-stay #'ece-proofshell-search pt nil t))
 
 ;;;###autoload
 (defun avy-action-ece-proofshell-locate-move (pt)
   "Executes `ece-proofshell-search' at PT (selected with `avy'), additionally
 moving point to PT."
-  (ece--avy-action-ece-proofshell-command-move #'ece-proofshell-locate pt nil t))
+  (ece-avy--action-ece-proofshell-command-move #'ece-proofshell-locate pt nil t))
 
 ;;;###autoload
 (defun avy-action-ece-proofshell-locate-stay (pt)
   "Executes `ece-proofshell-search' at PT (selected with `avy'), leaving PT."
-  (ece--avy-action-ece-proofshell-command-stay #'ece-proofshell-locate pt nil t))
+  (ece-avy--action-ece-proofshell-command-stay #'ece-proofshell-locate pt nil t))
 
 
 ;;; Setup and teardown

@@ -1,3 +1,4 @@
+;;; easycrypt-ext-cape.el --- Cape Integration for EasyCrypt Extensions -*- lexical-binding: t; -*-
 (require 'easycrypt-ext)
 (require 'easycrypt-ext-consts)
 
