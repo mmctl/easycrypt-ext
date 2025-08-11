@@ -8,7 +8,7 @@
   :prefix "ece-tempel"
   :group 'easycrypt-ext)
 
-(defcustom ece-tempel-keymap-templates
+(defcustom ece-tempel-template-map-entries
   '(("a" axiomn) ("A" abbrevn) ("b" byequiv) ("B" byphoare)
     ("c" conseq) ("C" conseqeqvhoahoa) ("d" doccommentn) ("D" declaremodule)
     ("e" equivn) ("E" equivnlemman) ("f" funn) ("F" fel)
@@ -25,6 +25,12 @@ TEMPLATE-NAME in `ece-template-map'. KEY should be a string satisfying
 `key-valid-p', which see, and TEMPLATE-NAME should be a symbol matching a
 template specified in the template file `eascyrypt-ext-templates.eld'."
   :type '(alist :key-type key :value-type symbol)
+  :group 'easycrypt-ext-tempel)
+
+(defcustom ece-tempel-template-map-prefix "C-c C-y t"
+  "Prefix for accessing `ece-template-map'. Should be a valid key (sequence) as
+per `key-valid-p', which see."
+  :type 'key
   :group 'easycrypt-ext-tempel)
 
 
@@ -59,7 +65,7 @@ that allows to include other templates by their name."
   :doc "Keymap for EasyCrypt templates."
   :prefix 'ece-template-map-prefix)
 
-(dolist (keytemp ece-tempel-keymap-templates)
+(dolist (keytemp ece-tempel-template-map-entries)
   (let ((key (car keytemp))
         (temp (cadr keytemp)))
     (eval `(tempel-key ,key ,temp ece-template-map))))
@@ -70,12 +76,14 @@ that allows to include other templates by their name."
   (add-to-list 'tempel-user-elements #'ece-tempel--include)
   (add-to-list 'tempel-template-sources #'ece-tempel--templates-file-read)
   (when tempel-abbrev-mode
-    (tempel-abbrev-mode 1)))
+    (tempel-abbrev-mode 1))
+  (keymap-set easycrypt-ext-mode-map ece-tempel-template-map-prefix 'ece-template-map-prefix))
 
 (defun ece-tempel--disable-templates ()
-  (setq tempel-user-elements (remq #'ece-tempel--include tempel-user-elements))
+  (keymap-unset easycrypt-ext-mode-map ece-tempel-template-map-prefix)
   (setq tempel-template-sources
         (remq #'ece-tempel--templates-file-read tempel-template-sources))
+  (setq tempel-user-elements (remq #'ece-tempel--include tempel-user-elements))
   (when tempel-abbrev-mode
     (tempel-abbrev-mode 1)))
 

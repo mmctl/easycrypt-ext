@@ -36,16 +36,12 @@
 ;; - Executing proof shell commands through keybindings or mouse clicks
 ;;   (eliminating the need to manually type the corresponding commands).
 ;;   Supported commands are `print', `search', and `locate'.
-;;   This functionality is also made accessible through the
-;;   appropriate menus (menu bar and mode line).
 ;; - Executing command line (sub)commands through keybindings.
 ;;   Supported commands are `compile', `docgen', `runtest', `why3config',
 ;;   and `--help' (which is actually an option, but you get the point).
 ;;   Where relevant, this functionality is extended to the directory/project
 ;;   level, enabling you to execute a (sub)commands for each EasyCrypt
 ;;   file in a directory (tree).
-;;   This functionality is also made accessible through the
-;;   appropriate menus (menu bar and mode line).
 ;;
 ;; These features are (partially) implemented through three minor modes, one
 ;; for each of the major modes provided by the existing front-end:
@@ -1262,7 +1258,7 @@ command corresponding to the choice upon confirmation."
   (add-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t)
   (unless nomap
     (keymap-set easycrypt-ext-mode-map "RET" #'newline-and-indent)
-    (keymap-set easycrypt-ext-mode-map "<return>" "RET")
+    (keymap-set easycrypt-ext-mode-map "<return>" #'newline-and-indent)
     (keymap-set easycrypt-ext-mode-map "S-<return>" #'newline)
     (keymap-set easycrypt-ext-mode-map "<backtab>" #'ece-indent-for-tab-command-nonlocal)
     (keymap-set easycrypt-ext-mode-map "M-i" #'ece-basic-indent)
