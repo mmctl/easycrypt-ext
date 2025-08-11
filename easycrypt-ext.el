@@ -28,7 +28,7 @@
 ;; it features an interactive theorem prover with a front-end implemented
 ;; in `Proof General'.
 ;; This package aims to add useful extensions to this EasyCrypt front-end.
-;; Key (basic) features include the following.
+;; Basic/standalone features include the following.
 ;; - Improved (but still ad-hoc) indentation.
 ;; - Imenu integration; i.e., proper indexing of items (like
 ;;   axioms, lemmas, types, operators, theorems) to allow for
@@ -45,6 +45,9 @@
 ;;   Where relevant, this functionality is extended to the directory/project
 ;;   level, enabling you to execute a (sub)commands for each EasyCrypt
 ;;   file in a project or directory (tree).
+;; - Automatic "smart" centering of goal buffer and echoing of remaining goals.
+;;   This tries to minimize the need for scrolling each time you processing
+;;   a command when dealing with larger goals.
 ;;
 ;; Further, more advanced features are provided through integration with
 ;; other packages. Each of these is provided in a separate file/feature
@@ -55,7 +58,8 @@
 ;; - Code templates (requires `tempel', see `easycrypt-ext-tempel').
 ;; - Execution of proof shell commands from a distance (requires `avy').
 ;;
-;; For setup and usage instructions, see: https://github.com/mmctl/easycrypt-ext
+;; For setup and usage instructions, refer to the accompanying README file
+;; (or https://github.com/mmctl/easycrypt-ext).
 ;;
 ;;; Code:
 
@@ -1260,8 +1264,6 @@ command corresponding to the choice upon confirmation."
   (add-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t)
   (unless nomap
     (keymap-set easycrypt-ext-mode-map "RET" #'newline-and-indent)
-    (keymap-set easycrypt-ext-mode-map "<return>" #'newline-and-indent)
-    (keymap-set easycrypt-ext-mode-map "S-RET" #'newline)
     (keymap-set easycrypt-ext-mode-map "S-<return>" #'newline)
     (keymap-set easycrypt-ext-mode-map "<backtab>" #'ece-indent-for-tab-command-nonlocal)
     (keymap-set easycrypt-ext-mode-map "M-i" #'ece-basic-indent)
@@ -1270,8 +1272,6 @@ command corresponding to the choice upon confirmation."
 (defun ece--disable-indentation (&optional nomap)
   (unless nomap
     (keymap-unset easycrypt-ext-mode-map "RET")
-    (keymap-unset easycrypt-ext-mode-map "<return>")
-    (keymap-unset easycrypt-ext-mode-map "S-RET")
     (keymap-unset easycrypt-ext-mode-map "S-<return>")
     (keymap-unset easycrypt-ext-mode-map "<backtab>")
     (keymap-unset easycrypt-ext-mode-map "M-i")
