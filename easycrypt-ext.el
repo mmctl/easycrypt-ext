@@ -28,26 +28,32 @@
 ;; it features an interactive theorem prover with a front-end implemented
 ;; in `Proof General'.
 ;; This package aims to add useful extensions to this EasyCrypt front-end.
-;; Key features include the following.
+;; Key (basic) features include the following.
 ;; - Improved (but still ad-hoc) indentation.
-;; - Keyword completion (requires `cape', specifically `cape-keyword').
-;; - Code templates (requires `tempel').
-;; - Informative templates (requires `tempel').
-;; - Executing proof shell commands through keybindings or mouse clicks
+;; - Imenu integration; i.e., proper indexing of items (like
+;;   axioms, lemmas, types, operators, theorems) to allow for
+;;   quick navigation through Imenu.
+;; - Execution of proof shell commands through keybindings or mouse clicks
 ;;   (eliminating the need to manually type the corresponding commands).
 ;;   Supported commands are `print', `search', and `locate'.
-;; - Executing command line (sub)commands through keybindings.
+;; - Interactive setting of pragmas, with completion for most of them.
+;;   Allows for, e.g., quickly enabling/disabling weak-check mode
+;;   to process parts of the proof script faster.
+;; - Execution of command line (sub)commands from Emacs through keybindings.
 ;;   Supported commands are `compile', `docgen', `runtest', `why3config',
 ;;   and `--help' (which is actually an option, but you get the point).
 ;;   Where relevant, this functionality is extended to the directory/project
 ;;   level, enabling you to execute a (sub)commands for each EasyCrypt
-;;   file in a directory (tree).
+;;   file in a project or directory (tree).
 ;;
-;; These features are (partially) implemented through three minor modes, one
-;; for each of the major modes provided by the existing front-end:
-;; - `easycrypt-ext-mode', for `easycrypt-mode';
-;; - `easycrypt-ext-goals-mode', for `easycrypt-goals-mode'; and
-;; - `easycrypt-ext-response-mode', for `easycrypt-response-mode'.
+;; Further, more advanced features are provided through integration with
+;; other packages. Each of these is provided in a separate file/feature
+;; called `easycrypt-ext-X', where `X' is the name of the other package.
+;; Specifically, these features are the following.
+;; - Keyword completion (requires `cape', specifically `cape-keyword',
+;;   see `easycrypt-ext-cape').
+;; - Code templates (requires `tempel', see `easycrypt-ext-tempel').
+;; - Execution of proof shell commands from a distance (requires `avy').
 ;;
 ;; For setup and usage instructions, see: https://github.com/mmctl/easycrypt-ext
 ;;
@@ -803,8 +809,15 @@ for EasyCrypt (executable, not proof shell)."
   (or (member subcommand ece--exec-supported-subcommands)
       (error "Unknown/Unsupported subcommand `%s'" subcommand)))
 
+(defun ece--exec-project-root-or-default-directory ()
+  "Returns root of current project or, if no project is found,
+`default-directory'."
+  (let ((proj (project-current)))
+    (or (when proj (file-name-as-directory (expand-file-name (project-root proj))))
+        default-directory)))
+
 (defun ece--exec-source-location (&optional scope)
-  "Determines (common parent) location of to-be-considered source file(s).
+  "Determines (parent) location of to-be-considered source file(s).
 
 If SCOPE equals \\='file, returns the single EasyCrypt source file to be
 considered. In this case, defaults to the file visited by the current buffer or,
@@ -835,9 +848,7 @@ a directory, to be interpreted as above."
          (expand-file-name
           (read-directory-name (format-prompt "EasyCrypt source (root) directory" "") nil nil t))))))
    (t
-    (let* ((projcr (project-current))
-           (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-                       default-directory)))
+    (let* ((defdir (ece--exec-project-root-or-default-directory)))
       (if (eq scope 'file)
           (let ((buffn (buffer-file-name)))
             (if (and buffn (string-match-p "^[^.].*\\.eca?$" (file-name-nondirectory buffn)))
@@ -1151,10 +1162,8 @@ be a string that specifies the working directory for the command (this is
 relevant because relative paths in the test file are interpreted with respect to
 the working directory)."
   (interactive
-   (let* ((projcr (project-current))
-          (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-                      default-directory))
-          (deftf (expand-file-name ece-exec-runtest-default-test-file defdir))
+   (let* ((defdir (ece--exec-project-root-or-default-directory))
+          (deftfl (expand-file-name ece-exec-runtest-default-test-file defdir))
           (defrp (expand-file-name ece-exec-runtest-default-report-file defdir))
           (testfile (read-file-name (format-prompt "Test configuration file" deftf) defdir deftf t))
           (scenario (read-string (format-prompt "Test scenario name" ece-exec-runtest-default-scenario)
@@ -1170,18 +1179,16 @@ the working directory)."
 
 ;;;###autoload
 (defun ece-exec-runtest-dflt (&optional arg)
-  "Executes `easycrypt runtest' asynchronously. By default,
-without a prefix argument, performs test `ece-exec-runtest-default-scenario'
-specified in `ece-exec-runtest-default-test-file', writing a final report
-to `ece-exec-runtest-default-report-file'. With a single prefix argument,
-asks to provide a scenario; with two prefix arguments, also asks
-to provide a test file; with three prefix arguments, also asks
-to provide a report file; with four prefix arguments, also asks
-for a working directory."
+  "Executes `easycrypt runtest' asynchronously. By default, without a prefix
+argument, executes scenario `ece-exec-runtest-default-scenario' specified in
+test file `ece-exec-runtest-default-test-file' (with the parent directory of the
+this file as working directory), writing a final report to
+`ece-exec-runtest-default-report-file'. With a single prefix argument, asks to
+provide a scenario; with two prefix arguments, also asks to provide a test file;
+with three prefix arguments, also asks to provide a report file; with four
+prefix arguments, also asks for a working directory."
   (interactive "p")
-  (let* ((projcr (project-current))
-         (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-                     default-directory))
+  (let* ((defdir (ece--exec-project-root-or-default-directory))
          (deftf (expand-file-name ece-exec-runtest-default-test-file defdir))
          (defrp (expand-file-name ece-exec-runtest-default-report-file defdir))
          (testfile (if (<= 16 arg)
