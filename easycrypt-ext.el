@@ -58,7 +58,7 @@
 ;; be enabled/disabled/toggled via commands accessible through
 ;; key bindings and the appropriate menus (menu bar and mode line).
 ;;
-;; For setup and usage instructions, see: TODO
+;; For setup and usage instructions, see: https://github.com/mmctl/easycrypt-ext
 ;;
 ;;; Code:
 
@@ -82,14 +82,6 @@
   "Directory where this file is stored (and so also where rest of package should
   be).")
 
-;; (defconst ece--templates-file
-;;   (expand-file-name "easycrypt-ext-templates.eld" ece--dir)
-;;   "File where code templates for EasyCrypt are stored.")
-
-;; (defconst ece--templates-info-file
-;;   (expand-file-name "easycrypt-ext-templates-info.eld" ece--dir)
-;;   "File where informative code templates for EasyCrypt are stored.")
-
 
 ;;; Customization options
 (defgroup easycrypt-ext nil
@@ -103,72 +95,11 @@
   :type 'boolean
   :group 'easycrypt-ext)
 
-;; (defcustom ece-indentation-style 'local
-;;   "\='local or \='nonlocal to make local or non-local
-;; the default indentation style. The difference between the
-;; two styles mainly pertains to indentation inside
-;; enclosed expressions (e.g., between { and }, ( and ),
-;; or [ and ]): \='local indents w.r.t. previous
-;; non-blank line in the expression; \='non-local indents
-;; w.r.t. expression opener (e.g., { or ( or [).
-;; In any case, indentation using the opposite style is available
-;; through the command `ece-indent-for-tab-command-inverse-style', which see.
-;; Only has effect if `ece-indentation', which see, is non-nil."
-;;   :type '(choice
-;;           (const :tag "Local indentation style" local)
-;;           (const :tag "Non-local indentation style" nonlocal))
-;;   :group 'easycrypt-ext)
-
 (defcustom ece-imenu t
   "Non-nil (resp. nil) to enable (resp. disable) improved Imenu integration for
 EasyCrypt."
   :type 'boolean
   :group 'easycrypt-ext)
-
-;; (defcustom ece-keyword-completion nil
-;;   "Non-nil (resp. nil) to enable (resp. disable) completion for
-;; EasyCrypt keywords (depends on `cape')."
-;;   :type 'boolean
-;;   :group 'easycrypt-ext)
-
-;; (defcustom ece-templates nil
-;;   "Non-nil (resp. `nil') to enable (resp. disable) code templates for
-;; EasyCrypt (depends on `tempel'). If you enable this, it is recommended to
-;; also enable enhanced indentation (see `ece-indentation'),
-;; since the templates use indentation and were made with the enhanced
-;; EasyCrypt indentation in mind."
-;;   :type 'boolean
-;;   :group 'easycrypt-ext)
-
-;; (defcustom ece-templates-info 'ece-templates
-;;   "Non-nil (resp. `nil') to enable (resp. disable) informative code templates
-;; for EasyCrypt (depends on `tempel'). If you enable this, it is recommended to
-;; also enable enhanced indentation (see `ece-indentation'), since the templates
-;; use indentation and were made with the enhanced EasyCrypt indentation in mind."
-;;   :type 'boolean
-;;   :group 'easycrypt-ext)
-
-;; (defcustom ece-templates-bound
-;;   '(("a" axiomn) ("A" abbrevn) ("b" byequiv) ("B" byphoare)
-;;     ("c" conseq) ("C" conseqeqvhoahoa) ("d" doccommentn) ("D" declaremodule)
-;;     ("e" equivn) ("E" equivnlemman) ("f" funn) ("F" fel)
-;;     ("g" ge0) ("G" gt0) ("h" hoaren) ("H" hoarenlemman)
-;;     ("i" ifelse) ("I" ifthenelse) ("l" lemman) ("L" letinn)
-;;     ("m" module) ("M" modulept) ("o" op) ("O" opas)
-;;     ("p" proc) ("P" procsig) ("r" rewrited) ("R" rngin)
-;;     ("s" seq) ("S" seqph) ("t" moduletype) ("T" moduletypep)
-;;     ("u" Prmbnd) ("U" Prmrbnd) ("v" Prmeq) ("V" Prmreq)
-;;     ("w" whiles) ("W" whileph) ("x" cloneimportaswith) ("X" requireimport)
-;;     ("y" phoaren) ("Y" phoare1n) ("z" theory) ("Z" abstracttheory))
-;;   "Alist of (KEY TEMPLATE-NAME) pairs for which KEY
-;; should be bound to TEMPLATE-NAME in `ece-template-map'
-;; when templates are enabled (i.e., when `ece-templates'
-;; are non-nil). KEY should be a string satisfying
-;; `key-valid-p', which see, and TEMPLATE-NAME should be
-;; a symbol matching a template specified in the template file
-;; `eascyrypt-ext-templates'."
-;;   :type '(alist :key-type key :value-type symbol)
-;;   :group 'easycrypt-ext)
 
 (defcustom ece-exec-runtest-default-test-file "tests.config"
   "Default file name to consider for test configuration files
@@ -205,37 +136,12 @@ contains at that time)."
   :group 'easycrypt-ext)
 
 
-;;; Utilities
-;; (defsubst ece--check-feature (feature)
-;;   (unless (featurep feature)
-;;     (user-error "Feature `%s' not detected, but required. Try again after loading" (symbol-name feature))))
-
-;; (defsubst ece--check-functionality (fun feature)
-;;   (unless (fboundp fun)
-;;     (user-error "Function `%s' from feature `%s' not detected, but required. Make sure to load the feature"
-;;                 (symbol-name fun)
-;;                 (symbol-name feature))))
-
+;;; Utilities (general)
 (defsubst ece--check-other-buffers-mode (mode)
   (seq-some #'(lambda (buf)
                 (and (not (eq buf (current-buffer)))
                      (with-current-buffer buf (symbol-value mode))))
             (buffer-list)))
-
-;; (defun ece--gen-buffer-loop-pred (fun pred &optional args)
-;;   (dolist (buffer (buffer-list))
-;;     (with-current-buffer buffer
-;;       (when (or (null pred) (funcall pred))
-;;         (apply fun args)))))
-
-;; (defun ece--gen-buffer-loop-symb (fun symb &optional args)
-;;   (dolist (buffer (buffer-list))
-;;     (with-current-buffer buffer
-;;       (when (symbol-value symb)
-;;         (apply fun args)))))
-
-;; (defsubst ece--ece-configure-global-from-local (fun &optional args)
-;;   (ece--gen-buffer-loop-symb fun 'easycrypt-ext-mode args))
 
 
 ;;; Indentation
@@ -607,32 +513,11 @@ passing NONLOCAL directly."
       (back-to-indentation))))
 
 ;;;###autoload
-;; (defun ece-indent-for-tab-command-nonlocal ()
-;;   "Calls `indent-for-tab-command' with `ece-indentation-style' inverted.
-;; If `ece-indentation' is non-nil, `indent-line-function' will be set to
-;; `ece-indent-line', which is used by `indent-for-tab-command' to indent a line
-;; or region. So, this command essentially performs indentation according to the
-;; style that is currently not selected."
-;;   (interactive)
-;;   (let ((ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local)))
-;;     (indent-for-tab-command)))
-
-;;;###autoload
-(defun ece-indent-for-tab-command-basic ()
-  "Calls `indent-for-tab-command' with `indent-line-function' bound
-to `ece-basic-indent' with a non-nil argument, which see, essentially
-meaning it performs basic (rigid) indentation while still preserving
-completion behavior."
-  (interactive)
-  (let ((indent-line-function #'ece-basic-indent))
-    (indent-for-tab-command)))
-
-;;;###autoload
 (defun ece-indent-for-tab-command-nonlocal ()
   "Calls `indent-for-tab-command' with `indent-line-function' bound
 to `ece-indent-line' with a non-nil argument, which see, essentially
 meaning it performs indentation with a non-local style while
-still preserving completion behavior."
+still preserving intended completion behavior."
   (interactive)
   (let ((indent-line-function #'(lambda () (ece-indent-line 'nonlocal))))
     (indent-for-tab-command)))
@@ -685,7 +570,6 @@ indexing of several successive items of the same kind."
 and removing `ece--imenu-re-search-backward-advice' around
 `re-seach-backward' for the duration of the execution."
   (advice-add #'re-search-backward :around #'ece--imenu-re-search-backward-advice)
-
   (unwind-protect
       (apply igf args)
     (advice-remove #'re-search-backward #'ece--imenu-re-search-backward-advice)))
@@ -754,7 +638,6 @@ is executed synchronously (resp. asynchronously). ARGS is a string that is
 concatenated to SUBCOMMAND (separated by a space) as is."
   (unless (or (null args) (stringp args))
     (error "ece--proofshell-execute: ARGS (%s) should be nil or a string" args))
-  ;; (ece--check-functionality 'proof-shell-invisible-command 'proof-general)
   ;; proof-shell-ready-prover called inside proof-shell-invisible-command
   (let ((cmd (if args (concat command  " " args) command)))
     (proof-shell-invisible-command cmd sync callback)))
@@ -906,7 +789,6 @@ which see. Allows binding to a mouse-based key
 (e.g., `<wheel-up>') and have it effect the window
 that the mouse is hovering, not necessarily the active one."
   (interactive "@")
-  ;; (ece--check-functionality 'bufhist-prev 'proof-general)
   (bufhist-prev n))
 
 (defun ece-bufhist-next (&optional n)
@@ -916,7 +798,6 @@ which see. Allows binding to a mouse-based key
 (e.g., `<wheel-down>') and have it effect the window
 that the mouse is hovering, not necessarily the active one."
   (interactive "@")
-  ;; (ece--check-functionality 'bufhist-next 'proof-general)
   (bufhist-next n))
 
 
@@ -1048,25 +929,6 @@ string and is concatenated to the command as is."
      (t
       (user-error "`%s' (resolved as `%s') not a regular file nor a directory" srcs esrc)))))
 
-;;;###autoload
-;; (defun ece-exec-compile (srcs &optional subdirs options)
-;;   "Executes `easycrypt compile' asynchronously, checking the EasyCrypt file SRCS
-;; or, if SRCS is a directory, EasyCrypt files in (sub-directories of) SRCS. In the
-;; latter case, sub-directories are considered if SUBDIRS is non-nil. SRCS can be
-;; absolute or relative. A relative path (for SRCS) is interpreted with respect to
-;; `default-directory'. OPTIONS, if provided, should be a string and is
-;; concatenated to the command as is."
-;;   (interactive
-;;    (let* ((projcr (project-current))
-;;           (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-;;                       default-directory))
-;;           (srcs (read-file-name (format-prompt "EasyCrypt source file or directory" defdir)
-;;                                 defdir defdir t))
-;;           (subdirs (when (file-directory-p srcs) (yes-or-no-p "Include sub-directories?")))
-;;           (options (read-string (format-prompt "Further options" ""))))
-;;      (list srcs subdirs (when (not (string-empty-p options)) options))))
-;;   (ece--exec-compile-internal srcs subdirs options))
-
 (defun ece-exec-compile (srcs &optional subdirs options)
   "Executes `easycrypt compile' asynchronously, checking the EasyCrypt file SRCS
 or, if SRCS is a directory, EasyCrypt files in (sub-directories of) SRCS. In the
@@ -1081,27 +943,6 @@ concatenated to the command as is."
      (list srcs subdirs (when (not (string-empty-p options)) options))))
    (ece--exec-compile-internal srcs subdirs options))
 
-;;;###autoload
-;; (defun ece-exec-compile-file (file &optional options)
-;;   "Executes `easycrypt compile' asynchronously,
-;; checking the EasyCrypt file FILE which, if relative, is interpreted with
-;; respect to `default-directory'. OPTIONS, if non-nil, should be a string and is
-;; concatenated to the command as is. Interactively, FILE defaults to the
-;; file visited by the current buffer or, if the current buffer is not
-;; visiting such a file, asks to specify a file instead.
-;; Further, interactively, no possibility of specifying OPTIONS is given."
-;;   (interactive
-;;    (let* ((projcr (project-current))
-;;           (defdir (or (when projcr (file-name-as-directory (expand-file-name (project-root projcr))))
-;;                       default-directory))
-;;           (buffn (buffer-file-name))
-;;           (file (if (and buffn (string-match-p "^[^.].*\\.eca?$" (file-name-nondirectory buffn)))
-;;                     buffn
-;;                   (read-file-name (format-prompt "EasyCrypt source file" "")
-;;                                   defdir nil t nil (apply-partially #'string-match-p "^[^.].*\\.eca?$")))))
-;;      (list file nil)))
-;;   (ece--exec-compile-internal file nil options))
-
 (defun ece-exec-compile-file (file &optional options)
   "Executes `easycrypt compile' asynchronously,
 checking the EasyCrypt file FILE which, if relative, is interpreted with
@@ -1112,29 +953,6 @@ visiting such a file, asks to specify a file instead.
 Further, interactively, no possibility of specifying OPTIONS is given."
   (interactive (list (ece--exec-source-location 'file) nil))
   (ece--exec-compile-internal file nil options))
-
-;;;###autoload
-;; (defun ece-exec-compile-projdir (root &optional options)
-;;   "Executes `easycrypt compile' command asynchronously, checking the EasyCrypt
-;; files in ROOT, including sub-directories. OPTIONS, if non-nil, should be
-;; a string and is concatenated to the command as is. Interactively,
-;; without a prefix argument, ROOT defaults to the root of the current
-;; project or, if no project is found, asks to provide such a root. With a
-;; prefix argument, ROOT instead defaults to `default-directory' or, if
-;; that does not contain any EasyCrypt source files, asks to provide a root
-;; directory instead. Further, interactively, no possibility of specifying
-;; OPTIONS is given."
-;;   (interactive
-;;    (let* ((projcr (when (null current-prefix-arg) (project-current t)))
-;;           (root (or (when projcr
-;;                       (file-name-as-directory (expand-file-name (project-root projcr))))
-;;                     (when (directory-files-recursively default-directory "^[^.].*\\.eca?$" nil t t)
-;;                       default-directory)
-;;                     (file-name-as-directory
-;;                      (expand-file-name
-;;                       (read-directory-name (format-prompt "EasyCrypt source (root) directory" "") nil nil t))))))
-;;      (list root nil)))
-;;   (ece--exec-compile-internal root t options))
 
 (defun ece-exec-compile-projdir (root &optional options)
   "Executes `easycrypt compile' command asynchronously, checking the EasyCrypt
@@ -1430,117 +1248,9 @@ command corresponding to the choice upon confirmation."
   (call-interactively (intern-soft (format "ece-exec-%s" subcommand))))
 
 
-;;; Templates
-;; (defun ece--tempel-placeholder-form-as-lit (elt)
-;; "Defines slight adjustment of regular placeholder element
-;; so that a prompt form evaluating to a string is inserted as
-;; default value in the same way as a literal string prompt."
-;;   (pcase elt
-;;     (`(pfl ,prompt . ,rest)
-;;      (let ((evprompt (eval prompt)))
-;;        (if (stringp evprompt)
-;;            `(p ,evprompt ,@rest)
-;;          `('p ,prompt ,@rest))))))
-
-;; (defun ece--tempel-include (elt)
-;;   "Defines `include' element (taken and slightly adjusted from TempEL github repo)
-;; that allows to include other templates by their name."
-;;   (when (eq (car-safe elt) 'i)
-;;     (when-let (template (alist-get (cadr elt) (tempel--templates)))
-;;       (cons 'l template))))
-
-;; (defun ece--tempel-template-file-read (file)
-;;   (let ((res '()))
-;;     (dolist (metatemps (tempel--file-read file))
-;;       (let ((modes (car metatemps))
-;;             (plist (cadr metatemps))
-;;             (temps (cddr metatemps)))
-;;         (when (tempel--condition-p modes plist)
-;;           (setq res (append res temps)))))
-;;     res))
-
-;; (defsubst ece--templates-file-read ()
-;;   (ece--tempel-template-file-read ece--templates-file))
-
-;; (defsubst ece--templates-info-file-read ()
-;;   (ece--tempel-template-file-read ece--templates-info-file))
-
-;; ;;;###autoload
-;; (defmacro ece-tempel-key (keymap key template-name)
-;;   "Binds KEY to (a function inserting) TEMPLATE-NAME in KEYMAP.
-;; Simplified version of `tempel-key' macro from `tempel' package, but
-;; with functionality checks."
-;;   `(define-key ,keymap ,(key-parse key)
-;;                ,(let ((cmd (intern (format "tempel-insert-%s" template-name))))
-;;                   `(prog1 ',cmd
-;;                      (defun ,cmd ()
-;;                        ,(format "Insert template %s in the current buffer."
-;;                                 template-name)
-;;                        (interactive)
-;;                        (unless ece-templates
-;;                          (user-error "Templates not enabled (i.e., `ece-templates' is nil). Try again after enabling"))
-;;                        (ece--check-functionality 'tempel-insert 'tempel)
-;;                        (tempel-insert ',template-name))))))
-
-
 ;;; Configuration
 ;; Indentation
 (defvar-local original-indentation-state nil)
-
-;; (defun ece--set-indentation-settings-local ()
-;;   (if original-indentation-state
-;;       (setq-local indent-line-function #'ece-indent-line
-;;                   electric-indent-mode nil)
-;;     (setq-local original-indentation-state
-;;                 (buffer-local-set-state indent-line-function #'ece-indent-line
-;;                                         electric-indent-mode nil)))
-;;   (add-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
-
-;; (defun ece--reset-indentation-settings-local ()
-;;   (when original-indentation-state
-;;       (buffer-local-restore-state original-indentation-state)
-;;       (setq-local original-indentation-state nil))
-;;   (remove-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
-
-;; (defun ece--set-indentation-settings ()
-;;   (if original-indentation-state
-;;       (setq-local indent-line-function #'ece-indent-line
-;;                   electric-indent-mode nil)
-;;     (setq-local original-indentation-state
-;;                 (buffer-local-set-state indent-line-function #'ece-indent-line
-;;                                         electric-indent-mode nil)))
-;;   (add-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
-
-;; (defun ece--reset-indentation-settings ()
-;;   (when original-indentation-state
-;;       (buffer-local-restore-state original-indentation-state)
-;;       (setq-local original-indentation-state nil))
-;;   (remove-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
-
-;; (defun ece--configure-indentation-settings-local (enable)
-;;   (if enable (ece--set-indentation-settings-local) (ece--reset-indentation-settings-local)))
-
-;; (defun ece--enable-indentation ()
-;;   (ece--ece-configure-global-from-local #'ece--set-indentation-settings-local)
-;;   (keymap-set easycrypt-ext-mode-map "RET" #'newline-and-indent)
-;;   (keymap-set easycrypt-ext-mode-map "<return>" #'newline-and-indent)
-;;   (keymap-set easycrypt-ext-mode-map "S-<return>" #'newline)
-;;   (keymap-set easycrypt-ext-mode-map "TAB" #'ece-basic-indent)
-;;   (keymap-set easycrypt-ext-mode-map "<tab>" #'ece-basic-indent)
-;;   (keymap-set easycrypt-ext-mode-map "<backtab>" #'ece-basic-deindent)
-;;   (keymap-set easycrypt-ext-mode-map "M-i" #'indent-for-tab-command)
-;;   (keymap-set easycrypt-ext-mode-map "M-I" #'ece-indent-for-tab-command-inverse-style))
-
-;; (defun ece--disable-indentation ()
-;;   (keymap-unset easycrypt-ext-mode-map "RET")
-;;   (keymap-unset easycrypt-ext-mode-map "<return>")
-;;   (keymap-unset easycrypt-ext-mode-map "S-<return>")
-;;   (keymap-unset easycrypt-ext-mode-map "TAB")
-;;   (keymap-unset easycrypt-ext-mode-map "<tab>" "TAB")
-;;   (keymap-unset easycrypt-ext-mode-map "<backtab>")
-;;   (keymap-unset easycrypt-ext-mode-map "M-i")
-;;   (keymap-unset easycrypt-ext-mode-map "M-I")
-;;   (ece--ece-configure-global-from-local #'ece--reset-indentation-settings-local))
 
 (defun ece--enable-indentation (&optional nomap)
   (if original-indentation-state
@@ -1571,30 +1281,7 @@ command corresponding to the choice upon confirmation."
       (setq-local original-indentation-state nil))
   (remove-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
 
-;; (defsubst ece--configure-indentation (enable)
-;;   (if enable (ece--enable-indentation) (ece--disable-indentation)))
-
 ;; Imenu
-;; (defun ece--enable-imenu-local ()
-;;   (unless (and (local-variable-p ece-imenu) ece-imenu)
-;;     (if original-imenu-generic-expression
-;;         (setq-local imenu-generic-expression ece--imenu-generic-expression)
-;;       (setq-local original-imenu-generic-expression
-;;                   (buffer-local-set-state imenu-generic-expression
-;;                                           ece--imenu-generic-expression)))
-;;     (advice-add #'imenu--generic-function :around #'ece--imenu-generic-function-rsb-advice)
-;;     (advice-add #'imenu--generic-function :filter-return #'ece--imenu-deduplicate)
-;;     (setq-local ece-imenu t)))
-
-;; (defun ece--disable-imenu-local ()
-;;   (unless (and (local-variable-p ece-imenu) (not ece-imenu))
-;;     (setq-local ece-imenu nil)
-;;     (advice-remove #'imenu--generic-function #'ece--imenu-deduplicate)
-;;     (advice-remove #'imenu--generic-function #'ece--imenu-generic-function-rsb-advice)
-;;     (when original-imenu-generic-expression
-;;       (buffer-local-restore-state original-imenu-generic-expression)
-;;       (setq-local original-imenu-generic-expression nil))))
-
 (defun ece--enable-imenu ()
   (if original-imenu-generic-expression
       (setq-local imenu-generic-expression ece--imenu-generic-expression)
@@ -1610,238 +1297,6 @@ command corresponding to the choice upon confirmation."
   (when original-imenu-generic-expression
     (buffer-local-restore-state original-imenu-generic-expression)
     (setq-local original-imenu-generic-expression nil)))
-
-;; (defsubst ece--configure-imenu-local (enable)
-;;   (if enable (ece--enable-imenu-local) (ece--disable-imenu-local)))
-
-;; (defsubst ece--configure-imenu (enable)
-;;   (ece--ece-configure-global-from-local
-;;    (if enable #'ece--enable-imenu-local #'ece--disable-imenu-local)))
-
-;; Keyword completion
-;; (defun ece--enable-keyword-completion-local ()
-;;   (unless (and (local-variable-p ece-keyword-completion) ece-keyword-completion)
-;;     (add-to-list 'cape-keyword-list (cons 'easycrypt-mode ece-keywords))
-;;     (setq-local ece-keyword-completion t)))
-
-;; (defun ece--disable-keyword-completion-local ()
-;;   (unless (and (local-variable-p ece-keyword-completion) (not ece-keyword-completion))
-;;     (setq-local ece-keyword-completion nil)
-;;     (setq-local cape-keyword-list (assq-delete-all 'easycrypt-mode cape-keyword-list))
-;;     (when (eq cape-keyword-list (default-value 'cape-keyword-list))
-;;       (kill-local-variable 'cape-keyword-list))))
-
-;; (defsubst ece--configure-keyword-completion-local (enable)
-;;   (ece--check-feature 'cape-keyword)
-;;   (if enable (ece--enable-keyword-completion-local) (ece--disable-keyword-completion-local)))
-
-;; (defsubst ece--configure-keyword-completion (enable)
-;;   (ece--check-feature 'cape-keyword)
-;;   (ece--ece-configure-global-from-local
-;;    (if enable #'ece--enable-keyword-completion-local #'ece--disable-keyword-completion-local)))
-
-;; Templates
-;; (defvar-keymap ece-template-map
-;;   :doc "Keymap for EasyCrypt templates."
-;;   :prefix 'ece-template-map-prefix)
-
-;; (dolist (keytemp ece-templates-bound)
-;;   (let ((key (car keytemp))
-;;         (temp (cadr keytemp)))
-;;     (eval `(ece-tempel-key ece-template-map ,key ,temp))))
-
-;; (defun ece--enable-templates-local ()
-;;   (unless (and (local-variable-p ece-templates) ece-templates)
-;;     (add-to-list 'tempel-user-elements #'ece--tempel-placeholder-form-as-lit)
-;;     (add-to-list 'tempel-user-elements #'ece--tempel-include)
-;;     (add-to-list 'tempel-template-sources #'ece--templates-file-read)
-;;     (when tempel-abbrev-mode
-;;       (tempel-abbrev-mode 1))
-;;     (setq-local ece-templates t)))
-
-;; (defun ece--disable-templates-local ()
-;;   (unless (and (local-variable-p ece-templates) (not ece-templates))
-;;     (setq-local ece-templates nil)
-;;     (setq-local tempel-user-elements
-;;                 (remq #'ece--tempel-placeholder-form-as-lit
-;;                       (remq #'ece--tempel-include tempel-user-elements)))
-;;     (when (eq tempel-user-elements (default-value 'tempel-user-elements))
-;;       (kill-local-variable 'tempel-user-elements))
-;;     (setq-local tempel-template-sources
-;;                 (remq #'ece--templates-file-read tempel-template-sources))
-;;     (when (eq tempel-template-sources (default-value 'tempel-template-sources))
-;;       (kill-local-variable 'tempel-template-sources))
-;;     (when tempel-abbrev-mode
-;;       (tempel-abbrev-mode 1))))
-
-;; (defsubst ece--configure-templates-local (enable)
-;;   (ece--check-feature 'tempel)
-;;   (if enable (ece--enable-templates-local) (ece--disable-templates-local)))
-
-;; (defsubst ece--configure-templates (enable)
-;;   (ece--check-feature 'tempel)
-;;   (ece--ece-configure-global-from-local
-;;    (if enable #'ece--enable-templates-local #'ece--disable-templates-local)))
-
-;; (defun ece--enable-templates-info-local ()
-;;   (unless (and (local-variable-p ece-templates-info) ece-templates-info)
-;;     (add-to-list 'tempel-template-sources #'ece--templates-info-file-read)
-;;     (when tempel-abbrev-mode
-;;       (tempel-abbrev-mode 1))
-;;     (setq-local ece-templates-info t)))
-
-;; (defun ece--disable-templates-info-local ()
-;;   (unless (and (local-variable-p ece-templates-info) (not ece-templates-info))
-;;     (setq-local ece-templates-info nil)
-;;     (setq-local tempel-template-sources
-;;                 (remq #'ece--templates-info-file-read tempel-template-sources))
-;;     (when tempel-abbrev-mode
-;;       (tempel-abbrev-mode 1))))
-
-;; (defsubst ece--configure-templates-info-local (enable)
-;;   (ece--check-feature 'tempel)
-;;   (if enable (ece--enable-templates-info-local) (ece--disable-templates-info-local)))
-
-;; (defsubst ece--configure-templates-info (enable)
-;;   (ece--check-feature 'tempel)
-;;   (ece--ece-configure-global-from-local
-;;    (if enable #'ece--enable-templates-info-local #'ece--disable-templates-info-local)))
-
-
-;;; Toggles
-;;;###autoload
-;; (defun ece-toggle-indentation-style-local ()
-;;   "Toggles EasyCrypt Ext indentation style in this buffer."
-;;   (interactive)
-;;   (setq-local ece-indentation-style (if (eq ece-indentation-style 'local) 'nonlocal 'local))
-;;   (message "EasyCrypt Ext indentation style set to %s in this buffer!"
-;;            (if (eq ece-indentation-style 'local) "local" "non-local")))
-
-;;;###autoload
-;; (defun ece-toggle-imenu-local ()
-;;   "Toggles EasyCrypt Ext Imenu integration in this buffer."
-;;   (interactive)
-;;   (ece--configure-imenu-local (not ece-imenu))
-;;   (message "EasyCrypt Ext Imenu integration %s in this buffer!"
-;;            (if ece-imenu "enabled" "disabled")))
-
-;; ;;;###autoload
-;; (defun ece-toggle-keyword-completion-local ()
-;;   "Toggles EasyCrypt Ext keyword completion in this buffer."
-;;   (interactive)
-;;   (ece--configure-keyword-completion-local (not ece-keyword-completion))
-;;   (message "EasyCrypt Ext keyword completion %s in this buffer!"
-;;            (if ece-keyword-completion "enabled" "disabled")))
-
-;; ;;;###autoload
-;; (defun ece-toggle-templates-local ()
-;;   "Toggles EasyCrypt Ext templates in this buffer."
-;;   (interactive)
-;;   (ece--configure-templates-local (not ece-templates))
-;;   (message "EasyCrypt Ext templates %s in this buffer!"
-;;            (if ece-templates "enabled" "disabled")))
-
-;; ;;;###autoload
-;; (defun ece-toggle-templates-info-local ()
-;;   "Toggles EasyCrypt Ext informative templates in this buffer."
-;;   (interactive)
-;;   (ece--configure-templates-info-local (not ece-templates-info))
-;;   (message "EasyCrypt Ext informative templates %s in this buffer!"
-;;            (if ece-templates-info "enabled" "disabled")))
-
-;; ;;;###autoload
-;; (defun ece-reset-to-defaults-local ()
-;;   "Resets relevant EasyCrypt Ext functionalities/settings in this buffer
-;; to their global defaults."
-;;   (interactive)
-;;   (ece--configure-indentation-settings-local (default-value 'ece-indentation))
-;;   (ece--configure-imenu-local (default-value 'ece-imenu))
-;;   (ece--configure-keyword-completion-local (default-value 'ece-keyword-completion))
-;;   (ece--configure-templates-local (default-value 'ece-templates))
-;;   (ece--configure-templates-info-local (default-value 'ece-templates-info))
-;;   (message "EasyCrypt Ext options reset to their default values in this buffer!"))
-
-;; ;;;###autoload
-;; (defun ece-enable-indentation ()
-;;   "Enables EasyCrypt Ext indentation in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-indentation t)
-;;   (message "EasyCrypt Ext indentation enabled in all buffers! Current style: %s." ece-indentation-style))
-
-;; ;;;###autoload
-;; (defun ece-disable-indentation ()
-;;   "Disables EasyCrypt Ext indentation in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-indentation nil)
-;;   (message "EasyCrypt Ext indentation disabled in all buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-enable-imenu ()
-;;   "Enables EasyCrypt Ext Imenu integraton in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-imenu t)
-;;   (message "EasyCrypt Ext Imenu integration enabled in all buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-disable-imenu ()
-;;   "Disables EasyCrypt Ext Imenu integraton in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-imenu nil)
-;;   (message "EasyCrypt Ext Imenu integration disabled in all buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-enable-keyword-completion ()
-;;   "Enables EasyCrypt Ext keyword completion in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-keyword-completion t)
-;;   (message "EasyCrypt Ext keyword completion enabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-disable-keyword-completion ()
-;;   "Disables EasyCrypt Ext keyword completion in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-keyword-completion nil)
-;;   (message "EasyCrypt Ext keyword completion disabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-enable-templates ()
-;;   "Enables EasyCrypt Ext templates in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-templates t)
-;;   (message "EasyCrypt Ext templates enabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-disable-templates ()
-;;   "Disables EasyCrypt Ext templates in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-templates nil)
-;;   (message "EasyCrypt Ext templates disabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-enable-templates-info ()
-;;   "Enables EasyCrypt Ext informative templates in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-templates-info t)
-;;   (message "EasyCrypt Ext informative templates enabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-disable-templates-info ()
-;;   "Disables EasyCrypt Ext informative templates in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-templates-info nil)
-;;   (message "EasyCrypt Ext informative templates disabled in all (EasyCrypt Ext) buffers!"))
-
-;; ;;;###autoload
-;; (defun ece-reset-to-defaults ()
-;;   "Resets all EasyCrypt Ext settings/functionalities to their
-;; global defaults in all EasyCrypt buffers."
-;;   (interactive)
-;;   (ece--configure-indentation (default-value 'ece-indentation))
-;;   (ece--configure-imenu (default-value 'ece-imenu))
-;;   (ece--configure-keyword-completion (default-value 'ece-keyword-completion))
-;;   (ece--configure-templates (default-value 'ece-templates))
-;;   (ece--configure-templates-info (default-value 'ece-templates-info))
-;;   (message "EasyCrypt Ext options reset to their default values in all (EasyCrypt Ext) buffers!"))
 
 
 ;;; Keymaps
@@ -1860,28 +1315,6 @@ command corresponding to the choice upon confirmation."
   "R" #'ece-exec-runtest
   "w" #'ece-exec-why3config-dflt
   "W" #'ece-exec-why3config)
-
-;; Options (enabling/disabling)
-;; (defvar-keymap ece-options-map
-;;   :doc "Keymap for managing options for `easycrypt-ext-mode'"
-;;   :prefix 'ece-options-map-prefix
-;;   "i" #'ece-enable-indentation
-;;   "I" #'ece-disable-indentation
-;;   "C-i" #'ece-toggle-indentation-style-local
-;;   "k" #'ece-enable-keyword-completion
-;;   "K" #'ece-disable-keyword-completion
-;;   "C-k" #'ece-toggle-keyword-completion-local
-;;   "m" #'ece-enable-imenu
-;;   "M" #'ece-disable-imenu
-;;   "C-m" #'ece-toggle-imenu-local
-;;   "t" #'ece-enable-templates
-;;   "T" #'ece-disable-templates
-;;   "C-t" #'ece-toggle-templates-local
-;;   "o" #'ece-enable-templates-info
-;;   "O" #'ece-disable-templates-info
-;;   "C-o" #'ece-toggle-templates-info-local
-;;   "r" #'ece-reset-to-defaults-local
-;;   "R" #'ece-reset-to-defaults)
 
 ;; Modes
 (defvar-keymap easycrypt-ext-general-map
@@ -1910,7 +1343,6 @@ mode-specific maps."
 (defvar-keymap easycrypt-ext-mode-map
   :doc "Keymap for `easycrypt-ext-mode'."
   :parent easycrypt-ext-general-map
-  ;; "C-c C-y o" 'ece-options-map-prefix
   "C-c C-y t" 'ece-template-map-prefix)
 
 (defvar-keymap easycrypt-ext-goals-mode-map
@@ -1948,118 +1380,6 @@ mode-specific maps."
   "<" #'bufhist-first
   ">" #'bufhist-last
   "d" #'bufhist-delete)
-
-
-;;; Menus
-;; Generation (macro)
-;; (defmacro ece--easy-menu-gen (symb map shell exec options &optional submode)
-;;   `(easy-menu-define ,symb ,map
-;;      ,@(let* ((mmd (concat "EasyCrypt Ext" (if (stringp submode) (format " (%s)" submode) "")))
-;;               (mms (format "easycrypt-ext%s-mode" (if (stringp submode) (concat "-" submode) "")))
-;;               (mmc (intern mms))
-;;               (hmd (concat "Disable " mmd)))
-;;          (append
-;;           `(,(concat "Menu bar and mode line menu (clickable) for " mms))
-;;           `('(,mmd
-;;               :visible t
-;;               :active t
-;;               :help ,(concat "Menu exposing functionality provided by " mmd)
-;;               ,@(append
-;;                  (when shell
-;;                    (list
-;;                     ["Locate" ece-proofshell-locate
-;;                      :help "Locate the item at cursor in the current EasyCrypt context."]
-;;                     ["Locate (prompt)" ece-proofshell-prompt-locate
-;;                      :help "Locate an item of choice in the current EasyCrypt context."]
-;;                     ["Print" ece-proofshell-print
-;;                      :help "Print the item at cursor from the current EasyCrypt context."]
-;;                     ["Print (prompt)" ece-proofshell-prompt-print
-;;                      :help "Print an item of choice from the current EasyCrypt context."]
-;;                     ["Search" ece-proofshell-search
-;;                      :help "Search for known axioms/lemmas from the current EasyCrypt context containing the item at cursor."]
-;;                     ["Search (prompt)" ece-proofshell-prompt-search
-;;                      :help "Search for known axioms/lemmas from the current EasyCrypt context containing items of choice."]
-;;                     (when (or exec options) "-----")))
-;;                  (when exec
-;;                    (list
-;;                     '("Executable (\"command line\") commands"
-;;                       :visible t
-;;                       :active t
-;;                       ["Compile file" ece-exec-compile-file
-;;                        :help "Check current EasyCrypt file."]
-;;                       ["Compile directory/project" ece-exec-compile-projdir
-;;                        :help "Check EasyCrypt files in current directory and its sub-directories."]
-;;                       ["Compile (prompt)" ece-exec-compile
-;;                        :help "Check EasyCrypt file(s) of choice."]
-;;                       "-----"
-;;                       ["Generate documentation file" ece-exec-docgen-file
-;;                        :help "Generate documentation for current EasyCrypt file."]
-;;                       ["Generate documentation directory/project" ece-exec-docgen-projdir
-;;                        :help "Generate documentation for EasyCrypt files in current directory and its sub-directories."]
-;;                       ["Generate documentation" ece-exec-docgen
-;;                        :help "Generate documentation for EasyCrypt file(s) of choice."]
-;;                       "-----"
-;;                       ["Print help (from executable)" ece-exec-help
-;;                        :help "Print help information as provided by the EasyCrypt executable (through \"--help\")."]
-;;                       "-----"
-;;                       ["Run test scenario (default)" ece-exec-runtest-dflt
-;;                        :help "Run default test scenario (for current EasyCrypt file)."]
-;;                       ["Run test scenario (prompt)" ece-exec-runtest
-;;                        :help "Run test scenario of choice."])))
-;;                  (when options
-;;                    (list
-;;                     '("Configuration/Options"
-;;                       :visible t
-;;                       :active t
-;;                       ["Toggle enhanced indentation (local)" ece-toggle-indentation-local
-;;                        :help "Toggle enhanced indentation in this buffer."
-;;                        :style toggle
-;;                        :selected ece-indentation]
-;;                       ["Enable enhanced indentation (global)" ece-enable-indentation
-;;                        :help "Enable enhanced indentation in all EasyCrypt Ext buffers."]
-;;                       ["Disable enhanced indentation (global)" ece-disable-indentation
-;;                        :help "Disable enhanced indentation in all EasyCrypt Ext buffers."]
-;;                       "-----"
-;;                       ["Toggle keyword completion (local)" ece-toggle-keyword-completion-local
-;;                        :help "Toggle keyword completion in this buffer."
-;;                        :style toggle
-;;                        :selected ece-keyword-completion]
-;;                       ["Enable keyword completion (global)" ece-enable-keyword-completion
-;;                        :help "Enable keyword completion in all EasyCrypt Ext buffers."]
-;;                       ["Disable keyword completion (global)" ece-disable-keyword-completion
-;;                        :help "Disable keyword completion in all EasyCrypt Ext buffers."]
-;;                       "-----"
-;;                       ["Toggle templates (local)" ece-toggle-templates-local
-;;                        :help "Toggle templates in this buffer."
-;;                        :style toggle
-;;                        :selected ece-templates]
-;;                       ["Enable templates (global)" ece-enable-templates
-;;                        :help "Enable templates in all EasyCrypt Ext buffers."]
-;;                       ["Disable templates (global)" ece-disable-templates
-;;                        :help "Disable templates in all EasyCrypt Ext buffers."]
-;;                       "-----"
-;;                       ["Toggle informative templates (local)" ece-toggle-templates-info-local
-;;                        :help "Toggle informative templates in this buffer."
-;;                        :style toggle
-;;                        :selected ece-templates-info]
-;;                       ["Enable informative templates (global)" ece-enable-templates-info
-;;                        :help "Enable informative templates in all EasyCrypt Ext buffers."]
-;;                       ["Disable informative templates (global)" ece-disable-templates-info
-;;                        :help "Disable informative templates in all EasyCrypt Ext buffers."]
-;;                       "-----"
-;;                       ["Reset settings (local)" ece-reset-to-defaults-local
-;;                        :help "Reset EasyCrypt Ext settings to their defaults in this buffer."]
-;;                       ["Reset settings (global)" ece-reset-to-defaults
-;;                        :help "Reset EasyCrypt Ext settings to their defaults in all EasyCrypt Ext buffers."])))
-;;                  (append
-;;                   (when (or shell options exec) '("-----"))
-;;                   (list `["Disable" (,mmc -1) :help ,hmd])))))))))
-
-;; (ece--easy-menu-gen easycrypt-ext-mode-menu easycrypt-ext-mode-map t t)
-;; (ece--easy-menu-gen easycrypt-ext-goals-mode-menu easycrypt-ext-goals-mode-map t t "goals")
-;; (ece--easy-menu-gen easycrypt-ext-response-mode-menu easycrypt-ext-response-mode-map t t "response")
-
-
 
 
 ;;; Fundamental
@@ -2132,57 +1452,11 @@ Meant for `proof-shell-handle-delayed-output-hook'."
   (ece--enable-indentation)
   (ece--enable-imenu))
 
-  ;; (ece--configure-indentation ece-indentation)
-  ;; (ece--configure-imenu-local ece-imenu)
-
-
-  ;; (let ((cpcnf nil)
-  ;;       (tpcnf nil))
-  ;;   (when ece-keyword-completion
-  ;;     (with-eval-after-load 'cape-keyword
-  ;;       (ece--configure-keyword-completion-local ece-keyword-completion))
-  ;;     (setq cpcnf (not (featurep 'cape-keyword))))
-
-  ;;   (when (or ece-templates ece-templates-info)
-  ;;     (with-eval-after-load 'tempel
-  ;;       (ece--configure-templates-local ece-templates)
-  ;;       (ece--configure-templates-info-local ece-templates-info))
-  ;;     (setq tpcnf (not (featurep 'tempel))))
-
-  ;;   (when (or cpcnf tpcnf)
-  ;;     (message "Attempted to setup %s not detected. Loading dependencies at any point will complete the corresponding setup automatically."
-  ;;              (cond
-  ;;               ((and cpcnf tpcnf)
-  ;;                "keyword completion and templates, but dependencies `cape-keyword' and `tempel' were")
-  ;;               (cpcnf
-  ;;                "keyword completion, but dependency `cape-keyword' was")
-  ;;               (t
-  ;;                "templates, but dependency `tempel' was"))))))
-
 (defun ece--teardown ()
   "Tears down EasyCrypt Ext."
   (ece--restore-syntax-table)
   (ece--disable-indentation (ece--check-other-buffers-mode 'easycrypt-ext-mode))
   (ece--disable-imenu))
-
-  ;; (if (ece--check-other-buffers-mode 'easycrypt-ext-mode)
-  ;;     (ece--reset-indentation-settings)
-  ;;   (ece--disable-indentation))
-
-  ;; (when (local-variable-p ece-imenu)
-  ;;   (kill-local-variable ece-imenu))
-
-  ;; (when (local-variable-p ece-keyword-completion)
-  ;;   (ece--disable-keyword-completion-local)
-  ;;   (kill-local-variable ece-keyword-completion))
-
-  ;; (when (local-variable-p ece-templates)
-  ;;   (ece--disable-templates-local)
-  ;;   (kill-local-variable ece-templates))
-
-  ;; (when (local-variable-p ece-templates-info)
-  ;;   (ece--disable-templates-info-local)
-  ;;   (kill-local-variable ece-templates-info)))
 
 (defun ece--goals-setup ()
   "Sets up EasyCrypt Ext (goals)."
@@ -2277,6 +1551,7 @@ Meant for `proof-shell-handle-delayed-output-hook'."
     "-----"
     ["Disable EasyCrypt Ext" easycrypt-ext-mode-disable-all
      :help "Disable EasyCrypt Ext (in current buffer)"]))
+
 
 (provide 'easycrypt-ext)
 
