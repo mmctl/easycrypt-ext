@@ -5,95 +5,109 @@
 
 easycrypt-mode
 
-;; Internal
-(pragmap "pragma +" q ".")
-(pragmam "pragma -" q ".")
+;;; Comments and documentation
+(com "(* " q " *)"
+     :doc
+     "Comment (single-line).
 
-;; Comments and documentation
-(comment "(* " q " *)")
-(commentn "(*" n>
-          q n
-          "*)" >)
-(doccomment "(*& " q " &*)")
-(doccommentn "(*&" n>
-             q n
-             "&*)" >)
-(doccommentf "(*^" n>
-             (file-name-nondirectory (or (buffer-file-name) (buffer-name))) n
-             n>
-             "- Author: " p n>
-             "- Date: " (p (format-time-string "%Y-%m-%d")) n>
-             n>
-             "Description:" n>
-             q n
-             "^*)" >)
+Regular, non-documentation comment on a single line.")
 
-;;; Aliases
-(com (i comment))
-(comn (i commentn))
-(doc (i doccomment))
-(docn (i doccommentn))
-(docf (i doccommentf))
+(comn "(*" n>
+      q n
+      "*)" >
+      :doc
+      "Comment (newline).
+
+Regular, non-documentation comment with newline(s), putting the opener and
+closer on separate lines.")
+
+(docc "(*& " q " &*)"
+      :doc
+      "Documentation comment, item (single-line).
+
+Item documentation comment on a single line.
+
+An item documentation comment is `linked' to the next item in the file, serving
+as (part of) its documentation. For example, this will show up alongside the
+`linked' item in the generated documentation for this file.")
+
+(docn "(*&" n>
+      q n
+      "&*)" >
+      :doc
+      "Documentation comment, item (newline).
+
+Item documentation comment with newline(s), putting the opener and closer on
+separate lines.
+
+For more information on documentation comments, see (the documentation of)
+the `docc' template.")
+
+(docf "(*^" n>
+      (file-name-nondirectory (or (buffer-file-name) (buffer-name))) n
+      n>
+      "- Author: " p n>
+      "- Date: " (p (format-time-string "%Y-%m-%d")) n>
+      n>
+      "Description:" n>
+      q n
+      "^*)" >
+      :doc
+      "Documentation comment, file.
+
+File documentation comment, automatically inserting the name of the currently
+visited file as `header' (first line), as well as an author, date, and
+description field. The date field is initially filled with the current date.
+
+A file documentation comment is `linked' to the current file, serving
+as (part of) its documentation; typically, this is used for relevant
+meta information of the file and/or an introduction or overview of
+the file's purpose and content. This will, e.g., show up
+at the top of the generated documentation for this file.")
 
 
-;; Meta
-(require "require " q ".")
-(import "import " q ".")
-(requireimport "require import " q ".")
+;;; Meta
+(req "require " q "."
+     :doc
+     "Require.
 
-(fromrequire "from " p " require " q)
-(fromrequireimport "from " p " require import " q)
-(fromjasminrequire "from Jasmin " p " require " q)
-(fromjasminrequireimport "from Jasmin " p " require import " q)
+Loads EasyCrypt files, provided they are present in the load
+path (of the current EasyCrypt session).
 
-(clone "clone " q ".")
-(cloneas "clone " p " as " q ".")
-(cloneaswith "clone " p " as " p " with" n>
+The names of the files to be loaded should be given as
+a space-separated list, without the extension. It is possible to have
+multiple `require' commands throughout a script/session, so it is
+not mandatory to specify all files at once.")
+
+(imp "import " q ".")
+(reqimp "require import " q ".")
+
+(froreq "from " p " require " q)
+(froreqimp "from " p " require import " q)
+(frojasreq "from Jasmin " p " require " q)
+(frojasreqimp "from Jasmin " p " require import " q)
+
+(clo "clone " q ".")
+(cloas "clone " p " as " q ".")
+(cloaswi "clone " p " as " p " with" n>
              q ".")
-(cloneimport "clone import " q ".")
-(cloneimportas "clone import " p " as " q ".")
-(cloneimportwith "clone import " p " with" n>
+(cloimp "clone import " q ".")
+(cloimpas "clone import " p " as " q ".")
+(cloimpwi "clone import " p " with" n>
                  q ".")
-(cloneimportaswith "clone import " p " as " p " with" n>
+(cloimpaswi "clone import " p " as " p " with" n>
                    q ".")
-(cloneinclude "clone include " q ".")
-(cloneincludeas "clone include " p " as " q ".")
-(cloneincludewith "clone include " p " with" n>
-                  q ".")
-(cloneincludeaswith "clone include " p " as " p " with" n>
-                    q ".")
+(cloinc "clone include " q ".")
+(cloincas "clone include " p " as " q ".")
+(cloincwi "clone include " p " with" n>
+          q ".")
+(cloincaswi "clone include " p " as " p " with" n>
+            q ".")
 
-(hintsimplify "hint simplify " q)
-(hintrewrite "hint rewrite " p " : " q)
-(hintexact "hint exact " p " : " q)
+(hinsim "hint simplify " q)
+(hinrew "hint rewrite " p " : " q)
+(hinex "hint exact " p " : " q)
 
-;;; Aliases
-(req (i require))
-(imp (i import))
-(reqim (i requireimport))
-
-(froreq (i fromrequire))
-(frojasreq (i fromjasminrequire))
-(froreqim (i fromrequireimport))
-(frojasreqim (i fromjasminrequireimport))
-
-(clo (i clone))
-(cloa (i cloneas))
-(cloaw (i cloneaswith))
-(cloim (i cloneimport))
-(cloima (i cloneimportas))
-(cloimw (i cloneimportwith))
-(cloimaw (i cloneimportaswith))
-(cloin (i cloneinclude))
-(cloina (i cloneincludeas))
-(cloinw (i cloneincludewith))
-(cloinaw (i cloneincludeaswith))
-
-(hints (i hintsimplify))
-(hintr (i hintrewrite))
-(hinte (i hintexact))
-
-;; Scope
 
 ;; Functional specification
 (type "type " p " = " q ".")

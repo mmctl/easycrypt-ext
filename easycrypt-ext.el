@@ -48,7 +48,9 @@
 ;; - Automatic "smart" centering of goal buffer and echoing of remaining goals.
 ;;   This tries to minimize the need for scrolling each time you processing
 ;;   a command when dealing with larger goals.
-;;
+;; - Menu bar and mode line menu for managing and using (selected features)
+;;   EasyCrypt Ext.
+
 ;; Further, more advanced features are provided through integration with
 ;; other packages. Each of these is provided in a separate file/feature
 ;; called `easycrypt-ext-X', where `X' is the name of the other package.
@@ -567,30 +569,37 @@ indexing of several successive items of the same kind."
     res))
 
 (defun ece--imenu-generic-function-rsb-advice (igf &rest args)
-  "Advice meant to be put around `imenu--generic-function', adding
-and removing `ece--imenu-re-search-backward-advice' around
-`re-seach-backward' for the duration of the execution."
-  (advice-add #'re-search-backward :around #'ece--imenu-re-search-backward-advice)
-  (unwind-protect
-      (apply igf args)
-    (advice-remove #'re-search-backward #'ece--imenu-re-search-backward-advice)))
+  "Advice meant to be put around `imenu--generic-function', adding and removing
+`ece--imenu-re-search-backward-advice' around `re-seach-backward' for the
+duration of the execution if `easycyrpt-ext-mode' is active (otherwise directly
+calls IGF on ARGS)."
+  (if easycrypt-ext-mode
+      (progn
+        (advice-add #'re-search-backward :around #'ece--imenu-re-search-backward-advice)
+        (unwind-protect
+            (apply igf args)
+          (advice-remove #'re-search-backward #'ece--imenu-re-search-backward-advice)))
+    (apply igf args)))
 
 (defun ece--imenu-deduplicate (idxal)
-  "De-duplicates Imenu ITEMS by appending a counter. Heavily inspired by
+  "De-duplicates Imenu IDXAL by appending a counter if `easycrypt-ext-mode' is
+active (otherwise directly returns IDXAL). Heavily inspired by
 `consult-imenu--deduplicate' from the `consult' package (see:
 https://github.com/minad/consult).
 
 Used as advice to filter the return value of functions generating values for
 `imenu--index-alist', e.g., `imenu--generic-function', to ensure that duplicate
 elements are shown when using the `imenu' command (with completing-read)."
-  (dolist (idxcons idxal idxal)
-    (let* ((items (cdr idxcons))
-           (ht (make-hash-table :test #'equal :size (length items))))
-      (dolist (item items)
-        (if-let* ((count (gethash (car item) ht)))
-            (setcar item (format "%s (%s)" (car item)
-                                 (puthash (car item) (1+ count) ht)))
-          (puthash (car item) 0 ht))))))
+  (if easycrypt-ext-mode
+      (dolist (idxcons idxal idxal)
+        (let* ((items (cdr idxcons))
+               (ht (make-hash-table :test #'equal :size (length items))))
+          (dolist (item items)
+            (if-let* ((count (gethash (car item) ht)))
+                (setcar item (format "%s (%s)" (car item)
+                                     (puthash (car item) (1+ count) ht)))
+              (puthash (car item) 0 ht)))))
+    idxal))
 
 (defsubst ece--generic-spec-regexp (items scope)
   "Constructs regular expression matching EasyCrypt specifications/definitions
