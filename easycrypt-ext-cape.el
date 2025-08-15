@@ -22,7 +22,8 @@ specifically `cape-keyword' for keyword completion.
 Meant for `easycrypt-ext-mode-hook'."
   (if easycrypt-ext-mode
       (ece-cape--enable-keyword-completion)
-    (ece-cape--disable-keyword-completion)))
+    (unless (ece--check-other-buffers-mode 'easycrypt-ext-mode)
+      (ece-cape--disable-keyword-completion))))
 
 
 (provide 'easycrypt-ext-cape)

@@ -49,7 +49,8 @@ that allows to include other templates by their name."
     (when-let (template (alist-get (cadr elt) (tempel--templates)))
       (cons 'l template))))
 
-;;; Utilities
+
+;;; Parsing
 (defun ece-tempel--templates-file-read ()
   (let ((res '()))
     (dolist (metatemps (tempel--file-read ece--templates-file))
@@ -60,6 +61,44 @@ that allows to include other templates by their name."
           (setq res (append res temps)))))
     res))
 
+
+;;; Documentation
+(defun ece-tempel--print-documentation (elts)
+  "Print documentation of template ELTS."
+  (while (and elts (not (keywordp (car elts))))
+    (pop elts))
+  (plist-get elts :doc))
+
+(defun ece-tempel--insert-doc-buffer-content (elts)
+  "Insert documentation buffer content for template ELTS."
+  (insert "Preview:\n")
+  (insert (tempel--print-template elts))
+  (when-let* ((doc (ece-tempel--print-documentation elts)))
+    (insert "\n\nDocumentation:\n")
+    (insert doc)))
+
+(defun ece-tempel--complete (tc &rest args)
+  "Replaces `:company-doc-buffer' property of TC (which should be
+`tempel-complete') such that, in addition to a template preview, the
+documentation string (i.e., the string associated with the `:doc' keyword) of
+the template is printed. Heavily inspired by
+`cape-wrap-properties' from the `cape' package (see:
+https://github.com/minad/cape).
+
+Meant as advice `:around' `tempel-complete'."
+  (if easycrypt-ext-mode
+      (pcase (apply tc args)
+        (`(,beg ,end ,templates . ,plist)
+         `(,beg ,end ,templates
+                ,@(plist-put
+                   plist
+                   :company-doc-buffer
+                   (apply-partially #'tempel--info-buffer
+                                    templates
+                                    #'(lambda (elts)
+                                        (ece-tempel--insert-doc-buffer-content elts)
+                                        (current-buffer)))))))
+    (apply tc args)))
 
 ;;; Keymap
 (defvar-keymap ece-template-map
@@ -76,12 +115,14 @@ that allows to include other templates by their name."
 (defun ece-tempel--enable-templates ()
   (add-to-list 'tempel-user-elements #'ece-tempel--include)
   (add-to-list 'tempel-template-sources #'ece-tempel--templates-file-read)
+  (advice-add 'tempel-complete :around #'ece-tempel--complete)
   (when tempel-abbrev-mode
     (tempel-abbrev-mode 1))
   (keymap-set easycrypt-ext-mode-map ece-tempel-template-map-prefix 'ece-template-map-prefix))
 
 (defun ece-tempel--disable-templates ()
   (keymap-unset easycrypt-ext-mode-map ece-tempel-template-map-prefix)
+  (advice-remove 'tempel-complete #'ece-tempel--complete)
   (setq tempel-template-sources
         (remq #'ece-tempel--templates-file-read tempel-template-sources))
   (setq tempel-user-elements (remq #'ece-tempel--include tempel-user-elements))
@@ -95,7 +136,8 @@ that allows to include other templates by their name."
 Meant for `easycrypt-ext-mode-hook'."
   (if easycrypt-ext-mode
       (ece-tempel--enable-templates)
-    (ece-tempel--disable-templates)))
+    (unless (ece--check-other-buffers-mode 'easycrypt-ext-mode)
+      (ece-tempel--disable-templates))))
 
 
 (provide 'easycrypt-ext-tempel)

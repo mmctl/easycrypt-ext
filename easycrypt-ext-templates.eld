@@ -8,24 +8,18 @@ easycrypt-mode
 ;;; Comments and documentation
 (com "(* " q " *)"
      :doc
-     "Comment (single-line).
-
-Regular, non-documentation comment on a single line.")
+     "Regular, non-documentation comment on a single line.")
 
 (comn "(*" n>
       q n
       "*)" >
       :doc
-      "Comment (newline).
-
-Regular, non-documentation comment with newline(s), putting the opener and
-closer on separate lines.")
+      "Regular, non-documentation comment with newline(s), putting the opener
+and closer on separate lines.")
 
 (docc "(*& " q " &*)"
       :doc
-      "Documentation comment, item (single-line).
-
-Item documentation comment on a single line.
+      "Item documentation comment on a single line.
 
 An item documentation comment is `linked' to the next item in the file, serving
 as (part of) its documentation. For example, this will show up alongside the
@@ -35,13 +29,11 @@ as (part of) its documentation. For example, this will show up alongside the
       q n
       "&*)" >
       :doc
-      "Documentation comment, item (newline).
+      "Item documentation comment with newline(s), putting the opener and closer
+on separate lines.
 
-Item documentation comment with newline(s), putting the opener and closer on
-separate lines.
-
-For more information on documentation comments, see (the documentation of)
-the `docc' template.")
+For more information on documentation comments, see (the documentation of) the
+`docc' template.")
 
 (docf "(*^" n>
       (file-name-nondirectory (or (buffer-file-name) (buffer-name))) n
@@ -53,31 +45,29 @@ the `docc' template.")
       q n
       "^*)" >
       :doc
-      "Documentation comment, file.
-
-File documentation comment, automatically inserting the name of the currently
-visited file as `header' (first line), as well as an author, date, and
+      "File documentation comment, automatically inserting the name of the
+currently visited file as `header' (first line), as well as an author, date, and
 description field. The date field is initially filled with the current date.
 
-A file documentation comment is `linked' to the current file, serving
-as (part of) its documentation; typically, this is used for relevant
-meta information of the file and/or an introduction or overview of
-the file's purpose and content. This will, e.g., show up
-at the top of the generated documentation for this file.")
+A file documentation comment is `linked' to the current file, serving as (part
+of) its documentation; typically, this is used for relevant meta information of
+the file and/or an introduction or overview of the file's purpose and content.
+This will, e.g., show up at the top of the generated documentation for this
+file.")
 
 
 ;;; Meta
 (req "require " q "."
      :doc
-     "Require.
+     "Loads EasyCrypt files into the current context.
 
-Loads EasyCrypt files, provided they are present in the load
-path (of the current EasyCrypt session).
+The names of the files to be loaded should be given as a space-separated list,
+without the extension. It is possible to have multiple `require' commands
+throughout a script/session, so it is not mandatory to specify all files at
+once.
 
-The names of the files to be loaded should be given as
-a space-separated list, without the extension. It is possible to have
-multiple `require' commands throughout a script/session, so it is
-not mandatory to specify all files at once.")
+Provided files must be present in the load path (of the current EasyCrypt
+session).")
 
 (imp "import " q ".")
 (reqimp "require import " q ".")
