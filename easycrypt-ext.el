@@ -1176,7 +1176,7 @@ relevant because relative paths in the test file are interpreted with respect to
 the working directory)."
   (interactive
    (let* ((defdir (ece--exec-project-root-or-default-directory))
-          (deftfl (expand-file-name ece-exec-runtest-default-test-file defdir))
+          (deftf (expand-file-name ece-exec-runtest-default-test-file defdir))
           (defrp (expand-file-name ece-exec-runtest-default-report-file defdir))
           (testfile (read-file-name (format-prompt "Test configuration file" deftf) defdir deftf t))
           (scenario (read-string (format-prompt "Test scenario name" ece-exec-runtest-default-scenario)
