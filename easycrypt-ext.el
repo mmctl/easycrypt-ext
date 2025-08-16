@@ -552,8 +552,6 @@ Meant for `post-self-insert-hook', which see."
 
 
 ;;; Imenu
-(defvar-local original-imenu-generic-expression nil)
-
 (defun ece--imenu-re-search-backward-advice (rsb &rest args)
   "Advice meant to be put around `re-search-backward' for the duration
 of `imenu-generic-function'. Moves point forward
@@ -587,7 +585,7 @@ active (otherwise directly returns IDXAL). Heavily inspired by
 `consult-imenu--deduplicate' from the `consult' package (see:
 https://github.com/minad/consult).
 
-Used as advice to filter the return value of functions generating values for
+Meant as advice to filter the return value of functions generating values for
 `imenu--index-alist', e.g., `imenu--generic-function', to ensure that duplicate
 elements are shown when using the `imenu' command (with completing-read)."
   (if easycrypt-ext-mode
@@ -601,33 +599,56 @@ elements are shown when using the `imenu' command (with completing-read)."
               (puthash (car item) 0 ht)))))
     idxal))
 
-(defsubst ece--generic-spec-regexp (items scope)
+(defun ece--imenu-purify (idxal)
+  "Purifies (Imenu) index alist IDXAL by removing unwanted entries that might be
+indexed as a result of `ece--imenu-generic-expression'. If `easycrypt-ext-mode'
+is not active, directly returns IDXAL.
+
+Currently removes:
+- From the \"Modules\" sub-alist, elements not starting with
+an upper-case letter.
+
+Meant as advice to filter the return value of functions generating values for
+`imenu--index-alist', e.g., `imenu--generic-function', particularly when values
+are generated using `ece--imenu-generic-expression'."
+  (when easycrypt-ext-mode
+    (let ((modidxs (alist-get "Modules" idxal nil nil #'string-equal))
+          (case-fold-search nil))
+      (setf (alist-get "Modules" idxal nil nil #'string-equal)
+            (seq-remove #'(lambda (mod) (string-match-p "^[^A-Z]" (car mod))) modidxs))))
+  idxal)
+
+(defsubst ece--generic-spec-regexp (itregexp &optional scope annot)
   "Constructs regular expression matching EasyCrypt specifications/definitions
-for ITEMS, which should be a string or list of strings used to start the
-specification of the corresponding item kind (e.g. \"op\" for operators). If
-SCOPE is non-nil, scoping keywords are accounted for as well.
+for ITREGEXP, which should be a regular expression capturing the strings
+used to start the specification of the corresponding item kind (e.g.
+\"op\" for operators). If SCOPE is non-nil, scoping keywords are
+accounted for as well. If ANNOT is non-nil, annotations (e.g. [lossless])
+are accounted for as well.
 
 This is not perfect, and the following are (known) limitations:
-- If SCOPE is non-nil, all scoping keywords are always included, even though
-some kind of items may only allow for a subset of them.
-- May not match the very first item if it is not preceded by a non-item
+- Does not match the very first item if it is not preceded by a non-item
 sentence that ends in a period.
-- Nested comments are not dealt with properly."
-  (format "\\.\\(?:[[:space:]]\\|(\\*.*?\\*)\\)*?%s%s\\_<\\(.*?\\)\\_>\\(?:.\\|[[:space:]]\\)*?\\."
-           (if scope (format "%s?[[:space:]]*?" (regexp-opt ece-keywords-scope)) "")
-           (format "%s[[:space:]]*?"(regexp-opt (ensure-list items)))))
+- Nested comments may (negatively) affect indexing.
+- Type constructors may not be properly named in the index.
+- If SCOPE is non-nil, all scoping keywords are always included, even though
+some kind of items may only allow for a subset of them."
+  (format "\\.\\(?:[[:space:]]\\|(\\*[^*]*?\\*)\\)*%s%s%s\\_<\\(.*?\\)\\_>"
+           (if scope (format "\\(?:%s[[:space:]]+\\)?" (regexp-opt ece-keywords-scope)) "")
+           (format "%s[[:space:]]+" itregexp)
+           (if annot "\\(?:\\[\\(?:[[:space:]]*\\_<.*?\\_>[[:space:]]*\\)+?\\][[:space:]]+\\)?" "")))
 
 (defconst ece--imenu-generic-expression
-  `(("Types" ,(ece--generic-spec-regexp "type" t) 1)
-    ("Operators" ,(ece--generic-spec-regexp "op" t) 1)
-    ("Constants" ,(ece--generic-spec-regexp "const" t) 1)
-    ("Modules" ,(ece--generic-spec-regexp "module" t) 1)
-    ("Module Types" ,(ece--generic-spec-regexp "module type" t) 1)
-    ("Axioms" ,(ece--generic-spec-regexp "axiom" t) 1)
-    ("Lemmas" ,(ece--generic-spec-regexp ece-keywords-lemma-start t) 1)
-    ("Theories" ,(ece--generic-spec-regexp "theory" nil) 1))
+  `(("Types" ,(ece--generic-spec-regexp "type" t nil) 1)
+    ("Operators" ,(ece--generic-spec-regexp "op" t t) 1)
+    ("Constants" ,(ece--generic-spec-regexp "const" t nil) 1)
+    ("Module Types" ,(ece--generic-spec-regexp "module type" t nil) 1)
+    ("Modules" ,(ece--generic-spec-regexp "module" t nil) 1)
+    ("Axioms" ,(ece--generic-spec-regexp "axiom" t nil) 1)
+    ("Lemmas" ,(ece--generic-spec-regexp (regexp-opt ece-keywords-lemma-start) t nil) 1)
+    ("Theories" ,(ece--generic-spec-regexp "\\(?:abstract[[:space:]]+?\\)?theory" nil nil) 1))
   "Generic expression used to create index menu entries for Imenu. (Used to
-  instantiate `imenu-generic-expression', which see.)")
+instantiate `imenu-generic-expression', which see.)")
 
 
 ;;; Proof shell commands
@@ -1291,21 +1312,26 @@ command corresponding to the choice upon confirmation."
   (remove-hook 'post-self-insert-hook #'ece-indent-closer-on-insertion-newline t))
 
 ;; Imenu
+(defvar-local original-imenu-state nil)
+
 (defun ece--enable-imenu ()
-  (if original-imenu-generic-expression
+  (if original-imenu-state
+      (setq-local imenu-generic-skip-comments-and-strings t)
       (setq-local imenu-generic-expression ece--imenu-generic-expression)
-    (setq-local original-imenu-generic-expression
-                (buffer-local-set-state imenu-generic-expression
-                                        ece--imenu-generic-expression)))
+    (setq-local original-imenu-state
+                (buffer-local-set-state imenu-generic-skip-comments-and-strings t
+                                        imenu-generic-expression ece--imenu-generic-expression)))
   (advice-add #'imenu--generic-function :around #'ece--imenu-generic-function-rsb-advice)
+  (advice-add #'imenu--generic-function :filter-return #'ece--imenu-purify)
   (advice-add #'imenu--generic-function :filter-return #'ece--imenu-deduplicate))
 
 (defun ece--disable-imenu ()
   (advice-remove #'imenu--generic-function #'ece--imenu-deduplicate)
+  (advice-remove #'imenu--generic-function #'ece--imenu-purify)
   (advice-remove #'imenu--generic-function #'ece--imenu-generic-function-rsb-advice)
-  (when original-imenu-generic-expression
-    (buffer-local-restore-state original-imenu-generic-expression)
-    (setq-local original-imenu-generic-expression nil)))
+  (when original-imenu-state
+    (buffer-local-restore-state original-imenu-state)
+    (setq-local original-imenu-state nil)))
 
 
 ;;; Keymaps

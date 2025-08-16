@@ -39,7 +39,7 @@ For more information on documentation comments, see (the documentation of) the
       (file-name-nondirectory (or (buffer-file-name) (buffer-name))) n
       n>
       "- Author: " p n>
-      "- Date: " (p (format-time-string "%Y-%m-%d")) n>
+      "- Date: " (p (format-time-string "%Y-%m-%d")) n
       n>
       "Description:" n>
       q n
