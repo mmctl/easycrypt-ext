@@ -32,8 +32,7 @@ as (part of) its documentation. For example, this will show up alongside the
       "Item documentation comment with newline(s), putting the opener and closer
 on separate lines.
 
-For more information on documentation comments, see (the documentation of) the
-`docc' template.")
+See the `docc' template for more information on documentation comments.")
 
 (docf "(*^" n>
       (file-name-nondirectory (or (buffer-file-name) (buffer-name))) n
@@ -59,44 +58,333 @@ file.")
 ;;; Meta
 (req "require " q "."
      :doc
-     "Loads EasyCrypt files into the current context.
+     "Loads specified EasyCrypt files into the current context.
 
-The names of the files to be loaded should be given as a space-separated list,
-without the extension. It is possible to have multiple `require' commands
+The names of the specified should be given as a space-separated list,
+without (file) extensions. It is allowed to have multiple `require' commands
 throughout a script/session, so it is not mandatory to specify all files at
 once.
 
 Provided files must be present in the load path (of the current EasyCrypt
-session).")
+session).
 
-(imp "import " q ".")
-(reqimp "require import " q ".")
+Example:
+require AllCore List.
+require Distr.")
 
-(froreq "from " p " require " q)
-(froreqimp "from " p " require import " q)
-(frojasreq "from Jasmin " p " require " q)
-(frojasreqimp "from Jasmin " p " require import " q)
+(imp "import " q "."
+     :doc
+     "Loads specified (theory) namespaces into the current context.
 
-(clo "clone " q ".")
-(cloas "clone " p " as " q ".")
+Loading a namespace enables direct referencing to items from that
+namespace (i.e., without explicitly specifying the namespace).
+
+The theories for which to load the namespaces should be given as a
+space-separated list. It is allowed to have multiple `import' commands
+throughout a script/session, so it is not mandatory to specify all theories at
+once.
+
+Provided theories must be present into the current context, which can be achieved
+by using `require' on the files containing the theories (see the `req' template
+for more information).
+
+Example:
+import AllCore.
+import List Distr.")
+
+(reqimp "require import " q "."
+        :doc
+        "Loads specified EasyCrypt files and corresponding namespaces into the
+current context.
+
+Essentially syntactic sugar for a `require' statement followed by an `import'
+statement with the same arguments.
+
+See the `req' and `imp' templates for more information on `require' and
+`import'.
+
+Example:
+require import AllCore List Distr.")
+
+(froreq "from " p " require " q
+        :doc
+        "Loads EasyCrypt files (given to `require') from the library (given to
+`from') into the current context.
+
+The specified library must be in the current load path,
+typically added via an EasyCrypt project file or the `-I' command line option.
+
+See the `req' template for more information on `require'.
+
+Example:
+from Jasmin require JModel JArray.")
+
+(froreqimp "from " p " require import " q
+           :doc
+           "Loads EasyCrypt files and corresponding namespaces (given to `require
+import') from the library (given to `from') into the current context.
+
+Essentially syntactic sugar for a `from require' statement followed by an
+`import' statement with the same arguments.
+
+See the `froreq' and `imp' templates for more information on
+`from require' and `import'.
+
+Example:
+from Jasmin require import JModel JArray.")
+
+(clo "clone " q "."
+     :doc
+     "Creates an instance of the specified theory in the current context.
+
+Instantiating a (potentially abstract) theory and its components through cloning
+allows for the reuse of definitions/results from the theory in different
+context, facilitating modularity.
+
+Only a single theory can be cloned at a time.
+
+The provided theory must be present in the current context, which can be achieved
+by using `require' on the files containing the theories (see the `req' template
+for more information).
+
+See the other templates starting with `clo' for more information on
+the cloning mechanism and its features. Particularly,
+see `cloas', `clowi', `cloimp', and `cloinc'.
+
+Example:
+clone KeyedHashFunctions.")
+
+(cloas "clone " p " as " q "."
+       :doc
+       "Creates an instance of the theory (given to `clone')
+under the name (given to `as') in the current context.
+
+The specified name should be a valid theory name not yet used in
+the current context.
+
+See the `clo' template for more information on `clone'.
+
+Example:
+clone KeyedHashFunctions as KHFs.")
+
+(clowi "clone " p " with" n>
+       q "."
+       :doc
+       "Creates an instance of the theory (given to `clone') in the current context
+with some of its items instantiated using items from the current context
+(as specified by the argument of `with').
+
+The argument of `with' should be a comma-separated list
+(whitespace is allowed but ignored) with entries of the form
+`<itemkind> <origitemname> <inst> <newitemname>':
+- `<itemkind>' is the kind of the item to instantiate, e.g., `type', `op'.
+- `<origitemname>' is the name of the item to instantiate.
+- `<inst>' is the type of instantiation, which may be one of
+  `<-', `<=', or `='. The first fully replaces every reference to the
+  original item from the cloned theory, removing the original definition;
+  the second fully replaces every reference to the original item from the
+  cloned theory, changing the original definition to be an equality with the
+  new item; the third keeps every reference to the original item from the
+  cloned theory, only changing the original definition to be
+  an equality with the new item.
+- `<newitemname>' is the name of the item from the current context
+  to instantiate the original item from the cloned theory with.
+
+The list should be terminated with a period (`.').
+
+When you instantiate abstract items that have axiomatized properties in the
+cloned theory, you probably (should) want to prove these axioms actually hold
+for the concrete items you used to instantiate them. This can be achieved by
+using the special keyword `proof' as the final entry. There should be no comma
+between the last actual (instantiation) entry and `proof'. As argument, this
+keyword takes a comma-separated list of axioms to prove. To prove every axiom,
+pass `*' as argument, i.e., `proof *'.
+
+See the `clo' template for more information on `clone'.
+
+Example:
+clone KeyedHashFunctions with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+
 (cloaswi "clone " p " as " p " with" n>
-             q ".")
-(cloimp "clone import " q ".")
-(cloimpas "clone import " p " as " q ".")
-(cloimpwi "clone import " p " with" n>
-                 q ".")
-(cloimpaswi "clone import " p " as " p " with" n>
-                   q ".")
-(cloinc "clone include " q ".")
-(cloincas "clone include " p " as " q ".")
-(cloincwi "clone include " p " with" n>
-          q ".")
-(cloincaswi "clone include " p " as " p " with" n>
-            q ".")
+         q "."
+         :doc
+         "Creates an instance of the theory (given to `clone') under the name
+(given to `as') in the current context with some of its items instantiated using
+items from the current context (as specified by the argument of `with').
 
-(hinsim "hint simplify " q)
-(hinrew "hint rewrite " p " : " q)
-(hinex "hint exact " p " : " q)
+See the `clo', `cloas', and `clowi' templates for more information on
+`clone' and its `as'/`with' features.
+
+Example:
+clone KeyedHashFunctions as KHFs with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+(cloimp "clone import " q "."
+        :doc
+        "Creates an instance of the theory (given to `clone import') and loads
+the corresponding namespace in the current context.
+
+Essentially syntactic sugar for a `clone' statement followed by an `import'
+statement with the same theory argument.
+
+See the `clo' and `imp' templates for more information on `clone' and
+`import'.
+
+Example:
+clone import KeyedHashFunctions.")
+
+(cloimpas "clone import " p " as " q "."
+          :doc
+          "Creates an instance of the theory (given to `clone import') under the
+name (given to `as') and loads the corresponding namespace in the current
+context.
+
+Essentially syntactic sugar for a `clone as' statement followed by an `import'
+statement with the specified name (given to `as') as argument.
+
+See the `cloas' and `imp' templates for more information on `clone as' and
+`import'.
+
+Example:
+clone import KeyedHashFunctions as KHFs.")
+
+(cloimpwi "clone import " p " with" n>
+          q "."
+          :doc
+          "Creates an instance of the theory (given to `clone import') with some
+of its items instantiated using items from the current context (as specified by
+the argument of `with') and loads the corresponding namespace in the current
+context.
+
+Essentially syntactic sugar for a `clone with' statement followed by an `import'
+statement with the same theory argument.
+
+See the `clowi' and `imp' templates for more information on `clone with' and
+`import'.
+
+Example:
+clone import KeyedHashFunctions with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+(cloimpaswi "clone import " p " as " p " with" n>
+            q "."
+            :doc
+            "Creates an instance of the theory (given to `clone import') under
+the name (given to `as') with some of its items instantiated using items from
+the current context (as specified by the argument of `with') and loads the
+corresponding namespace in the current context.
+
+Essentially syntactic sugar for a `clone as with' statement followed by an
+`import' statement with the specified name (given to `as') as argument.
+
+See the `cloaswi' and `imp' templates for more information on `clone as with'
+and `import'.
+
+Example:
+clone import KeyedHashFunctions as KHFs with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+(cloinc "clone include " q "."
+        :doc
+        "Creates an instance of the specified theory and includes it in the
+current context as if the code of the resulting instance was inserted literally.
+
+Certain statements do not have the same effect as they would have if the
+statements were inserted literally, particularly \"meta-statements\" like
+`import'.
+
+See the `clo' template for more information on `clone'.
+
+Example:
+clone include KeyedHashFunctions.")
+
+(cloincas "clone include " p " as " q "."
+          :doc
+          "Creates an instance of the theory (given to `clone include') under
+the name (given to `as') and includes it in the current context as if the code
+of the resulting instance was inserted literally.
+
+See the `cloinc' and `cloas' templates for more information on `clone include'
+and the `as' feature.
+
+clone include KeyedHashFunctions as KHFs.")
+
+(cloincwi "clone include " p " with" n>
+          q "."
+          :doc
+          "Creates an instance of the theory (given to `clone include') with
+some of its items instantiated using items from the current context (as
+specified by the argument of `with') and includes it in the current context as
+if the code of the resulting instance was inserted literally.
+
+See the `cloinc' and `clowi' templates for more information on `clone include'
+and the `with' feature.
+
+Example:
+clone include KeyedHashFunctions with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+(cloincaswi "clone include " p " as " p " with" n>
+            q "."
+            :doc
+            "Creates an instance of the theory (given to `clone inclue') under
+the name (given to `as') with some of its items instantiated using items from
+the current context (as specified by the argument to `with') and includes it in
+the current context as if the code of the resulting instance was inserted
+literally.
+
+See the `cloinc', `cloas', and `clowi' templates for more information
+on `clone include' and the `as/with' feature.
+
+Example:
+clone include KeyedHashFunctions as KHFs with
+  type key_t <- keys,
+  type in_t <- input,
+  type out_t <- output,
+  op f <- hashfun
+
+  proof *.")
+
+(hinsim "hint simplify " q
+        :doc
+        "Adds the specified axioms/lemmas as hints for the `simplify' tactic.
+
+Example:
+hint simplify oget_some, oget_none.")
+
+(hinrew "hint rewrite " p " : " q
+        :doc
+        "Adds the specified axioms/lemmas as hints for the `rewrite' tactic.")
+(hinex "hint exact " p " : " q
+       :doc
+       "Adds axioms/lemmas as hints for the `exact' tactic.")
 
 
 ;; Functional specification

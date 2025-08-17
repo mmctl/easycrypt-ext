@@ -48,7 +48,7 @@
 ;; - Automatic "smart" centering of goal buffer and echoing of remaining goals.
 ;;   This tries to minimize the need for scrolling each time you processing
 ;;   a command when dealing with larger goals.
-;; - Menu bar and mode line menu for managing and using (selected features)
+;; - Menu bar and mode line menu for managing and using (selected features of)
 ;;   EasyCrypt Ext.
 
 ;; Further, more advanced features are provided through integration with
@@ -611,9 +611,9 @@ an upper-case letter.
 Meant as advice to filter the return value of functions generating values for
 `imenu--index-alist', e.g., `imenu--generic-function', particularly when values
 are generated using `ece--imenu-generic-expression'."
-  (when easycrypt-ext-mode
-    (let ((modidxs (alist-get "Modules" idxal nil nil #'string-equal))
-          (case-fold-search nil))
+  (when-let* ((easycrypt-ext-mode)
+              (modidxs (alist-get "Modules" idxal nil nil #'string-equal)))
+    (let ((case-fold-search nil))
       (setf (alist-get "Modules" idxal nil nil #'string-equal)
             (seq-remove #'(lambda (mod) (string-match-p "^[^A-Z]" (car mod))) modidxs))))
   idxal)
