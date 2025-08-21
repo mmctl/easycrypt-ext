@@ -143,13 +143,13 @@ context, facilitating modularity.
 
 Only a single theory can be cloned at a time.
 
-The provided theory must be present in the current context, which can be achieved
-by using `require' on the files containing the theories (see the `req' template
-for more information).
+The provided theory must be present in the current context, which can be
+achieved by using `require' on the files containing the theories (see the `req'
+template for more information).
 
-See the other templates starting with `clo' for more information on
-the cloning mechanism and its features. Particularly,
-see `cloas', `clowi', `cloimp', and `cloinc'.
+See the other templates starting with `clo' for more information on the cloning
+mechanism and its features. Particularly, see the templates `cloas', `clowi',
+`cloimp', and `cloinc' for the `as', `with', `import' and `include' features.
 
 Example:
 clone KeyedHashFunctions.")
@@ -170,8 +170,8 @@ clone KeyedHashFunctions as KHFs.")
 (clowi "clone " p " with" n>
        q "."
        :doc
-       "Creates an instance of the theory (given to `clone') in the current context
-with some of its items instantiated using items from the current context
+       "Creates an instance of the theory (given to `clone') in the current
+context with some of its items instantiated using items from the current context
 (as specified by the argument of `with').
 
 The argument of `with' should be a comma-separated list
