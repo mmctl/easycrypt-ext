@@ -1,0 +1,309 @@
+#+TITLE: EasyCrypt Extensions for Emacs (Proof-General)
+#+AUTHOR: Matthias Meijers
+#+EMAIL: kernel@mmeijers.com
+#+DESCRIPTION: README file for easycrypt-ext respository (https://github.com/mmctl/easycrypt-ext).
+
+* THIS IS WIP. DONT USE.
+[[https://www.easycrypt.info/][[EasyCrypt]]] is a toolset primarily designed for the formal verification of
+code-based, game-playing crytpographic proofs. At its core, it features an
+interactive theorem prover with a front-end implemented in [[https://proofgeneral.github.io/][Proof General]].
+
+This package aims to add useful extensions to this EasyCrypt front-end.
+Basic/standalone features include the following.
+- Improved (but still ad-hoc) indentation.
+- Imenu integration; i.e., proper indexing of items (like
+  axioms, lemmas, types, operators, theorems) to allow for
+  quick navigation through Imenu.
+- Repeat (key)maps for quickly repeating certain commands
+  after issuing them once. Currently implemented for processing,
+  undoing, and deleting proof commands, as well as browsing
+  through goal/response history (if enabled through Proof General).
+- Execution of proof shell commands through keybindings or mouse clicks
+  (eliminating the need to manually type the corresponding commands).
+  Supported commands are =print=, =search=, and =locate=.
+- Interactive setting of pragmas, with completion for most of them.
+  Allows for, e.g., quickly enabling/disabling weak-check mode
+  to process parts of the proof script faster.
+- Execution of command line (sub)commands from Emacs through keybindings.
+  Supported commands are =compile=, =docgen=, =runtest=, =why3config=,
+  and =--help= (which is actually an option, but you get the point).
+  Where relevant, this functionality is extended to the directory/project
+  level, enabling you to execute a (sub)commands for each EasyCrypt
+  file in a project or directory (tree).
+- Automatic "smart" centering of goal buffer and echoing of remaining goals.
+  This tries to minimize the need for scrolling each time you processing
+  a command when dealing with larger goals.
+- Menu bar and mode line menu for managing and using (selected features of)
+  EasyCrypt Ext.
+
+Further, more advanced features are provided through integration with
+other packages. Each of these is provided in a separate file/feature
+called =easycrypt-ext-X=, where =X= is the name of the other package.
+Specifically, these features are the following.
+- Keyword completion (requires [[https://github.com/minad/cape][cape]], specifically cape-keyword;
+  see =easycrypt-ext-cape.el=).
+- Code templates (requires [[https://github.com/minad/tempel][tempel]]; see =easycrypt-ext-tempel.el=).
+- Execution of proof shell commands from a distance (requires
+  [[https://github.com/abo-abo/avy][avy]]; see =easycrypt-ext-avy.el=).
+
+#+BEGIN_QUOTE
+*Note:* The current version of this package requires Emacs version 29.1 or newer.
+#+END_QUOTE
+
+* Installation and Configuration
+We will walk through the basic installation and configuration process
+for setting up everything, including both basic and more advanced
+functionalities. Here, we do not assume any prior Emacs knowledge (as
+many EasyCrypt users start using Emacs only because of EasyCrypt).
+we will follow an approach based on Emacs's
+built-in =use-package= functionality for managing packages,
+which is (in my opinion) the most straightforward. If you
+have a different opinion, you probably have the knowledge to achieve
+the same thing in your favorite way.
+
+In what follows, we cover both the basic functionalities, requiring
+no further external packages, as well as the more advanced functionalities,
+requiring external packages. 
+For the basic functionalities, only first two are required; the latter
+three cover the more advanced functionalities. After
+going through this section and having set everything up, it is /strongly/
+recommended to go through the Tips and Tricks section as well for some additional setup that greatly improves the user-friendliness of some Emacs features used by this package (which will also improve your overall Emacs experience).
+
+The instructions below will often reference your [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][initialization file]], mostly to
+put in code necessary for the setup. Emacs supports several locations for the
+initialization file, so depending on your setup, the location may differ.
+However, typically this file will be called something like =~/emacs.d/init.el=,
+=~/.emacs=, or =~/.config/emacs/init.el=. If you are uncertain, you can launch
+Emacs and press =C-h v= (i.e. =Control + h= followed by =v=), type
+=user-init-file=, and hit enter. This will bring up a window with a line that
+says something like ~Its value is "X"~. =X= is your initialization file.
+You might want to have it open already before continuing. 
+
+** Proof General
+If you have not already done so, install Proof General before
+anything else, as not much provided by this package makes sense
+without. To do so, either follow the official instructions, or
+the ones below. The latter has the advantage of immediately suggesting
+configurations for better integration with this package (and,
+arguably, better defaults in general). So, even if you
+have already installed Proof General, check out the instruction below
+may still be helpful for the configuration advice.
+First, make sure to add [[https://melpa.org/#/getting-started][Melpa]] as a package archive:[fn:1]
+#+begin_src elisp
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+#+end_src
+Then, add the following to install Proof General, and configure it for better
+defaults and better integration with this package. The configurations (i.e.,
+everything following =:init=) are optional, and you can either remove them or
+change them to your liking. The comments provide explanations.
+In general, can change =nil= to =t= to go from disabled to enabled,
+and vice-versa. Naturally, you can also leave all the
+configurations out (just remove the whole =:init= block) and
+customize via the regular [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][customization interface]], reachable by
+pressing =M-x= (i.e., =Meta + x=),[fn:2] typing. 
+#+begin_src elisp
+  ;; Proof General
+  ;; Generic proof assistant (front-end) framework used by EasyCrypt.
+  ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
+  (use-package proof-general
+    :ensure t ; Install if not available already
+
+    :pin melpa ; Get the up-to-date version from Melpa
+
+    :init ; Configuration
+    ;; Disable start-up screen (splash)
+    (setopt proof-splash-enable nil)
+    ;; Enable "browsable" goal/response history (i.e., allow for browsing
+    ;; through goal/history history without undoing proof steps).
+    (setopt proof-keep-response-history t)
+    ;; Disable automatically collapsing proofs as they are completed and saved.
+    ;; In any case, can fold/unfold completed proofs using `pg-toggle-visibility',
+    ;; bound to `C-c v' by default.
+    (setopt proof-disappearing-proofs nil)
+
+    ;; Disable built-in automatic indentation in EasyCrypt proof scripts.
+    (setopt easycrypt-script-indent nil)
+    ;; Disable formatting for newlines after each command.
+    (setopt easycrypt-one-command-per-line nil))
+#+end_src
+If you are not familiar with Emacs, you might want to restart it at this point,
+to already have Emacs process the above and make sure everything is fine.
+(If it doesn't yell at you, it is fine.)
+Note that this might take a second, as it has to download the package
+from the server first.
+
+Afterward, continue to EasyCrypt Extensions to set up this package.
+
+** EasyCrypt Extensions
+To set up this package, simply add the following to your initialization file.
+#+begin_src elisp
+  ;; Install EasyCrypt Ext if not already available
+  (unless (package-installed-p 'easycrypt-ext)
+    (package-vc-install "https://github.com/mmctl/easycrypt-ext" nil 'Git
+                        'easycrypt-ext))
+
+
+  ;; EasyCrypt Extensions
+  ;; Extensions for EasyCrypt in Emacs 
+  ;; See: https://github.com/mmctl/easycrypt-ext
+  (use-package easycrypt-ext
+    :ensure nil ; Already installed above
+
+    :hook
+    (easycrypt-mode . easycrypt-ext-mode)
+    (easycrypt-goals-mode . easycrypt-ext-goals-mode)
+    (easycrypt-response-mode . easycrypt-ext-response-mode)
+
+    :config
+    ;; Enable use of repeat maps, which allow you to
+    ;; repeat certain commands quickly after issuing them once.
+    ;; Used by `easycrypt-ext' for processing, undoing, and deleting proof steps,
+    ;; as well as browsing through goal/response history.
+    ;; Note that this is a global mode, i.e., it will apply to all
+    ;; buffers in the current Emacs session.
+    ;; Remove if you don't want this behavior.
+    (repeat-mode 1)
+
+    ;; Advanced customization
+    ;; See the documentation of the variables for more information. 
+    ;; (Press `C-h v', type the name of the variable, and hit enter to
+    ;; access the documentation; alternatively, look at the source code)
+    ;; ece-indentation
+    ;; ece-imenu
+    ;; ece-exec-runtest-default-test-file
+    ;; ece-exec-runtest-default-scenario
+    ;; ece-exec-runtest-default-report-file
+    ;; ece-exec-runtest-default-scenarios
+    )
+#+end_src
+
+Restart to have Emacs process this and make sure you nothing is wrong.  
+And that's it, at least for the basic functionality.
+You can now enjoy EasyCrypt with better indentation, Imenu integration,
+print/search/locate on click/press, "smart" centering, and more. Everything is loaded automatically with EasyCrypt, e.g., when you open a =.ec= or =.eca= file.
+
+If you want to make use of more advanced functionality that involves
+other packages, e.g., keyword completion or code templates, continue
+reading.
+
+** Cape (Keyword Completion)
+#+begin_src elisp
+  ;; Cape (completion-at-point functionality)
+  ;; See: https://github.com/minad/cape
+  (use-package cape
+    :ensure t)
+#+end_src
+
+#+begin_src elisp
+(use-package easycrypt-ext-cape
+  :ensure nil ; Provided by `easycrypt-ext'
+
+  :hook
+  (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup))
+#+end_src
+
+** Tempel (Templates)
+#+begin_src elisp
+    ;; Tempel (code templates)
+    ;; See: https://github.com/minad/tempel
+    (use-package tempel
+      :ensure t
+
+      :bind
+      ;; Keybinding for initiating template completion
+      ;; Can change to any desired keybinding (sequence)
+      ;; by changing "M-+" to another keybinding string.
+      (tempel-complete . "M-+"))
+#+end_src
+
+#+begin_src elisp
+  (use-package easycrypt-ext-tempel
+    :ensure nil ; Provided by `easycrypt-ext'
+
+    :hook
+    (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
+
+    :init
+    ;; Prefix (keybinding sequence) to access the
+    ;; template map of EasyCrypt Ext for fast template insertion.
+    ;; Can set to any keybinding (sequence) of your liking
+    ;; by changing "C-c l t" to another keybinding (sequence) string.
+    (setopt ece-tempel-template-map-prefix "C-c l t"))
+#+end_src
+
+** Avy (Jumping)
+#+begin_src elisp
+(use-package avy
+  :ensure t
+
+  :pin melpa)
+#+end_src
+
+#+begin_src elisp
+(use-package easycrypt-ext-avy
+  :ensure nil ; Provided by `easycrypt-ext'
+
+  :hook
+  (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
+  (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
+  (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
+#+end_src
+
+TODO: comment about finding documentation in Emacs and file
+
+* Commands (and Keybindings)
+Below are the most relevant available commands and their default keybindings.
+Some commands can also be accessed through the corresponding menus in the menu
+bar and mode line.
+
+#+begin_quote
+To avoid conflicts with other keybindings (from Proof General o otherwise), all
+keybindings for this package begin with the prefix =C-c C-y=. Depending on your
+personal keybindings and how many Proof General keybindings you want to use,
+there may be (a lot) more convenient alternatives.
+#+end_quote
+
+** Proof Shell
+
+| Command             | Keybinding                      | Description                     |
+|---------------------+---------------------------------+---------------------------------|
+| =ece-locate=        | =C-c C-y l= and =C-S-<mouse 2>= | =locate= item at point or click |
+| =ece-print=         | =C-c C-y p= and =C-S-<mouse 1>= | =print= item at point or click  |
+| =ece-search=        | =C-c C-y p= and =C-S-<mouse 3>= | =search= item at point or click |
+| =ece-prompt-locate= | =C-c C-y L= and =C-c -=         | Prompt for item to =locate=     |
+| =ece-prompt-print=  | =C-c C-y P= and ~C-c =~         | Prompt for item to =print=      |
+| =ece-prompt-search= | =C-c C-y S= and =C-c /=         | Prompt for item to =search=     |
+
+** Executable (Command Line)
+
+| Command | Keybinding | Description |
+|---------+------------+-------------|
+|         |            |             |
+
+|-----------------------+-----------------+-----------------------------------------------------------------------------------------+---|
+| =ece-compile-file=    | =C-c C-y e c=   | =compile= (check) visited EasyCrypt file                                                |   |
+| =ece-compile-dir=     | =C-c C-y e C=   | =compile= (check) EasyCrypt files in visited directory and its children                 |   |
+| =ece-compile=         | =C-c C-y e C-c= | Prompt for EasyCrypt file(s) to =compile= (check)                                       |   |
+| =ece-docgen-file=     | =C-c C-y e d=   | =docgen= (generate documentation) visited EasyCrypt file                                |   |
+| =ece-docgen-dir=      | =C-c C-y e D=   | =docgen= (generate documentation) EasyCrypt files in visited directory and its children |   |
+| =ece-docgen=          | =C-c C-y e C-d= | Prompt for EasyCrypt file(s) to =docgen= (generate documentation)                       |   |
+| =ece-help=            | =C-c C-y e h=   | Print help (as output by =easycrypt --help=)                                            |   |
+| =ece-runtest-dflt=    | =C-c C-y e r=   | =runtest= (test) using default test file and scenario (relative to visited directory)   |   |
+| =ece-runtest=         | =C-c C-y e R=   | Prompt for configuration to use with =runtest= (test)                                   |   |
+| =ece-why3config-dflt= | =C-c C-y e w=   | =why3config= (configure Why3) using default configuration file                          |   |
+| =ece-why3config=      | =C-c C-y e W=   | Prompt for configuration file to use with =why3config= (configure Why3).                |   |
+** Indentation
+
+* Enhancements
+** Corfu
+** Vertico
+
+* Tips and Tricks
+** Consult Imenu
+** Behavior of Shift-TAB
+** Silencing bufhist buttons
+
+* Footnotes
+[fn:2] Usually, =Meta= is =Alt= (or =Command= on Macs).   
+
+[fn:1] If you have already done so before, you may skip this step.
