@@ -71,10 +71,10 @@ that allows to include other templates by their name."
 
 (defun ece-tempel--insert-doc-buffer-content (elts)
   "Insert documentation buffer content for template ELTS."
-  (insert "Preview:\n")
+  (insert (concat (propertize "Preview" 'face '(:underline t)) "\n"))
   (insert (tempel--print-template elts))
-  (when-let* ((doc (ece-tempel--print-documentation elts)))
-    (insert "\n\nDocumentation:\n")
+  (when-let* ((doc (tempel--print-documentation elts)))
+    (insert (concat "\n\n" (propertize "Documentation" 'face '(:underline t)) "\n"))
     (insert doc)))
 
 (defun ece-tempel--complete (tc &rest args)

@@ -1,18 +1,4 @@
 ;; -*- lexical-binding: t; no-byte-compile: t -*-
-;; Environment
-;; CHECK
-(defconst ECE_DIR
-  (file-name-as-directory (file-name-concat user-emacs-directory "local/easycrypt-ext/"))
-  "Directory where `easycrypt-ext` package is located. By default it is the
-local/easycrypt-ext/ directory, relative to your emacs configuration directory.
-You can find this directory by launching Emacs, pressing `C-h v' (i.e., `Control
-+ h' followed by `v'), typing `user-emacs-directory', and press Return (i.e.,
-Enter). You can replace the above `(file-name-as-directory (file-name-concat ...))'
-form with a string containing the absolute path to the directory as well." )
-
-;;; Add ECE_DIR to the load path, so we can load files from it
-(add-to-list 'load-path ECE_DIR)
-
 ;; Package system
 ;;; Load package system
 (require 'package)
@@ -119,10 +105,6 @@ form with a string containing the absolute path to the directory as well." )
   ;; (Can set to `t' to enable, and can set `proof-splash-time'
   ;; to number  of seconds you want it displayed.)
   (setopt proof-splash-enable nil)
-  ;; Disable "electric terminator", i.e., don't automatically
-  ;; send command to proof assistant upon entering terminator (`.' in EasyCrypt)
-  ;; (Can set to `t` to enable.)
-  (setopt proof-electric-terminator-enable nil)
   ;; Enable "browsable" goal/response history (i.e., allow for browsing
   ;; through goal/history history without undoing proof steps).
   ;; (Can set to `nil' to disable.)
