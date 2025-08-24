@@ -47,36 +47,43 @@ Specifically, these features are the following.
   [[https://github.com/abo-abo/avy][avy]]; see =easycrypt-ext-avy=).
 
 #+begin_quote
-*Note:* The current version of this package should be compatible with (at least)
+:eyes:
+The current version of this package should be compatible with (at least)
 Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
 #+end_quote
 
 * Installation and Configuration
 
 #+begin_quote
+:speech_balloon:
 Since many EasyCrypt users only pick up Emacs for EasyCrypt, these instructions
 assume no prior Emacs knowledge and are written to be beginner-friendly. If
 you are an experienced Emacs user, you may prefer skipping most of the
 explanatory text and jumping straight to the code snippets.
 #+end_quote
 
-The setup is presented in layers. You can stop at any stage or continue stacking more features:[^1]
+The setup is presented in layers. You can stop at any stage or continue stacking more features:
 
-1. Prerequisites -- Set up your environment and Proof General for EasyCrypt.
-2. Basics -- Set up core features of this package (no external packages).
-3. Extra -- Set up extra features of this package (integration with external packages).
-4. Enhancements -- Improve Emacs features that this package relies
+1. [[#prerequisites][Prerequisites]] -- Set up your environment and Proof General for EasyCrypt.
+2. [[#basics][Basics]] -- Set up core features of this package (no external packages).
+3. [[#extra][Extra]] -- Set up extra features of this package (integration with external packages).
+4. [[#enhancements][Enhancements]] -- Improve Emacs features that this package relies
    on; these also benefit your general Emacs usage.
 
-[^1]: Technically, the /Enhancements/ "layer" is independent of the others but included here because it greatly improves the overall experience.
+#+begin_quote
+:point_up:
+Technically, the /Enhancements/ "layer" is independent of the others but included here because it greatly improves the overall experience.
+#+end_quote
 
 Each layer comes with ready-to-use code snippets you can copy into your
-configuration. Customization is optional, but we also provide suggestions for
-common tweaks if you’d like to go beyond the defaults.
+configuration. Customization is optional, but the snippets also provide
+explanations and suggestions for common tweaks if you’d like to go beyond the
+defaults. 
 
 When you’re done here, don’t miss the Tips and Tricks section for further quality-of-life improvements.
 
 #+begin_quote
+:eyes:
 Most of the instructions below involve editing your
 [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][Emacs initialization file]]. This file can live in different places, most commonly:
 - =~/emacs.d/init.el= 
@@ -94,63 +101,51 @@ That file is your initialization file.
 #+end_quote
 
 ** Prerequisites
-If you have already installed and configured Proof General,
-you can skip to installing this package directly.
-However, you 
-If you have not already done so, install Proof General before
-anything else, as not much provided by this package makes sense
-without. To do so, either follow the official instructions, or
-the ones below. The latter has the advantage of immediately suggesting
-configurations for better integration with this package (and,
-arguably, better defaults in general). So, even if you
-have already installed Proof General, check out the instruction below
-may still be helpful for the configuration advice.
-First, make sure to add [[https://melpa.org/#/getting-started][Melpa]] as a package archive:[fn:1]
-#+begin_src elisp
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
-#+end_src
-Then, add the following to install Proof General, and configure it for better
-defaults and better integration with this package. The configurations (i.e.,
-everything following =:init=) are optional, and you can either remove them or
-change them to your liking. The comments provide explanations.
-In general, can change =nil= to =t= to go from disabled to enabled,
-and vice-versa. Naturally, you can also leave all the
-configurations out (just remove the whole =:init= block) and
-customize via the regular [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html][customization interface]], reachable by
-pressing =M-x= (i.e., =Meta + x=),[fn:2] typing. 
-#+begin_src elisp
-  ;; Proof General
-  ;; Generic proof assistant (front-end) framework used by EasyCrypt.
-  ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
-  (use-package proof-general
-    :ensure t ; Install if not available already
+#+begin_quote
+:bulb:
+Even if you already set up MELPA and Proof General, skimming these instructions may still be useful for learning about recommended defaults and configuration options that integrate better with this package.
+#+end_quote
 
-    :pin melpa ; Get the up-to-date version from Melpa
+1. *Add [[https://melpa.org/#/getting-started][MELPA]] as a package archive*
+   Add the following snippet to your initialization file.   
+   #+begin_src elisp
+     (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/") t)
+   #+end_src 
 
-    :init ; Configuration
-    ;; Disable start-up screen (splash)
-    (setopt proof-splash-enable nil)
-    ;; Enable "browsable" goal/response history (i.e., allow for browsing
-    ;; through goal/history history without undoing proof steps).
-    (setopt proof-keep-response-history t)
-    ;; Disable automatically collapsing proofs as they are completed and saved.
-    ;; In any case, can fold/unfold completed proofs using `pg-toggle-visibility',
-    ;; bound to `C-c v' by default.
-    (setopt proof-disappearing-proofs nil)
+2. *Install and configure Proof General*
+   Add the following snippet to your initialization file. The settings under
+   =:init= are recommended defaults for EasyCrypt and this package. However,
+   everything is optional: you can remove, keep, or adjust them as you like your
+   liking.
+   #+begin_src elisp
+     ;; Proof General
+     ;; Front-end framework for proof assistants, used by EasyCrypt.
+     ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
+     (use-package proof-general
+       :ensure t ; Install if not already available
+       :pin melpa ; Get the up-to-date version from Melpa
 
-    ;; Disable built-in automatic indentation in EasyCrypt proof scripts.
-    (setopt easycrypt-script-indent nil)
-    ;; Disable formatting for newlines after each command.
-    (setopt easycrypt-one-command-per-line nil))
-#+end_src
-If you are not familiar with Emacs, you might want to restart it at this point,
-to already have Emacs process the above and make sure everything is fine.
-(If it doesn't yell at you, it is fine.)
-Note that this might take a second, as it has to download the package
-from the server first.
+       :init
+       ;; Disable splash screen
+       (setopt proof-splash-enable nil)
 
-Afterward, continue to EasyCrypt Extensions to set up this package.
+       ;; Keep a browsable goal/response history without undoing steps
+       (setopt proof-keep-response-history t)
+       
+       ;; Disable automatically collapsing proofs as they are completed and saved.
+       (setopt proof-disappearing-proofs nil)
 
+       ;;
+       ;; Disable automatic indentation in EasyCrypt proof scripts.
+       (setopt easycrypt-script-indent nil)
+       ;; Disable formatting for newlines after each command.
+       (setopt easycrypt-one-command-per-line nil))
+   #+end_src
+
+3. *Restart Emacs*
+   Restart to ensure necessary operations are performed and changes take effect.
+   If Emacs starts without errors, you’re good to go.
+   
 ** Basics
 ** Extra
 To set up this package, simply add the following to your initialization file.
@@ -323,6 +318,3 @@ Built-in template map.
 ** Silencing bufhist buttons
 
 * Footnotes
-[fn:2] Usually, =Meta= is =Alt= (or =Command= on Macs).   
-
-[fn:1] If you have already done so before, you may skip this step.
