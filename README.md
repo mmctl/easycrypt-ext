@@ -48,13 +48,13 @@ Specifically, these features are the following.
 - Execution of proof shell commands from a distance (requires
   [avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy`).
 
-> :exclamation:
+> :exclamation:  
 > The current version of this package should be compatible with (at least)
 > Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
 
 ## Installation and Configuration
 
-> :speech_balloon:
+> :speech_balloon:  
 > Since many EasyCrypt users only pick up Emacs for EasyCrypt, these
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
@@ -81,7 +81,7 @@ defaults.
 When you’re done here, don’t miss the Tips and Tricks section for further
 quality-of-life improvements.
 
-> :eyes:
+> :eyes:  
 > Most of the instructions below involve editing your
 > [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html). 
 > This file can live in different places, most commonly:
@@ -99,7 +99,7 @@ quality-of-life improvements.
 
 ### Prerequisites
 
-> :eyes:
+> :eyes:  
 > Even if you already set up MELPA and Proof General, skimming these
 > instructions may still be useful for learning about recommended defaults and
 > configuration options that integrate better with this package.
@@ -113,12 +113,12 @@ quality-of-life improvements.
    ```
 
 2. **Install and configure Proof General**
-Add the following snippet to your initialization file. The settings under
-`:init` are recommended defaults. However,
-everything is optional: you can remove, keep, or adjust them as you like your
-liking.
+   Add the following snippet to your initialization file. The settings under
+   `:init` are recommended defaults. However,
+   everything is optional: you can remove, keep, or adjust them as you like your
+   liking.
 
-      ```emacs-lisp
+    ```emacs-lisp
      ;; Proof General
      ;; Front-end framework for proof assistants, used by EasyCrypt.
      ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
@@ -140,7 +140,7 @@ liking.
        (setopt easycrypt-one-command-per-line nil))
        ```
 
-    > :eyes:
+    > :eyes:  
     > You can enable (resp. disable) a setting by assigning `t` (resp. `nil).
     > (For `setopt`, the second argument is the assigned value.x)
 
