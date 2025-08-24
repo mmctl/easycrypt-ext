@@ -7,7 +7,7 @@
 [EasyCrypt](https://www.easycrypt.info/) is a toolset primarily designed for the
 formal verification of code-based, game-playing crytpographic proofs. At its
 core, it features an interactive theorem prover with a front-end implemented in
-[Proof General](https://proofgeneral.github.io/)
+[Proof General](https://proofgeneral.github.io/).
 
 This package aims to add useful extensions to this EasyCrypt front-end.
 Basic/standalone features include the following.
@@ -42,11 +42,11 @@ other packages. Each of these is provided in a separate file/feature
 called `easycrypt-ext-X`, where `X` is the name of the other package.
 Specifically, these features are the following.
 - Keyword completion (requires [cape](https://github.com/minad/cape),
-  specifically cape-keyword; see `easycrypt-ext-cape`).
+  specifically cape-keyword; see `easycrypt-ext-cape.el`).
 - Code templates (requires  [tempel](https://github.com/minad/tempel);
-  see `easycrypt-ext-tempel`).
+  see `easycrypt-ext-tempel.el`).
 - Execution of proof shell commands from a distance (requires
-  [avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy`).
+  [avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy.el`).
 
 > :exclamation: **Compatibility** :exclamation:  
 > The current version of this package should be compatible with (at least)
@@ -100,7 +100,7 @@ for additional quality-of-life improvements.
 
 ## Prerequisites
 
-> :eyes: **Can you skip this?**  
+> :eyes: **Skipping prerequisites** :eyes:  
 > Even if you already set up MELPA and Proof General, skimming these
 > instructions may still be useful for learning about recommended defaults and
 > configuration options that integrate better with this package.
@@ -122,7 +122,7 @@ for additional quality-of-life improvements.
    (package-initialize)
    ```
 
-2. **Install and configure Proof General**  
+2. **Install and configure [Proof General](https://proofgeneral.github.io/download/)**  
    Add the following snippet to your initialization file, which will install and
    configure Proof General the next time Emacs launches. All settings appear
    under `:init` and are set to the recommended defaults. However, each one is
@@ -216,14 +216,16 @@ experience!
 
 ## Extras
 
-1. **Install and configure external packages: `cape`, `tempel`, and `avy`**  
+1. **Install and configure external packages**  
    Add the following snippet to your initialization file, which will install and
-   configure `cape`, `tempel`, and `avy` the next time Emacs launches. If you
-   don't want a certain package, simply remove its `use-package`. Although
-   these packages are rather customizable, the defaults should be fine for most
-   use cases, so we keep the configuration minimal here. For advanced
-   customization, see the package repositories (linked in the
-   comments) or the [Tips and Tricks](#tips-and-tricks) section.
+   configure [cape](https://github.com/minad/cape),
+   [tempel](https://github.com/minad/tempel), and
+   [avy](https://github.com/abo-abo/avy) the next time Emacs launches. If you
+   don't want a certain package, simply remove its `use-package` statement.
+   Although these packages are rather customizable, the defaults should be fine
+   for most use cases, so we keep the configuration minimal here. For advanced
+   customization, see the package repositories (linked in the comments) or the
+   [Tips and Tricks](#tips-and-tricks) section.
 
     ```emacs-lisp
     ;; Cape (keyword completion)
@@ -246,14 +248,14 @@ experience!
     (use-package avy
         :ensure t
         :pin melpa)
-  ```
+    ```
 
 2. **Configure EasyCrypt Ext integration with external packages.**  
    Add the following snippet to your initialization file, which will configure
-   the integration of EasyCrypt Ext with the external packages the next time
-   Emacs launches. If you don't want to use a certain package integration,
-   simply remove its `use-package` statement. All settings appear under `:init`
-   and `:config` and are set to some basic, non-conflicting defaults.
+   EasyCrypt Ext's integration with the external packages the next time Emacs
+   launches. If you don't want to use a certain package integration, simply
+   remove its `use-package` statement. All settings appear under `:init` and
+   `:config` and are set to some basic, non-conflicting defaults.
 
    ```emacs-lisp
     (use-package easycrypt-ext-cape
@@ -291,7 +293,7 @@ experience!
         (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
    ```
 
-2. **Restart Emacs**  
+3. **Restart Emacs**  
    Restart Emacs to ensure necessary operations are performed
    and changes take effect. If Emacs starts without errors, you’re good to go.
 
@@ -314,7 +316,7 @@ Below are the most relevant available commands and their default keybindings.
 Some commands can also be accessed through the corresponding menus in the menu
 bar and mode line.
 
-> :eyes: **Default keybindings and changing them** :eyes:
+> :eyes: **Default keybindings and changing them** :eyes:  
 > To avoid conflicts with other keybindings (from Proof General o otherwise), all
 > keybindings for this package begin with the prefix `C-c C-y`. Depending on your
 > personal keybindings and how many Proof General keybindings you want to use,
