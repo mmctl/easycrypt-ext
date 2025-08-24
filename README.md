@@ -32,8 +32,8 @@ Basic/standalone features include the following.
   level, enabling you to execute a (sub)commands for each EasyCrypt
   file in a project or directory (tree).
 - Automatic "smart" centering of goal buffer and echoing of remaining goals.
-  This tries to minimize the need for scrolling each time you processing
-  a command when dealing with larger goals.
+  This tries to minimize the need for scrolling each time you process
+  a command, especially when dealing with larger goals.
 - Menu bar and mode line menu for managing and using (selected features of)
   EasyCrypt Ext.
 
@@ -48,7 +48,7 @@ Specifically, these features are the following.
 - Execution of proof shell commands from a distance (requires
   [avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy`).
 
-> :exclamation:  
+> :exclamation: **Compatibility** :exclamation:  
 > The current version of this package should be compatible with (at least)
 > Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
 
@@ -56,7 +56,7 @@ Specifically, these features are the following.
 
 -----
 
-> :speech_balloon:  
+> :speech_balloon: **Beginner-friendliness** :speech_balloon:  
 > Since many EasyCrypt users only pick up Emacs for EasyCrypt, these
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
@@ -75,14 +75,14 @@ more features:[^1]
 4. [Enhancements](#enhancements): Improve Emacs features that this package relies
    on; these also benefit your general Emacs usage.
 
-Each layer includes ready-to-use code snippets with comments explaining what
+Each step includes ready-to-use code snippets with comments explaining what
 they do. Customization is optional, but the snippets also suggest common tweaks
 if you’d like to go beyond the defaults.
 
 When you’re done here, check out the [Tips and Tricks](#tips-and-tricks) section
 for additional quality-of-life improvements.
 
-> :eyes:  
+> :eyes: **Finding your initialization file** :eyes:   
 > Most of the instructions below involve editing your
 > [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html). 
 > This file can live in different places, most commonly:
@@ -100,13 +100,21 @@ for additional quality-of-life improvements.
 
 ## Prerequisites
 
-> :eyes:  
+> :eyes: **Can you skip this?**  
 > Even if you already set up MELPA and Proof General, skimming these
 > instructions may still be useful for learning about recommended defaults and
 > configuration options that integrate better with this package.
 
 1. **Add [MELPA](https://melpa.org/#/getting-started) as a package archive**  
-   Add the following snippet to your initialization file.
+   Add the following snippet to your initialization file, which will
+   add MELPA to the considered package archives and initialize the
+   package system the next time Emacs launches.
+
+   > :exclamation: **No need to repeat** :exclamation:  
+   > If you  already have `(require 'package)` and `(package-initialize)`
+   > somewhere in your initialization file, you do _not_ need to add
+   > them again. In that case, just add the second line from the snippet
+   > after `(require 'package)`
 
    ```emacs-lisp
    (require 'package)
@@ -115,7 +123,8 @@ for additional quality-of-life improvements.
    ```
 
 2. **Install and configure Proof General**  
-   Add the following snippet to your initialization file. All settings appear
+   Add the following snippet to your initialization file, which will install and
+   configure Proof General the next time Emacs launches. All settings appear
    under `:init` and are set to the recommended defaults. However, each one is
    optional: you can remove, keep, or adjust them as you like.
 
@@ -141,9 +150,9 @@ for additional quality-of-life improvements.
         (setopt easycrypt-one-command-per-line nil))
      ```
 
-      > :eyes:  
+      > :eyes: **Changing settings** :eyes:  
       > In the above, you can enable (resp. disable) a setting by assigning `t`
-      > (resp. `nil). (For `setopt`, the first argument is the variable and the
+      > (resp. `nil`). (For `setopt`, the first argument is the variable and the
       > second argument is the assigned value.)
 
 3. **Restart Emacs**  
@@ -153,9 +162,10 @@ for additional quality-of-life improvements.
 ## Basics
 
 1. **Install and configure EasyCrypt Ext (this package)**  
-    Add the following snippet to your initialization file. All settings appear
-   under `:config` and are set to the recommended defaults. However, each one is
-   optional: you can remove, keep, or adjust them as you like.
+    Add the following snippet to your initialization file, which will
+    install EasyCrypt Ext the next time Emacs launches. All settings appear
+    under `:config` and are set to the recommended defaults. However, each one is
+    optional: you can remove, keep, or adjust them as you like.
 
     ```emacs-lisp
     ;; Install EasyCrypt Ext if not already available
@@ -177,99 +187,120 @@ for additional quality-of-life improvements.
 
         :config
         ;; Enable repeat maps to quickly repeat certain commands after issuing them once.
-        ;; Used by `easycrypt-ext' for processing, undoing, and deleting proof steps,
-        ;; as well as browsing through goal/response history.
         ;; This is a global setting and will apply to all buffers in the current Emacs session.
         (repeat-mode 1))
     ```
+
+    > :eyes: **Further customization** :eyes:  
+    > EasyCrypt Ext provides several customization options for more advanced use
+    > cases (e.g., enabling or disabling specific features, or executing EasyCrypt
+    > command-line commands from inside Emacs). You can view the documentation for a
+    > customization variable with `C-h v` (Control + h, then v), then typing the
+    > variable name and pressing enter. Searching for the prefix `ece-` should bring
+    > up all the available variables. You can set these variables with `setopt`
+    > inside an `:init` block of the `use-package easycrypt-ext` statement. For an
+    > example of such an `:init` block , see the the Proof General configuration in
+    > [Prerequisites](#prerequisites).
 
 2. **Restart Emacs**  
    Restart Emacs to ensure necessary operations are performed
    and changes take effect. If Emacs starts without errors, you’re good to go.
 
-> :eyes:  
-> EasyCrypt Ext provides several customization options for more advanced use
-> cases (e.g., enabling or disabling specific features, or executing EasyCrypt
-> command-line commands from inside Emacs). You can view the documentation for a
-> customization variable with `C-h v` (Control + h, then v), then typing the
-> variable name and pressing enter. Searching for the prefix `ece-` should bring
-> up all the available variables. You can set these variables with `setopt`
-> inside an `:init` block of the `use-package easycrypt-ext` statement. For an
-> example of such an :init block , see the the Proof General configuration in
-> [Prerequisites](#prerequisites).
-
 That’s it! EasyCrypt Ext now loads automatically with EasyCrypt (e.g., when you
 open an `.ec` or `.eca` file). To get familiar with the available features,
-commands, and keybindings, check out [the corresponding
-section](#features-commands-and-keybindings).
-
+commands, and keybindings, see the relevant parts of [Features, Commands,
+and Keybindings](#features-commands-and-keybindings). Alternatively, check out
+[Extras](#extras), [Enhancements](#enhancements), or [Tips and
+Tricks](#tips-and-tricks) to unlock additional features and further improve your
+experience!
 
 ## Extras
 
-** Cape (Keyword Completion)
-#+begin_src elisp
-  ;; Cape (completion-at-point functionality)
-  ;; See: https://github.com/minad/cape
-  (use-package cape
-    :ensure t)
-#+end_src
+1. **Install and configure external packages: `cape`, `tempel`, and `avy`**  
+   Add the following snippet to your initialization file, which will install and
+   configure `cape`, `tempel`, and `avy` the next time Emacs launches. If you
+   don't want a certain package, simply remove its `use-package`. Although
+   these packages are rather customizable, the defaults should be fine for most
+   use cases, so we keep the configuration minimal here. For advanced
+   customization, see the package repositories (linked in the
+   comments) or the [Tips and Tricks](#tips-and-tricks) section.
 
-#+begin_src elisp
-(use-package easycrypt-ext-cape
-  :ensure nil ; Provided by `easycrypt-ext'
+    ```emacs-lisp
+    ;; Cape (keyword completion)
+    ;; https://github.com/minad/cape
+    (use-package cape
+        :ensure t)
 
-  :hook
-  (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup))
-#+end_src
-
-** Tempel (Templates)
-#+begin_src elisp
     ;; Tempel (code templates)
-    ;; See: https://github.com/minad/tempel
+    ;; https://github.com/minad/tempel
     (use-package tempel
-      :ensure t
+        :ensure t
 
-      :bind
-      ;; Keybinding for initiating template completion
-      ;; Can change to any desired keybinding (sequence)
-      ;; by changing "M-+" to another keybinding string.
-      ("M-+" . tempel-complete))
-#+end_src
+        :bind
+        ;; Bind template completion to "M-+"
+        ;; (change this to whatever keybinding you prefer)
+        ("M-+" . tempel-complete)
 
-#+begin_src elisp
-  (use-package easycrypt-ext-tempel
-    :ensure nil ; Provided by `easycrypt-ext'
+    ;; Avy (jumping and acting from a distance)
+    ;; https://github.com/abo-abo/avy
+    (use-package avy
+        :ensure t
+        :pin melpa)
+  ```
 
-    :hook
-    (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
+2. **Configure EasyCrypt Ext integration with external packages.**  
+   Add the following snippet to your initialization file, which will configure
+   the integration of EasyCrypt Ext with the external packages the next time
+   Emacs launches. If you don't want to use a certain package integration,
+   simply remove its `use-package` statement. All settings appear under `:init`
+   and `:config` and are set to some basic, non-conflicting defaults.
 
-    :init
-    ;; Prefix (keybinding sequence) to access the
-    ;; template map of EasyCrypt Ext for fast template insertion.
-    ;; Can set to any keybinding (sequence) of your liking
-    ;; by changing "C-c l t" to another keybinding (sequence) string.
-    (setopt ece-tempel-template-map-prefix "C-c l t"))
-#+end_src
+   ```emacs-lisp
+    (use-package easycrypt-ext-cape
+        :ensure nil ; Comes with EasyCrypt Ext
 
-** Avy (Jumping)
-#+begin_src elisp
-(use-package avy
-  :ensure t
+        :hook
+        (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
 
-  :pin melpa)
-#+end_src
+        :config
+        ;; Add (resp. remove) `cape-keyword' to (resp. from) the functions
+        ;; used for completion whenever EasyCrypt Ext loads (resp. unloads)
+        (defun setup-ece-cape-keyword ()
+            (if easycrypt-ext-mode
+                (add-hook 'completion-at-point-functions #'cape-keyword nil t)
+              (remove-hook 'completion-at-point-functions #'cape-keyword t)))
+        (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
 
-#+begin_src elisp
-(use-package easycrypt-ext-avy
-  :ensure nil ; Provided by `easycrypt-ext'
+    (use-package easycrypt-ext-tempel
+        :ensure nil ; Comes with EasyCrypt Ext
 
-  :hook
-  (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
-  (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
-  (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
-#+end_src
+        :hook
+        (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
 
-TODO: comment about finding documentation in Emacs and file
+        :init
+        ;; Set keybinding to accesss predefined template map to "C-c C-y t",
+        ;; (change this to whatever keybinding you prefer)
+        (setopt ece-tempel-template-map-prefix "C-c C-y t"))
+
+    (use-package easycrypt-ext-avy
+        :ensure nil ; Comes with EasyCrypt Ext
+
+        :hook
+        (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
+        (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
+        (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
+   ```
+
+2. **Restart Emacs**  
+   Restart Emacs to ensure necessary operations are performed
+   and changes take effect. If Emacs starts without errors, you’re good to go.
+
+And you're done! The extra integration features now load automatically alongside
+EasyCrypt Ext and should work out of the box. Usage and customization of the
+available features are detailed in [Features, Commands, and
+Keybindings](#features-commands-and-keybindings). For further improvement of
+your experience, check out [Enhancements](#enhancements) or [Tips and
+Tricks](#tips-and-tricks)!
 
 ## Enhancements
  Corfu
@@ -283,12 +314,11 @@ Below are the most relevant available commands and their default keybindings.
 Some commands can also be accessed through the corresponding menus in the menu
 bar and mode line.
 
-#+begin_quote
-To avoid conflicts with other keybindings (from Proof General o otherwise), all
-keybindings for this package begin with the prefix `C-c C-y`. Depending on your
-personal keybindings and how many Proof General keybindings you want to use,
-there may be (a lot) more convenient alternatives.
-#+end_quote
+> :eyes: **Default keybindings and changing them** :eyes:
+> To avoid conflicts with other keybindings (from Proof General o otherwise), all
+> keybindings for this package begin with the prefix `C-c C-y`. Depending on your
+> personal keybindings and how many Proof General keybindings you want to use,
+> there may be (a lot) more convenient alternatives.
 
 ## Indentation
 
@@ -325,6 +355,8 @@ Built-in template map.
 
 # Tips and Tricks
 
+## Corfu automatic (including templates)
+## Cape dabbrev
 ## Consult Imenu
 ## Behavior of Shift-TAB
 ## Silencing bufhist buttons
