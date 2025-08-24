@@ -4,7 +4,7 @@
 #+DESCRIPTION: README file for easycrypt-ext respository (https://github.com/mmctl/easycrypt-ext).
 
 * THIS IS WIP. DONT USE.
-[[https://www.easycrypt.info/][[EasyCrypt]]] is a toolset primarily designed for the formal verification of
+[[https://www.easycrypt.info/][EasyCrypt]] is a toolset primarily designed for the formal verification of
 code-based, game-playing crytpographic proofs. At its core, it features an
 interactive theorem prover with a front-end implemented in [[https://proofgeneral.github.io/][Proof General]].
 
@@ -41,45 +41,62 @@ other packages. Each of these is provided in a separate file/feature
 called =easycrypt-ext-X=, where =X= is the name of the other package.
 Specifically, these features are the following.
 - Keyword completion (requires [[https://github.com/minad/cape][cape]], specifically cape-keyword;
-  see =easycrypt-ext-cape.el=).
-- Code templates (requires [[https://github.com/minad/tempel][tempel]]; see =easycrypt-ext-tempel.el=).
+  see =easycrypt-ext-cape=).
+- Code templates (requires [[https://github.com/minad/tempel][tempel]]; see =easycrypt-ext-tempel=).
 - Execution of proof shell commands from a distance (requires
-  [[https://github.com/abo-abo/avy][avy]]; see =easycrypt-ext-avy.el=).
+  [[https://github.com/abo-abo/avy][avy]]; see =easycrypt-ext-avy=).
 
-#+BEGIN_QUOTE
-*Note:* The current version of this package requires Emacs version 29.1 or newer.
-#+END_QUOTE
+#+begin_quote
+*Note:* The current version of this package should be compatible with (at least)
+Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
+#+end_quote
 
 * Installation and Configuration
-We will walk through the basic installation and configuration process
-for setting up everything, including both basic and more advanced
-functionalities. Here, we do not assume any prior Emacs knowledge (as
-many EasyCrypt users start using Emacs only because of EasyCrypt).
-we will follow an approach based on Emacs's
-built-in =use-package= functionality for managing packages,
-which is (in my opinion) the most straightforward. If you
-have a different opinion, you probably have the knowledge to achieve
-the same thing in your favorite way.
 
-In what follows, we cover both the basic functionalities, requiring
-no further external packages, as well as the more advanced functionalities,
-requiring external packages. 
-For the basic functionalities, only first two are required; the latter
-three cover the more advanced functionalities. After
-going through this section and having set everything up, it is /strongly/
-recommended to go through the Tips and Tricks section as well for some additional setup that greatly improves the user-friendliness of some Emacs features used by this package (which will also improve your overall Emacs experience).
+#+begin_quote
+Since many EasyCrypt users only pick up Emacs for EasyCrypt, these instructions
+assume no prior Emacs knowledge and are written to be beginner-friendly. If
+you are an experienced Emacs user, you may prefer skipping most of the
+explanatory text and jumping straight to the code snippets.
+#+end_quote
 
-The instructions below will often reference your [[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][initialization file]], mostly to
-put in code necessary for the setup. Emacs supports several locations for the
-initialization file, so depending on your setup, the location may differ.
-However, typically this file will be called something like =~/emacs.d/init.el=,
-=~/.emacs=, or =~/.config/emacs/init.el=. If you are uncertain, you can launch
-Emacs and press =C-h v= (i.e. =Control + h= followed by =v=), type
-=user-init-file=, and hit enter. This will bring up a window with a line that
-says something like ~Its value is "X"~. =X= is your initialization file.
-You might want to have it open already before continuing. 
+The setup is presented in layers. You can stop at any stage or continue stacking more features:[^1]
 
-** Proof General
+1. Prerequisites -- Set up your environment and Proof General for EasyCrypt.
+2. Basics -- Set up core features of this package (no external packages).
+3. Extra -- Set up extra features of this package (integration with external packages).
+4. Enhancements -- Improve Emacs features that this package relies
+   on; these also benefit your general Emacs usage.
+
+[^1]: Technically, the /Enhancements/ "layer" is independent of the others but included here because it greatly improves the overall experience.
+
+Each layer comes with ready-to-use code snippets you can copy into your
+configuration. Customization is optional, but we also provide suggestions for
+common tweaks if you’d like to go beyond the defaults.
+
+When you’re done here, don’t miss the Tips and Tricks section for further quality-of-life improvements.
+
+#+begin_quote
+Most of the instructions below involve editing your
+[[https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html][Emacs initialization file]]. This file can live in different places, most commonly:
+- =~/emacs.d/init.el= 
+- =~/.emacs=
+- =~/.config/emacs/init.el=
+To check which one your Emacs uses:
+1. Open Emacs.
+2. Press =C-h v= (Control + h, then v).
+3. Type =user-init-file= and hit enter.
+Emacs will display something like:
+#+begin_src
+  Its value is "/home/you/.emacs.d/init.el"
+#+end_src
+That file is your initialization file.
+#+end_quote
+
+** Prerequisites
+If you have already installed and configured Proof General,
+you can skip to installing this package directly.
+However, you 
 If you have not already done so, install Proof General before
 anything else, as not much provided by this package makes sense
 without. To do so, either follow the official instructions, or
@@ -134,7 +151,8 @@ from the server first.
 
 Afterward, continue to EasyCrypt Extensions to set up this package.
 
-** EasyCrypt Extensions
+** Basics
+** Extra
 To set up this package, simply add the following to your initialization file.
 #+begin_src elisp
   ;; Install EasyCrypt Ext if not already available
@@ -213,7 +231,7 @@ reading.
       ;; Keybinding for initiating template completion
       ;; Can change to any desired keybinding (sequence)
       ;; by changing "M-+" to another keybinding string.
-      (tempel-complete . "M-+"))
+      ("M-+" . tempel-complete))
 #+end_src
 
 #+begin_src elisp
@@ -263,6 +281,8 @@ personal keybindings and how many Proof General keybindings you want to use,
 there may be (a lot) more convenient alternatives.
 #+end_quote
 
+** Indentation
+
 ** Proof Shell
 
 | Command             | Keybinding                      | Description                     |
@@ -276,23 +296,22 @@ there may be (a lot) more convenient alternatives.
 
 ** Executable (Command Line)
 
-| Command | Keybinding | Description |
-|---------+------------+-------------|
-|         |            |             |
+| Command               | Keybinding      | Description                                                                           |
+|-----------------------+-----------------+---------------------------------------------------------------------------------------|
+| =ece-compile-file=    | =C-c C-y e c=   | =compile= (check) visited EasyCrypt file                                              |
+| =ece-compile-dir=     | =C-c C-y e C=   | =compile= (check) EasyCrypt files in visited directory and its children               |
+| =ece-compile=         | =C-c C-y e C-c= | Prompt for EasyCrypt file(s) to =compile= (check)                                     |
+| =ece-docgen-file=     | =C-c C-y e d=   | =docgen= (generate documentation) visited EasyCrypt file                              |
+| =ece-docgen-dir=      | =C-c C-y e D=   | docgen = generate documentation EasyCrypt files in visited directory and its children |
+| =ece-docgen=          | =C-c C-y e C-d= | Prompt for EasyCrypt file(s) to =docgen= (generate documentation)                     |
+| =ece-help=            | =C-c C-y e h=   | Print help (as output by =easycrypt --help=)                                          |
+| =ece-runtest-dflt=    | =C-c C-y e r=   | =runtest= (test) using default test file and scenario (relative to visited directory) |
+| =ece-runtest=         | =C-c C-y e R=   | Prompt for configuration to use with =runtest= (test)                                 |
+| =ece-why3config-dflt= | =C-c C-y e w=   | =why3config= (configure Why3) using default configuration file                        |
+| =ece-why3config=      | =C-c C-y e W=   | Prompt for configuration file to use with =why3config= (configure Why3).              |
 
-|-----------------------+-----------------+-----------------------------------------------------------------------------------------+---|
-| =ece-compile-file=    | =C-c C-y e c=   | =compile= (check) visited EasyCrypt file                                                |   |
-| =ece-compile-dir=     | =C-c C-y e C=   | =compile= (check) EasyCrypt files in visited directory and its children                 |   |
-| =ece-compile=         | =C-c C-y e C-c= | Prompt for EasyCrypt file(s) to =compile= (check)                                       |   |
-| =ece-docgen-file=     | =C-c C-y e d=   | =docgen= (generate documentation) visited EasyCrypt file                                |   |
-| =ece-docgen-dir=      | =C-c C-y e D=   | =docgen= (generate documentation) EasyCrypt files in visited directory and its children |   |
-| =ece-docgen=          | =C-c C-y e C-d= | Prompt for EasyCrypt file(s) to =docgen= (generate documentation)                       |   |
-| =ece-help=            | =C-c C-y e h=   | Print help (as output by =easycrypt --help=)                                            |   |
-| =ece-runtest-dflt=    | =C-c C-y e r=   | =runtest= (test) using default test file and scenario (relative to visited directory)   |   |
-| =ece-runtest=         | =C-c C-y e R=   | Prompt for configuration to use with =runtest= (test)                                   |   |
-| =ece-why3config-dflt= | =C-c C-y e w=   | =why3config= (configure Why3) using default configuration file                          |   |
-| =ece-why3config=      | =C-c C-y e W=   | Prompt for configuration file to use with =why3config= (configure Why3).                |   |
-** Indentation
+** Templates
+Built-in template map.
 
 * Enhancements
 ** Corfu
