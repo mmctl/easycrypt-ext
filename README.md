@@ -82,9 +82,9 @@ if you’d like to go beyond the defaults.
 When you’re done here, check out [Tips and Tricks](#tips-and-tricks)
 for additional quality-of-life improvements.
 
-> :eyes: **Finding your initialization file** :eyes:   
+> :eyes: **Finding your initialization file** :eyes:  
 > Most of the instructions below involve editing your
-> [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html). 
+> [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html).
 > This file can live in different places, most commonly:
 > - `~/emacs.d/init.el`
 > - `~/.emacs`
@@ -293,8 +293,8 @@ experience!
    you should be good to go.
 
 And you're done! The extra integration features should now load automatically
-alongside EasyCrypt Ext and work out of the box. Usage and configuration of the
-available features are detailed in [Features, Commands, and
+alongside EasyCrypt Ext and work out of the box. The available features and
+corresponding commands are further detailed in [Features, Commands, and
 Keybindings](#features-commands-and-keybindings). For further improvement of
 your experience, check out [Enhancements](#enhancements) or [Tips and
 Tricks](#tips-and-tricks)!
@@ -372,30 +372,54 @@ Tricks](#tips-and-tricks).
 
 -----
 
-Below are the most relevant available commands and their default keybindings.
-Some commands can also be accessed through the corresponding menus in the menu
-bar and mode line.
+The following provides an overview of the main (interactive) features of
+EasyCrypt Ext and explains how to use them. It also lists the most relevant
+commands and their default keybindings. Although often not mentioned explicitly,
+some commands are also available through the menu bar and mode line menus.
 
 > :eyes: **Default keybindings and changing them** :eyes:  
-> To avoid conflicts with other keybindings (from Proof General or otherwise),
-> nearly all keybindings for this package begin with the prefix `C-c C-y`.
-> Depending on your personal keybindings and how many Proof General keybindings
-> you want to use, there may be (a lot) more convenient alternatives.
-
-
-> :eyes: **General configuration** :eyes:  
-> EasyCrypt Ext provides several configuration options for more advanced use
-> cases (e.g., enabling or disabling specific features, or executing
-> EasyCrypt command-line commands from inside Emacs) through customization
-> variables. You can view the documentation for a customization variable
-> with `C-h v` (Control + h, then v), then typing the variable name and
-> pressing enter. Searching for the prefix `ece-` should bring up all the
-> available variables. You can set these variables with `setopt` inside an
-> `:init` block of the `use-package easycrypt-ext` statement. For an example
-> of such an `:init` block , see the the Proof General configuration in
-> [Prerequisites](#prerequisites).
+> To avoid conflicts with other keybindings (from Proof General or elsewhere),
+> nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
+>
+> Depending on your personal setup and workflow, there may be (a lot) more
+> convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
+> COMMAND)` in the `:config` block of the relevant `use-package` declaration
+> (typically of the package defining the command). For example, to bind the
+> command `ece-print` (provided by EasyCrypt Ext) to "C-c C-p", you could add
+> the following to the `use-package` declaration for `easycrypt-ext`:
+> ```
+> (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
+> ```
+> (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
+> its commands).
 
 ## Indentation
+As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
+provides its own implementation of the standard Emacs indentation command and
+ensures it is triggered at convenient points (e.g., after closing expressions or
+inserting newlines). However, because this solution is still somewhat ad-hoc,
+it may not always produce the indentation you expect or want. To cover such
+cases, EasyCrypt Ext also includes:
+
+- **Basic (de)indentation**  
+Commands that indent/deindent every line in the selected region by one tab, or
+insert/remove a tab at point if no region is active.
+- **"Non-local" indentation**  
+Command that behaves identically to the default, except in specific cases.[^6]
+The main difference concerns indentation inside delimited expressions: While the
+default indents relative to the previous line ("locally"), this command indents
+relative to the expression's opening delimiter ("non-locally"). For more
+details, see the documentation of the relevant commands.
+
+[^6]: This is in an attempt to predict common scenario's one might run into with the default indentation.
+
+| Command                               | Keybinding      | Description                                        |
+|---------------------------------------|-----------------|----------------------------------------------------|
+| `ece-basic-indent`                    | `M-i`           | Basic indent                                       |
+| `ece-basid-deindent`                  | `M-I`           | Basic deindent                                     |
+| `ece-indent-for-tab-command-nonlocal` | `<backtab>`[^7] | "Non-local" variant of default indentation command |
+
+[^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
 
 ## Proof Shell
 
@@ -439,3 +463,16 @@ bar and mode line.
 ## Consult Imenu
 ## Behavior of Shift-TAB
 ## Silencing bufhist buttons
+
+
+> :eyes: **Configuration** :eyes:  
+> EasyCrypt Ext provides several configuration options for more advanced use
+> cases (e.g., enabling or disabling specific features, or executing
+> EasyCrypt command-line commands from inside Emacs) through customization
+> variables. You can view the documentation for a customization variable
+> with `C-h v` (Control + h, then v), then typing the variable name and
+> pressing enter. Searching for the prefix `ece-` should bring up all the
+> available variables. You can set these variables with `setopt` inside an
+> `:init` block of the `use-package easycrypt-ext` statement. For an example
+> of such an `:init` block , see the the Proof General configuration in
+> [Prerequisites](#prerequisites).
