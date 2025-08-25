@@ -391,7 +391,7 @@ some commands are also available through the menu bar and mode line menus.
 > (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
 > ```
 > (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
-> its commands).
+> its commands.)
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
@@ -411,13 +411,13 @@ default indents relative to the previous line ("locally"), this command indents
 relative to the expression's opening delimiter ("non-locally"). For more
 details, see the documentation of the relevant commands.
 
-[^6]: This is in an attempt to predict common scenario's one might run into with the default indentation.
+[^6]: This is in an attempt to predict common scenarios one might run into with the default indentation.
 
-| Command                               | Keybinding      | Description                                        |
-|---------------------------------------|-----------------|----------------------------------------------------|
-| `ece-basic-indent`                    | `M-i`           | Basic indent                                       |
-| `ece-basid-deindent`                  | `M-I`           | Basic deindent                                     |
-| `ece-indent-for-tab-command-nonlocal` | `<backtab>`[^7] | "Non-local" variant of default indentation command |
+| Command                               | Keybinding      | Description                                |
+|---------------------------------------|-----------------|--------------------------------------------|
+| `ece-basic-indent`                    | `M-i`           | Basic indent                               |
+| `ece-basid-deindent`                  | `M-I`           | Basic deindent                             |
+| `ece-indent-for-tab-command-nonlocal` | `<backtab>`[^7] | "Non-local" variant of default indentation |
 
 [^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
 
