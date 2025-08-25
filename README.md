@@ -111,10 +111,10 @@ for additional quality-of-life improvements.
    package system the next time Emacs launches.
 
    > :exclamation: **No need to repeat** :exclamation:  
-   > If you already have `(require 'package)` and `(package-initialize)`
-   > statement in your initialization file, you do _not_ need to add
-   > them again. In that case, just add the second line from the snippet 
-   > (putting it after `(require 'package)`).
+   > If your initialization file already includes `(require 'package)` and
+   > `(package-initialize)`, you don’t need to add them again. In that case,
+   > simply add the second line from the snippet, placing it after `(require
+   > 'package)`.
 
    ```emacs-lisp
    (require 'package)
@@ -124,9 +124,9 @@ for additional quality-of-life improvements.
 
 2. **Set up [Proof General](https://proofgeneral.github.io/download/)**  
    Add the following snippet to your initialization file, which will install and
-   configure Proof General the next time Emacs launches. All settings appear
-   under `:init` and are set to the recommended defaults. However, each one is
-   optional: you can remove, keep, or adjust them as you like.
+   configure Proof General the next time Emacs launches. The recommended
+   configuration appears under `:init`. However, every setting is optional: you
+   can remove, keep, or adjust as you like.
 
     ```emacs-lisp
     ;; Proof General
@@ -156,15 +156,18 @@ for additional quality-of-life improvements.
       > second argument is the assigned value.)
 
 3. **Restart Emacs**  
-   Restart Emacs for the changes to take effect. If Emacs launches without errors, you should be good to go.
+   Restart Emacs for the changes to take effect. If Emacs launches without
+   errors, you should be good to go.
 
 ## Basics
 
 1. **Set up EasyCrypt Ext (this package)**  
-    Add the following snippet to your initialization file, which will
-    install EasyCrypt Ext the next time Emacs launches. All settings appear
-    under `:config` and are set to the recommended defaults. However, each one is
-    optional: you can remove, keep, or adjust them as you like.
+    Add the following snippet to your initialization file, which will install
+    EasyCrypt Ext the next time Emacs launches. The recommended configuration
+    appears under `:config`, which activates a _global setting_ (`repeat-mode`)
+    when EasyCrypt Ext loads to enable repeat maps. Although these maps are
+    generally useful, you can safely remove it if you prefer not to
+    alter your Emacs's behavior outside of EasyCrypt development.
 
     ```emacs-lisp
     ;; Install EasyCrypt Ext if not already available
@@ -184,30 +187,20 @@ for additional quality-of-life improvements.
         (easycrypt-response-mode . easycrypt-ext-response-mode)
 
         :config
-        ;; Enable repeat maps to quickly repeat certain commands after issuing them once.
-        ;; This is a global setting and will apply to all buffers in the current Emacs session.
+        ;; Enable repeat maps (globally) to quickly repeat certain commands
+        ;; after issuing them once.
         (repeat-mode 1))
     ```
 
-    > :eyes: **Further customization** :eyes:  
-    > EasyCrypt Ext provides several customization options for more advanced use
-    > cases (e.g., enabling or disabling specific features, or executing EasyCrypt
-    > command-line commands from inside Emacs). You can view the documentation for a
-    > customization variable with `C-h v` (Control + h, then v), then typing the
-    > variable name and pressing enter. Searching for the prefix `ece-` should bring
-    > up all the available variables. You can set these variables with `setopt`
-    > inside an `:init` block of the `use-package easycrypt-ext` statement. For an
-    > example of such an `:init` block , see the the Proof General configuration in
-    > [Prerequisites](#prerequisites).
-
 2. **Restart Emacs**  
-   Restart Emacs for the changes to take effect. If Emacs starts without errors, you should be good to go.
+   Restart Emacs for the changes to take effect. If Emacs starts without errors,
+   you should be good to go.
 
-That’s it! EasyCrypt Ext now loads automatically with EasyCrypt (e.g., when you
-open an `.ec` or `.eca` file). To get familiar with the available features,
-commands, and keybindings, see the relevant parts of [Features, Commands,
-and Keybindings](#features-commands-and-keybindings). Alternatively, check out
-[Extras](#extras), [Enhancements](#enhancements), or [Tips and
+That’s it! EasyCrypt Ext should now load automatically with EasyCrypt (e.g.,
+when you open an `.ec` or `.eca` file). To get familiar with the available
+features, commands, and keybindings, see the relevant parts of [Features,
+Commands, and Keybindings](#features-commands-and-keybindings). Alternatively,
+check out [Extras](#extras), [Enhancements](#enhancements), or [Tips and
 Tricks](#tips-and-tricks) to unlock additional features and further improve your
 experience!
 
@@ -219,10 +212,9 @@ experience!
    [Tempel](https://github.com/minad/tempel), and
    [Avy](https://github.com/abo-abo/avy) the next time Emacs launches. If you
    don't want a certain package, simply remove its `use-package` block. Although
-   these packages are rather customizable, the defaults should be fine for most
-   use cases, so we keep the configuration minimal here. For possible
-   customization, see the package repositories (linked in the comments) or [Tips
-   and Tricks](#tips-and-tricks).
+   these packages are quite configurable, their defaults should be fine for most
+   use cases. For configuration options and ideas, see the package repositories
+   (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
 
     ```emacs-lisp
     ;; Cape (keyword completion)
@@ -244,15 +236,21 @@ experience!
     ;; https://github.com/abo-abo/avy
     (use-package avy
         :ensure t
-        :pin melpa)
+        :pin melpa
+
+        :bind
+        ;; Bind character jump command to "M-g j"
+        ;; (change this to whatever jump command and keybinding you prefer)
+        ("M-g j" . avy-goto-char))
     ```
 
 2. **Set up EasyCrypt Ext integration with external packages.**  
    Add the following snippet to your initialization file, which will configure
    EasyCrypt Ext's integration with the external packages the next time Emacs
    launches. If you don't want to use a certain package integration, simply
-   remove its `use-package` block. All settings appear under `:init` and
-   `:config` and are set to some basic, non-conflicting defaults.
+   remove its `use-package` block. Basic configurations are provided under
+   `:init` and `:config`, sufficient to get started. For additional tweaks and
+   options, see [Tips and Tricks](#tips-and-tricks).
 
    ```emacs-lisp
     (use-package easycrypt-ext-cape
@@ -291,10 +289,11 @@ experience!
    ```
 
 3. **Restart Emacs**  
-   Restart Emacs for the changes to take effect. If Emacs starts without errors, you should be good to go.
+   Restart Emacs for the changes to take effect. If Emacs starts without errors,
+   you should be good to go.
 
-And you're done! The extra integration features now load automatically alongside
-EasyCrypt Ext and should work out of the box. Usage and customization of the
+And you're done! The extra integration features should now load automatically
+alongside EasyCrypt Ext and work out of the box. Usage and configuration of the
 available features are detailed in [Features, Commands, and
 Keybindings](#features-commands-and-keybindings). For further improvement of
 your experience, check out [Enhancements](#enhancements) or [Tips and
@@ -309,27 +308,22 @@ but you may prefer a smoother and more user-friendly experience. For that, we
 recommend two lightweight external packages: Corfu (for an in-buffer completion
 pop-up) and Vertico (for a minibuffer completion interface). [^2]
 
-[^2]: Both are by the same author as Cape and Tempel, giving great interoperability.
+[^2]: Both are by the same author as Cape and Tempel, ensuring great interoperability.
 
 > :exclamation: **Global settings ahead** :exclamation:  
-> The settings in this section apply globally across Emacs, not just when
-> EasyCrypt Ext is active. For most users this will be an improvement, but if
-> you already have specific preferences or other configurations, be mindful of
-> possible conflicts. In any case, reverting is as simple as removing the added
-> code.
+> The settings in this section apply globally across Emacs at startup, not just
+> when EasyCrypt Ext is active. If you already have specific preferences or
+> completion-related configurations, you may want to skip this section or at
+> least be aware of potential conflicts. In any case, reverting the
+> suggested changes is straightforward.
 
 1. **Set up Corfu and Vertico**  
    Add the following snippet to your initialization file, which will install and
    activate Corfu and Vertico the next time Emacs launches. If you don't want to
    use a certain package, simply remove its `use-package` block. Both packages
-   are highly customizable, but their defaults are good enough for most use
-   cases. For possible customization, see the package repositories (linked in
-   the comments) [Tips and Tricks](#tips-and-tricks).
-
-   > :eyes: **Activation, not configuration** :eyes  
-   > In this case, the settings under `:config` only activate the packages: They
-   > are not optional defaults (as in earlier sections), but rather setup to
-   > enable the packages at all.
+   are highly configurable, but their defaults are good enough for most use
+   cases. For configuration options and ideas, see the package repositories
+   (linked in the comments) [Tips and Tricks](#tips-and-tricks).
 
     ```emacs-lisp
     ;; Corfu (in-buffer completion pop-up/interface)
@@ -338,6 +332,7 @@ pop-up) and Vertico (for a minibuffer completion interface). [^2]
         :ensure t
 
         :config
+        ;; Activate Corfu (globally)
         (global-corfu-mode 1))
 
     ;; Vertico (minibuffer completion interface)
@@ -346,6 +341,7 @@ pop-up) and Vertico (for a minibuffer completion interface). [^2]
         :ensure t
 
         :config
+        ;; Activate Vertico (globally)
         (vertico-mode 1))
    ```
 
@@ -354,7 +350,7 @@ pop-up) and Vertico (for a minibuffer completion interface). [^2]
    and changes take effect. If Emacs starts without errors, you
    should be good to go.
 
-And that's it! Corfu and Vertico should now be up-and-running from launch.
+Done! Corfu and Vertico should now be up-and-running from launch.
 To test them right away, try the following:
 - Open your initialization file with `find-file`, bound by default to `C-x C-f`
   (Control + x, then Control + f). As you type the filename, you should see a
@@ -386,6 +382,19 @@ bar and mode line.
 > Depending on your personal keybindings and how many Proof General keybindings
 > you want to use, there may be (a lot) more convenient alternatives.
 
+
+> :eyes: **General configuration** :eyes:  
+> EasyCrypt Ext provides several configuration options for more advanced use
+> cases (e.g., enabling or disabling specific features, or executing
+> EasyCrypt command-line commands from inside Emacs) through customization
+> variables. You can view the documentation for a customization variable
+> with `C-h v` (Control + h, then v), then typing the variable name and
+> pressing enter. Searching for the prefix `ece-` should bring up all the
+> available variables. You can set these variables with `setopt` inside an
+> `:init` block of the `use-package easycrypt-ext` statement. For an example
+> of such an `:init` block , see the the Proof General configuration in
+> [Prerequisites](#prerequisites).
+
 ## Indentation
 
 ## Proof Shell
@@ -416,12 +425,12 @@ bar and mode line.
 | `ece-why3config`      | `C-c C-y e W`   | Prompt for configuration file to use with `why3config` (configure Why3).              |
 
 ## Templates
-Built-in template map.
+- Built-in template map.
+- Viewing documentation (with Corfu)
 
 ## Miscellaneous
 - Imenu
 - Auto centering and echoing of remaining goals
-- 
 
 # Tips and Tricks
 
