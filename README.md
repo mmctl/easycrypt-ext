@@ -552,9 +552,9 @@ In addition, EasyCrypt Ext provides a dedicated keymap for directly inserting
 specific templates. By default this keymap is available under the prefix `C-c
 C-y t`, though both the prefix and the bound templates are fully configurable.
 
-| Customization variable            | Value                         | Description                                                      |
-|-----------------------------------|-------------------------------|------------------------------------------------------------------|
-| `ece-tempel-template-map-prefix`  | `"C-c C-y t"`                 | Prefix to access EasyCrypt Ext's template map                    |
+| Customization variable            | Value                         | Description                                                |
+|-----------------------------------|-------------------------------|------------------------------------------------------------|
+| `ece-tempel-template-map-prefix`  | `"C-c C-y t"`                 | Prefix to access EasyCrypt Ext's template map              |
 | `ece-tempel-template-map-entries` | See `easycrypt-ext-tempel.el` | Alist of templates to bind in EasyCrypt Ext's template map |
 
 ## Acting From a Distance
