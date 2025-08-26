@@ -233,9 +233,10 @@ experience!
         :ensure t
 
         :bind
-        ;; Bind template completion to "M-+"
-        ;; (change this to whatever keybinding you prefer)
+        ;; Bind template completion and expansion to "M-+" and "M-*", respectively
+        ;; (change this to whatever keybindings you prefer)
         ("M-+" . tempel-complete)
+        ("M-*" . tempel-expand)
 
     ;; Avy (jumping and acting from a distance)
     ;; https://github.com/abo-abo/avy
@@ -497,15 +498,29 @@ if needed.
 | `ece-exec-runtest-default-report-file` | `"report.log"`   | Default report file (relative to project root/parent directory) to use with `runtest`      |
 | `ece-exec-docgen-default-outdir`       | `"docs/"`        | Default output directory  (relative to project root/parent directory) to use with `docgen` |
 
-## Keyword Completion and Template
+## Keyword Completion and Templates
 
 Keyword and template completion is straightforward: you can either call the
 dedicated commands directly (`cape-keyword` for keywords, `tempel-complete` for
 templates), or add them to `completion-at-point-functions` and invoke
-`completion-at-point` (by default bound to `C-M-i`). If you kept the default
-configuration from [Getting Started](#getting-started), `cape-keyword` is
-included in completion-at-point-functions, and `tempel-complete` is available on
-a dedicated keybinding.
+`completion-at-point` (by default bound to `C-M-i`). For templates, Tempel also
+provides `tempel-expand`, which directly expands a template if there is an exact
+match, but does not launch the completion interface when multiple candidates
+exist (e.g., when one template name is a prefix of another). If you kept the
+default configuration from [Getting Started](#getting-started), `cape-keyword`
+is included in `completion-at-point-functions`, while `tempel-complete` and
+`tempel-expand` are available on dedicated keybindings.
+
+Template names follow a simple convention: they are formed from the first three
+letters of each keyword in the template (in order), optionally followed by
+mnemonic suffixes for variants. For example, the template for `require import`
+is `reqimp`; the template for inserting a module is `mod`, and its parameterized
+variant is `modp` (p for "parameterized"). All templates are defined in
+`easycrypt-ext-templates.eld`.
+
+| ![Alt text](/assets/example-cape-keyword.gif?raw=true "Optional Title") | ![Alt text](/assets/example-tempel-complete.gif?raw=true  "Optional Title") | [Alt text](/assets/example-tempel-expand.gif?raw=true "Optional Title") |
+|:-----------------------------------------------------------------------:|:---------------------------------------------------------------------------:|:-----------------------------------------------------------------------:|
+| _`cape-keyword` (with Corfu)_                                           | _`tempel-complete` (with Corfu)_                                            | _`tempel-expand` (with Corfu)_                                          |
 
 If you use Corfu (recommended), you can configure it to show completions
 automatically as you type (see [Automatic Completion Popup
@@ -522,13 +537,31 @@ C-y t`, though both the prefix and the bound templates are fully configurable.
 | Customization variable            | Value                         | Description                                                      |
 |-----------------------------------|-------------------------------|------------------------------------------------------------------|
 | `ece-tempel-template-map-prefix`  | `"C-c C-y t"`                 | Prefix to access EasyCrypt Ext's template map                    |
-| `ece-tempel-template-map-entries` | See `easycrypt-ext-tempel.el` | Alist defining templates to bind in EasyCrypt Ext's template map |
+| `ece-tempel-template-map-entries` | See `easycrypt-ext-tempel.el` | Alist of templates to bind in EasyCrypt Ext's template map |
+
+## Acting From a Distance
+
+EasyCrypt Ext integrates with Avy by adding configurable dispatch actions for
+printing, searching, and locating items at a distance (optionally moving point
+as well). A detailed explanation of Avy’s dispatch system is out of scope for
+this README; see [Avy's repository](https://github.com/abo-abo/avy) for more
+information.
+
+| Customization variable   | Value                      | Description                      |
+|--------------------------|----------------------------|----------------------------------|
+| `ece-avy-dispatch-alist` | See `easycrypt-ext-avy.el` | Alist of dispatch actions to add |
+
 
 ## Miscellaneous
 
-- Imenu
-- Auto centering and echoing of remaining goals
-- Mouse scrolling through goals/response history
+While EasyCrypt Ext includes additional features beyond those described above,
+most are non-interactive or require no change to your usual workflow. The below
+lists a few of the remaining ones.
+
+- **Imenu integration**
+  Imenu is a menu 
+- **goals/response history
+- ** ** Auto centering and echoing of remaining goals
 
 -----
 
@@ -536,7 +569,6 @@ C-y t`, though both the prefix and the bound templates are fully configurable.
 
 ## Automatic Completion Popup (Corfu)
 ## Documentation Popup (Corfu)
-## Completion Preview
-## Useful Additional Completions (Cape)
+## Additional Completion Functions (Cape)
 ## Enhanced Imenu (Consult)
 ## Remove Buffer History Buttons

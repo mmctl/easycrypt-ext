@@ -559,55 +559,6 @@ hint simplify oget_some, oget_none.")
 (letinn "let " p n>
         "in " q)
 
-;;; Aliases
-(ty (i type))
-(tyn (i typen))
-(opa (i opabs))
-(abv (i abbrev))
-(abvn (i abbrevn))
-(th (i theory))
-(absth (i abstractheory))
-(sec (i section))
-(secid (i sectionid))
-(decm (i declaremodule))
-(decmnm (i declaremodulenm))
-
-(hoa (i hoare))
-(hoan (i hoaren))
-(ph (i phoare))
-(phn (i phoaren))
-(ph1 (i phoare1))
-(ph1n (i phoare1n))
-(eqv (i equiv))
-(eqvn (i equivn))
-(eho (i ehoare))
-(ehon (i ehoaren))
-
-(ax (i axiom))
-(axn (i axiomn))
-(lem (i lemma))
-(lemby (i lemmaby))
-(lempq (i lemmapq))
-(lemn (i lemman))
-
-(lemll (i lemmall))
-(lemllpq (i lemmallpq))
-
-(hoalem (i hoarelemma))
-(hoalempq (i hoarelemmapq))
-(hoalemn (i hoarelemman))
-(hoanlemn (i hoarenlemman))
-(eqvlem (i equivlemma))
-(eqvlempq (i equivlemmapq))
-(eqvlemn (i equivlemman))
-(eqvnlemn (i equivnlemman))
-(eholem (i ehoarelemma))
-(eholempq (i ehoarelemmapq))
-(eholemn (i ehoarelemman))
-(ehonlemn (i ehoarenlemman))
-
-(ifte (i ifthenelse))
-(iften (i ifthenelsen))
 
 ;; Imperative specification
 (procsig "proc " p "(" p ") : " q)
@@ -633,9 +584,9 @@ hint simplify oget_some, oget_none.")
              q n>
              "}." >)
 
-(module "module " p " = {" n>
-        q n>
-        "}." >)
+(mod "module " p " = {" n>
+     q n>
+     "}." >)
 (modulep "module " p "(" p ") = {" n>
          q n>
          "}." >)
@@ -673,30 +624,6 @@ hint simplify oget_some, oget_none.")
 (calls p "<@" q ";")
 (sample p "<$" q ";")
 
-;;; Aliases
-(procs (i procsig))
-(procsl (i procsiglim))
-
-(proca (i procalias))
-
-(modty (i moduletype))
-(modtyp (i moduletypep))
-
-(mod (i module))
-(modp (i modulep))
-(modt (i modulet))
-(modpt (i modulept))
-
-(moda (i modulealias))
-(modnpa (i modulenpalias))
-
-(ife (i ifelse))
-(ifee (i ifelifelse))
-
-(whis (i whiles))
-
-(assn (i assign))
-(sam (i sample))
 
 
 ;; Tactics
@@ -721,16 +648,6 @@ hint simplify oget_some, oget_none.")
 (rewritel "rewrite -(: " p " = " q ")")
 (rewritein "rewrite " p " in " q)
 
-;;;; Aliases
-(movi (i movein))
-(movg (i movegen))
-
-(appin (i applyin))
-
-(rewd (i rewrited))
-(rewr (i rewriter))
-(rewl (i rewritel))
-(rewin (i rewritein))
 
 
 ;;; Program
@@ -904,113 +821,6 @@ hint simplify oget_some, oget_none.")
 (procrewrite1 "proc rewrite{1} " q)
 (procrewrite2 "proc rewrite{2} " q)
 
-;;; Aliases
-(proctup (i proctupbad))
-(proctupe (i proctupbadext))
-
-(whi (i while))
-(whiph (i whileph))
-(whi1 (i while1))
-(whi2 (i while2))
-
-(callc (i callcont))
-(call1c (i call1cont))
-(call2c (i call2cont))
-
-(inl1 (i inline1))
-(inl2 (i inline2))
-
-(inls (i inlines))
-(inl1s (i inlines))
-(inl2s (i inlines))
-
-(inlo (i inlineo))
-(inl1o (i inline1o))
-(inl2o (i inline2o))
-
-(outl (i outline))
-(outl1 (i outline1))
-(outl2 (i outline2))
-
-(outlb (i outlinebl))
-(outl1b (i outline1bl))
-(outl2b (i outline2bl))
-
-(outlc (i outlinecode))
-(outl1c (i outline1code))
-(outl2c (i outline2code))
-
-(outlbc (i outlineblcode))
-(outl1bc (i outline1blcode))
-(outl2bc (i outline2blcode))
-
-(rcot1 (i rcondt1))
-(rcot2 (i rcondt2))
-
-(rcof1 (i rcondf1))
-(rcof2 (i rcondf2))
-
-(unr1 (i unroll1))
-(unr2 (i unroll2))
-
-(splwhi (i splitwhile))
-(splwhi1 (i splitwhile1))
-(splwhi2 (i splitwhile2))
-
-(fis (i fission))
-(fis1 (i fission1))
-(fis2 (i fission2))
-
-(fus (i fusion))
-(fus1 (i fusion1))
-(fus2 (i fusion2))
-
-(ali (i alias))
-(ali1 (i alias1))
-(ali2 (i alias2))
-
-(alie (i aliase))
-(ali1e (i alias1e))
-(ali2e (i alias2e))
-
-(cfo (i cfold))
-(cfo1 (i cfold1))
-(cfo2 (i cfolde))
-
-(trans (i transitivity))
-(transc (i transitivitycode))
-
-(cons (i conseq))
-(conspt (i conseqpt))
-(conscr (i conseqcr))
-(consehh (i conseqehh))
-(conseh (i conseqeh))
-
-(byeqv (i byequiv))
-(byeqvpt (i byequivpt))
-(byeqvub (i byequivub))
-(byeqvubpt (i byequivubpt))
-
-(byph (i byphoare))
-(byphpt (i byphoarept))
-
-(phospjc (i phoaresplitjunc))
-(phospn (i phoaresplitneg))
-
-(reweqv (i rewriteequiv))
-(reweqv1 (i rewriteequiv1))
-(reweqv2 (i rewriteequiv2))
-(reweqvr (i rewriteequivrv))
-(reweqv1r (i rewriteequiv1rv))
-(reweqv2r (i rewriteequiv2rv))
-
-(procch (i procchange))
-(procch1 (i procchange1))
-(procch2 (i procchange2))
-
-(procrew (i procrewrite))
-(procrew1 (i procrewrite1))
-(procrew2 (i procrewrite2))
 
 ;; Miscellaneous
 (Prbnd (i Pr) n>
