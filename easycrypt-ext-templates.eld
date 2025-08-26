@@ -411,10 +411,10 @@ hint simplify oget_some, oget_none.")
 (absthe "abstract " (i the))
 
 (sec "section." n>
-     q >
+     q n>
      "end section." >)
 (secid "section" (p "" secid) "." n>
-       q >
+       q n>
        "end section " (s secid) "." >)
 
 (decmod "declare module " p " <: " q ".")
