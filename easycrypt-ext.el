@@ -92,18 +92,6 @@
   :prefix "ece-"
   :group 'easycrypt)
 
-(defcustom ece-indentation t
-  "Non-nil (resp. `nil') to enable (resp. disable) enhanced
-(but still ad-hoc) indentation in EasyCrypt."
-  :type 'boolean
-  :group 'easycrypt-ext)
-
-(defcustom ece-imenu t
-  "Non-nil (resp. nil) to enable (resp. disable) improved Imenu integration for
-EasyCrypt."
-  :type 'boolean
-  :group 'easycrypt-ext)
-
 (defcustom ece-exec-runtest-default-test-file "tests.config"
   "Default file name to consider for test configuration files
 used with EasyCrypt's `runtest' subcommand. These should be relative

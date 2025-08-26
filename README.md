@@ -92,6 +92,7 @@ quality-of-life improvements.
 > - `~/emacs.d/init.el`
 > - `~/.emacs`
 > - `~/.config/emacs/init.el`
+
 > To check which one your Emacs uses:
 > 1. Open Emacs.
 > 2. Press `C-h v` (Control + h, then v).
@@ -137,7 +138,7 @@ quality-of-life improvements.
     ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
     (use-package proof-general
         :ensure t ; Install if not already available
-        :pin melpa ; Get the up-to-date version from Melpa
+        :pin melpa ; Get the version from Melpa
 
         :init
         ;; Disable splash screen
@@ -185,6 +186,7 @@ quality-of-life improvements.
         :ensure nil ; Already installed above
 
         :hook
+        ;; Ensure EasyCrypt Ext loads whenever EasyCrypt loads
         (easycrypt-mode . easycrypt-ext-mode)
         (easycrypt-goals-mode . easycrypt-ext-goals-mode)
         (easycrypt-response-mode . easycrypt-ext-response-mode)
@@ -260,6 +262,7 @@ experience!
         :ensure nil ; Comes with EasyCrypt Ext
 
         :hook
+        ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
         (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
 
         :config
@@ -275,6 +278,7 @@ experience!
         :ensure nil ; Comes with EasyCrypt Ext
 
         :hook
+        ;; Ensure Tempel integration loads whenever EasyCrypt Ext loads
         (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
 
         :init
@@ -286,6 +290,7 @@ experience!
         :ensure nil ; Comes with EasyCrypt Ext
 
         :hook
+        ;; Ensure Avy integration loads whenever EasyCrypt Ext loads
         (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
         (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
         (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
@@ -426,7 +431,7 @@ default indents relative to the previous line ("locally"), this command indents
 relative to the expression's opening delimiter ("non-locally"). For more
 details, see the documentation of the relevant commands.
 
-[^6]: This is in an attempt to predict common scenarios one might run into with the default indentation.
+[^6]: This is in an attempt to predict common scenarios you might run into with the default indentation.
 
 | Command                               | Keybinding      | Description                                |
 |---------------------------------------|-----------------|--------------------------------------------|
@@ -436,23 +441,19 @@ details, see the documentation of the relevant commands.
 
 [^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
 
-| Customization variable | Value | Description                                                 |
-|------------------------|-------|-------------------------------------------------------------|
-| `ece-indentation`      | `t`   | Enable (`t`) or disable (`nil`) EasyCrypt Ext's indentation |
-
 ## Proof Shell
 
 The proof shell is the part of EasyCrypt that processes proof script commands,
 including not only regular proof steps but also meta-commands such as
 printing/searching/locating items in the current context and setting pragmas
 (i.e., proof shell options). Normally, you would type these commands directly
-into your proof script, process them like any other proof step, and then remove
-them again (or leave them in, cluttering your script). EasyCrypt Ext streamlines
-this workflow by providing dedicated commands that (1) directly
-print/search/locate the highlighted item, the item at point, or an item you
-click with the mouse, or (2) prompt you for the item to use print/search/locate,
-or the pragma to set. When prompting for a pragma, EasyCrypt Ext provides
-possible completions based on a set of known pragmas.
+into your proof script, process them like any other proof step, and remove them
+again (or leave them in, cluttering your script). EasyCrypt Ext streamlines this
+by providing dedicated commands that (1) directly print/search/locate the
+highlighted item, the item at point, or the item you click with the mouse, or
+(2) prompt you for the item to use print/search/locate, or the pragma to set.
+When prompting for a pragma, EasyCrypt Ext provides possible completions based
+on a set of known pragmas.
 
 | Command                        | Keybinding                      | Description                                                 |
 |--------------------------------|---------------------------------|-------------------------------------------------------------|
@@ -487,7 +488,7 @@ if needed.
 | `ece-exec-runtest-dflt`    | `C-c C-y e r`           | `runtest` (test) using default test file and scenario                                   |
 | `ece-exec-runtest`         | `C-c C-y e R`           | Prompt for configuration to use with `runtest` (test)                                   |
 | `ece-exec-why3config-dflt` | `C-c C-y e w`           | `why3config` (configure Why3) using default configuration file                          |
-| `ece-exec-why3config`      | `C-c C-y e W`           | Prompt for configuration file to use with `why3config` (configure Why3).                |
+| `ece-exec-why3config`      | `C-c C-y e W`           | Prompt for configuration file to use with `why3config` (configure Why3)                 |
 
 | Customization variable                 | Value            | Description                                                                                |
 |----------------------------------------|------------------|--------------------------------------------------------------------------------------------|
@@ -496,12 +497,35 @@ if needed.
 | `ece-exec-runtest-default-report-file` | `"report.log"`   | Default report file (relative to project root/parent directory) to use with `runtest`      |
 | `ece-exec-docgen-default-outdir`       | `"docs/"`        | Default output directory  (relative to project root/parent directory) to use with `docgen` |
 
-## Keyword Completion and Templates
+## Keyword Completion and Template
 
-- Built-in template map.
-- Viewing documentation (with Corfu), Corfu info popup buffer
+Keyword and template completion is straightforward: you can either call the
+dedicated commands directly (`cape-keyword` for keywords, `tempel-complete` for
+templates), or add them to `completion-at-point-functions` and invoke
+`completion-at-point` (by default bound to `C-M-i`). If you kept the default
+configuration from [Getting Started](#getting-started), `cape-keyword` is
+included in completion-at-point-functions, and `tempel-complete` is available on
+a dedicated keybinding.
+
+If you use Corfu (recommended), you can configure it to show completions
+automatically as you type (see [Automatic Completion Popup
+(Corfu)](#automatic-completion-popup-corfu)). Corfu also lets you view template
+documentation by pressing `M-h` while a template is selected in the completion
+popup. By default this opens a separate window, but it can be configured to
+instead show a documentation popup beside the completions (see [Documentation
+Popup (Corfu)](documentation-popup-corfu))
+
+In addition, EasyCrypt Ext provides a dedicated keymap for directly inserting
+specific templates. By default this keymap is available under the prefix `C-c
+C-y t`, though both the prefix and the bound templates are fully configurable.
+
+| Customization variable            | Value                         | Description                                                      |
+|-----------------------------------|-------------------------------|------------------------------------------------------------------|
+| `ece-tempel-template-map-prefix`  | `"C-c C-y t"`                 | Prefix to access EasyCrypt Ext's template map                    |
+| `ece-tempel-template-map-entries` | See `easycrypt-ext-tempel.el` | Alist defining templates to bind in EasyCrypt Ext's template map |
 
 ## Miscellaneous
+
 - Imenu
 - Auto centering and echoing of remaining goals
 - Mouse scrolling through goals/response history
@@ -510,8 +534,9 @@ if needed.
 
 # Tips and Tricks
 
-## Corfu automatic (including templates)
-## Corfu info pop-up buffer
-## Cape dabbrev
-## Consult Imenu
-## Silencing bufhist buttons
+## Automatic Completion Popup (Corfu)
+## Documentation Popup (Corfu)
+## Completion Preview
+## Useful Additional Completions (Cape)
+## Enhanced Imenu (Consult)
+## Remove Buffer History Buttons
