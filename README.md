@@ -514,8 +514,11 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 Template names follow a simple convention: they are formed from the first three
 letters of each keyword in the template (in order), optionally followed by
 mnemonic suffixes for variants. For example, the template for `require import`
-is `reqimp`; the template for inserting a module is `mod`, and its parameterized
-variant is `modp` (p for "parameterized"). All templates are defined in
+is named `reqimp`; the template for inserting a module is named `mod`, and its
+parameterized variant is named `modp` (p for "parameterized"). Some templates
+fall outside this convention, such as those without keywords or cases where
+several keywords share the same prefix. In such situations, representative names
+are chosen on a case-by-case basis. All templates are defined in
 `easycrypt-ext-templates.eld`.
 
 | ![Alt text](/assets/example-cape-keyword.gif?raw=true "Optional Title") | ![Alt text](/assets/example-tempel-complete.gif?raw=true  "Optional Title") | [Alt text](/assets/example-tempel-expand.gif?raw=true "Optional Title") |

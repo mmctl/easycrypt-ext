@@ -58,15 +58,13 @@ file.")
 ;;; Meta
 (req "require " q "."
      :doc
-     "Loads specified EasyCrypt files into the current context.
+     "Syntax: require FILE_1 ... FILE_n.
 
-The names of the specified should be given as a space-separated list,
-without (file) extensions. It is allowed to have multiple `require' commands
-throughout a script/session, so it is not mandatory to specify all files at
-once.
+Loads (theory corresponding to) each FILE_i into the current context.
 
-Provided files must be present in the load path (of the current EasyCrypt
-session).
+FILE_i should be the name of an EasyCrypt file (without file extension) present
+in the load path. It is allowed to have multiple `require' commands throughout a
+script/session, so it is not mandatory to specify all files at once.
 
 Example:
 require AllCore List.
@@ -210,7 +208,6 @@ clone KeyedHashFunctions with
   op f <- hashfun
 
   proof *.")
-
 
 (cloaswi "clone " p " as " p " with" n>
          q "."
@@ -387,10 +384,10 @@ hint simplify oget_some, oget_none.")
        "Adds axioms/lemmas as hints for the `exact' tactic.")
 
 
-;; Functional specification
-(type "type " p " = " q ".")
-(typen "type " p " =" n>
-       q "." >)
+;;; Functional specification
+(typ "type " p " = " q ".")
+(typn "type " p " =" n>
+      q "." >)
 
 (op "op " p " : " p " = " q ".")
 (opn "op " p " : " p " =" n>
@@ -402,262 +399,261 @@ hint simplify oget_some, oget_none.")
 (constn "const " p " : " p " =" n>
         q "." >)
 
-(abbrev "abbrev " p " = " q ".")
-(abbrevt "abbrev " p " : " p " = " q ".")
-(abbrevn "abbrev " p " =" n>
-         q "." >)
+(abb "abbrev " p " = " q ".")
+(abbt "abbrev " p " : " p " = " q ".")
+(abbn "abbrev " p " =" n>
+      q "." >)
 
-(theory "theory " (p "" thid)  "." n>
-        q n>
-        "end " (s thid) "." >)
-(abstracttheory "abstract " (i theory))
+(the "theory " (p "" thid)  "." n>
+     q n>
+     "end " (s thid) "." >)
+(absthe "abstract " (i theory))
 
-(section "section." n>
-         q >
-         "end section." >)
-(sectionid "section" (p "" secid) "." n>
-           q >
-           "end section " (s secid) "." >)
+(sec "section." n>
+     q >
+     "end section." >)
+(secid "section" (p "" secid) "." n>
+       q >
+       "end section " (s secid) "." >)
 
-(declaremodule "declare module " p " <: " p "{ " q " }.")
-(declaremodulenm "declare module " p " <: " q ".")
+(decmod "declare module " p " <: " p "{ " q " }.")
+(decmodnm "declare module " p " <: " q ".")
 
 (Pr "Pr[" p " @ " p " : " q "]")
 (Prn "Pr[" n>
-      p " @ " p " :" n>
-      q "]" >)
+     p " @ " p " :" n>
+     q "]" >)
 (Prm "Pr[" p " @ &m : " q "]")
 (Prmr "Pr[" q " @ &m : res]")
 
-(hoare "hoare[" p " : " p " ==> " q "]")
-(hoaren "hoare[" n>
-         p " :" n>
-         p n>
-         "==>" n>
-         q n>
-         "]" >)
+(hoa "hoare[" p " : " p " ==> " q "]")
+(hoan "hoare[" n>
+      p " :" n>
+      p n>
+      "==>" n>
+      q n>
+      "]" >)
 
-(phoare "phoare[" p " : " p " ==> " p "] = " q)
-(phoaren "phoare[" n>
-          p " :" n>
-          p n>
-          "==>" n>
-          p n>
-          "] = " q >)
-(phoare1 "phoare[" p " : " p " ==> " q "] = 1%r")
-(phoare1n "phoare[" n>
-           p " :" n>
-           p n>
-           "==>" n>
-           q n>
-           "] = 1%r" >)
+(pho "phoare[" p " : " p " ==> " p "] = " q)
+(phon "phoare[" n>
+      p " :" n>
+      p n>
+      "==>" n>
+      p n>
+      "] = " q >)
+(pho1 "phoare[" p " : " p " ==> " q "] = 1%r")
+(pho1n "phoare[" n>
+       p " :" n>
+       p n>
+       "==>" n>
+       q n>
+       "] = 1%r" >)
 
-(equiv "equiv[" p " ~ " p " : " p " ==> " q "]")
-(equivn "equiv[" n>
-        p " ~ " p ":" n>
-        p n>
-        "==>" n>
-        q n>
-        "]" >)
+(equ "equiv[" p " ~ " p " : " p " ==> " q "]")
+(equn "equiv[" n>
+      p " ~ " p ":" n>
+      p n>
+      "==>" n>
+      q n>
+      "]" >)
 
-(ehoare "ehoare[" p " : " p " ==> " q "]")
-(ehoaren "ehoare[" n>
-         p " :" n>
-         p n>
-         "==>" n>
-         q n>
-         "]" >)
+(eho "ehoare[" p " : " p " ==> " q "]")
+(ehon "ehoare[" n>
+      p " :" n>
+      p n>
+      "==>" n>
+      q n>
+      "]" >)
 
-(axiom "axiom " p " : " q ".")
-(axiomn "axiom " p " :" n>
-        q "." >)
+(axi "axiom " p " : " q ".")
+(axin "axiom " p " :" n>
+      q "." >)
 
 (proof "proof." > n>
        q n>
        "qed." >)
 (proofpq "proof." q "qed." >)
 
-(lemma "lemma " p " : " p "." n>
+(lem "lemma " p " : " p "." n>
+     (i proof))
+(lemby "lemma " p " : " p " by " q ".")
+(lempq "lemma " p " : " p "." n>
+       (i proofpq) >)
+(lemn "lemma " p " :" n>
+      p "." n>
+      (i proof))
+(lemnpq "lemma " p " :" n>
+        p "." n>
+        (i proofpq))
+
+(lemll "lemma " p " : islossless " p "." n>
        (i proof))
-(lemmaby "lemma " p " : " p " by " q ".")
-(lemmapq "lemma " p " : " p "." n>
-         (i proofpq) >)
-(lemman "lemma " p " :" n>
+(lemllpq "lemma " p " : islossless " p "." n>
+         (i proofpq))
+
+(hoal "hoare " p " : " p " : " p " ==> " p "." n>
+      (i proof))
+(hoalpq "hoare " p " : " p " : " p " ==> " p "." n>
+        (i proofpq))
+(hoaln "hoare " p " :" n>
+       p " : " p " ==> " p "." n>
+       (i proof))
+(hoanln "hoare " p " :" n>
+        p " :" n>
+        p n>
+        "==>" n>
         p "." n>
         (i proof))
-(lemmanpq "lemma " p " :" n>
-          p "." n>
-          (i proofpq))
 
-(lemmall "lemma " p " : islossless " p "." n>
-         (i proof))
-(lemmallpq "lemma " p " : islossless " p "." n>
-           (i proofpq))
+(equl "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
+      (i proof))
+(equlpq "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
+        (i proofpq))
+(equln "equiv " p " :" n>
+       p " ~ " p " : " p " ==> "p "." n>
+       (i proof))
+(equnln "equiv " p " :" n>
+        p " ~ " p " :" n>
+        p n>
+        "==>" n>
+        p "." n>
+        (i proof))
 
-(hoarelemma "hoare " p " : " p " : " p " ==> " p "." n>
-             (i proof))
-(hoarelemmapq "hoare " p " : " p " : " p " ==> " p "." n>
-              (i proofpq))
-(hoarelemman "hoare " p " :" n>
-             p " : " p " ==> " p "." n>
-             (i proof))
-(hoarenlemman "hoare " p " :" n>
-              p " :" n>
-              p n>
-              "==>" n>
-              p "." n>
-              (i proof))
-
-(equivlemma "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
-            (i proof))
-(equivlemmapq "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
-              (i proofpq))
-(equivlemman "equiv " p " :" n>
-             p " ~ " p " : " p " ==> "p "." n>
-             (i proof))
-(equivnlemman "equiv " p " :" n>
-               p " ~ " p " :" n>
-               p n>
-               "==>" n>
-               p "." n>
-               (i proof))
-
-(ehoarelemma "ehoare " p " : " p " : " p " ==> " p "." n>
-             (i proof))
-(ehoarelemmapq "ehoare " p " : " p " : " p " ==> " p "." n>
-               (i proofpq))
-(ehoarelemman "ehoare " p " :" n>
-              p " : " p " ==> " p "." n>
-              (i proof))
-(ehoarenlemman "ehoare " p " :" n>
-               p " :" n>
-               p n>
-               "==>" n>
-               p "." n>
-               (i proof))
+(ehol "ehoare " p " : " p " : " p " ==> " p "." n>
+      (i proof))
+(eholpq "ehoare " p " : " p " : " p " ==> " p "." n>
+        (i proofpq))
+(eholn "ehoare " p " :" n>
+       p " : " p " ==> " p "." n>
+       (i proof))
+(eholn "ehoare " p " :" n>
+       p " :" n>
+       p n>
+       "==>" n>
+       p "." n>
+       (i proof))
 
 (fun "fun (" p ") => " q)
 (funn "fun (" p ") =>" n>
       q)
-(forall "forall (" p "), " q)
-(foralln "forall (" p ")," n>
-         q)
-(exists "exists (" p "), " q)
-(existsn "exists (" p ")," n>
-         q)
-(ifthenelse "if " p " then " p " else " q)
-(ifthenelsen "if " p n>
-             "then " p n>
-             "else " q)
+(for "forall (" p "), " q)
+(forn "forall (" p ")," n>
+      q)
+(exi "exists (" p "), " q)
+(exin "exists (" p ")," n>
+      q)
+(iftheels "if " p " then " p " else " q)
+(iftheelsn "if " p n>
+           "then " p n>
+           "else " q)
+
 (ge0 "0 <= " q)
 (gt0 "0 < " q)
-(rngin p " <= " p " <= " q)
-(rngex p " < " p " < " q)
-(rnginex p " <= " p " < " q)
-(rngexin p " < " p " <= " q)
+(rngii p " <= " p " <= " q)
+(rngee p " < " p " < " q)
+(rngie p " <= " p " < " q)
+(rngei p " < " p " <= " q)
 (letin "let " p " in " q)
 (letinn "let " p n>
         "in " q)
 
 
-;; Imperative specification
-(procsig "proc " p "(" p ") : " q)
-(procsiglim "proc " p "(" p ") : " p " { " q " }")
+;;; Imperative specification
+(pros "proc " p "(" p ") : " q)
+(prosl "proc " p "(" p ") : " p " { " q " }")
 
 (var "var " p " : " q)
 (varp (i var) ";")
 
-(proc "proc " p "(" p ") : " p " = {" n>
+(pro "proc " p "(" p ") = {" n>
+     q n>
+     "}" >)
+(prot "proc " p "(" p ") : " p " = {" n>
       q n>
       "}" >)
-(procnt "proc " p "(" p ") = {" n>
-        q n>
-        "}" >)
-(procl "proc " p "(" p ") : " p " = { " q " }")
-(proclnt "proc " p "(" p ") = { " q " }")
-(procalias "proc " p " = " q)
+(prol "proc " p "(" p ") = { " q " }")
+(protl "proc " p "(" p ") : " p " = { " q " }")
+(proa "proc " p " = " q)
 
-(moduletype "module type " p " = {" n>
-            q n>
-            "}." >)
-(moduletypep "module type " p " (" p ") = {" n>
-             q n>
-             "}." >)
+(modtyp "module type " p " = {" n>
+        q n>
+        "}." >)
+(modtypp "module type " p " (" p ") = {" n>
+         q n>
+         "}." >)
 
 (mod "module " p " = {" n>
      q n>
      "}." >)
-(modulep "module " p "(" p ") = {" n>
-         q n>
-         "}." >)
-(modulet "module " p " : " p " = {" n>
-         q n>
-         "}." >)
-(modulept "module " p " (" p ") : " p " = {" n>
-          q n>
-          "}." >)
+(modp "module " p "(" p ") = {" n>
+      q n>
+      "}." >)
+(modt "module " p " : " p " = {" n>
+      q n>
+      "}." >)
+(modpt "module " p " (" p ") : " p " = {" n>
+       q n>
+       "}." >)
 
-(modulealias "module " p " = " p "(" q ").")
-(modulenpalias "module " p " = " q ".")
+(moda "module " p " = " p "(" q ").")
+(modap "module " p " = " q ".")
 
 (if "if (" p ") {" n>
     q n>
     "}" >)
-(ifelse "if (" p ") {" n>
-        p n>
-        "} else {" > n>
-        q n>
-        "}" >)
-(ifelifelse "if (" p ") {" n>
-            p n>
-            "} elif {" > n>
-            p n>
-            "} else {" > n>
-            q n>
-            "}" >)
+(ifels "if (" p ") {" n>
+       p n>
+       "} else {" > n>
+       q n>
+       "}" >)
+(ifeliels "if (" p ") {" n>
+          p n>
+          "} elif {" > n>
+          p n>
+          "} else {" > n>
+          q n>
+          "}" >)
 
-(whiles "while (" p ") {" n>
-        q
-        "}" >)
+(whis "while (" p ") {" n>
+      q
+      "}" >)
 
-(assign p "<-" q ";")
-(calls p "<@" q ";")
-(sample p "<$" q ";")
-
+(ass p "<-" q ";")
+(cals p "<@" q ";")
+(sam p "<$" q ";")
 
 
 ;; Tactics
 ;;; Ambient
 (smt "smt(" q ")")
 
-(movein "move=> " q)
-(movegen "move: " q)
+(movi "move=> " q)
+(movg "move: " q)
 
-(pose "pose " p " := " q)
+(pos "pose " p " := " q)
 
-(have "have " p ": " q)
-(haveby "have " p ": " p " by " q ".")
-(haver "have ->: " q)
-(havel "have <-: " q)
-(haves "have /#: " q)
+(hav "have " p ": " q)
+(havby "have " p ": " p " by " q ".")
+(havr "have ->: " q)
+(havl "have <-: " q)
+(havs "have /#: " q)
 
-(applyin "apply " p " in " q)
+(appin "apply " p " in " q)
 
-(rewrited "rewrite (: " q ")")
-(rewriter "rewrite (: " p " = " q ")")
-(rewritel "rewrite -(: " p " = " q ")")
-(rewritein "rewrite " p " in " q)
-
+(rewd "rewrite (: " q ")")
+(rewr "rewrite (: " p " = " q ")")
+(rewl "rewrite -(: " p " = " q ")")
+(rewin "rewrite " p " in " q)
 
 
 ;;; Program
-(proct "proc (" q ")")
-(proctupbad "proc (" p ") (" q ")")
-(proctupbadext "proc (" p ") (" p ") (" q ")")
+(proc "proc (" q ")")
+(procub "proc (" p ") (" q ")")
+(procube "proc (" p ") (" p ") (" q ")")
 
 (seq "seq " p " " p " : (" q ")")
-(seqhoa "seq " p " : (" q ")")
-(seqph "seq " p " : (" p ") (" p ") (" p ") (" p ") (" p ") (" q ")")
+(seqh "seq " p " : (" q ")")
+(seqp "seq " p " : (" p ") (" p ") (" p ") (" p ") (" p ") (" q ")")
 
 (sp1 "sp{1} " q)
 (sp2 "sp{2} " q)
@@ -671,155 +667,155 @@ hint simplify oget_some, oget_none.")
 (if1 "if{1}")
 (if2 "if{2}")
 
-(while "while (" q ")")
-(whileph "while (" p ") (" p ") (" p ") (" q ")")
-(while1 "while{1} (" p ") (" q ")")
-(while2 "while{2} (" p ") (" q ")")
+(whi "while (" q ")")
+(whip "while (" p ") (" p ") (" p ") (" q ")")
+(whi1 "while{1} (" p ") (" q ")")
+(whi2 "while{2} (" p ") (" q ")")
 
-(call "call (_: " q ")")
-(call1 "call{1} (_: " q ")")
-(call2 "call{2} (_: " q ")")
-(callt "call (_: true)")
-(call1t "call{1} (_: true)")
-(call2t "call{2} (_: true)")
+(cal "call (_: " q ")")
+(cal1 "call{1} (_: " q ")")
+(cal2 "call{2} (_: " q ")")
+(calt "call (_: true)")
+(cal1t "call{1} (_: true)")
+(cal2t "call{2} (_: true)")
 
-(callcont "call (_: " p " ==> " q ")")
-(call1cont "call{1} (_: " p " ==> " q ")")
-(call2cont "call{2} (_: " p " ==> " q ")")
+(calc "call (_: " p " ==> " q ")")
+(cal1c "call{1} (_: " p " ==> " q ")")
+(cal2c "call{2} (_: " p " ==> " q ")")
 
-(callpt "call (" q ")")
-(call1pt "call{1} (" q ")")
-(call2pt "call{2} (" q ")")
+(calpt "call (" q ")")
+(cal1pt "call{1} (" q ")")
+(cal2pt "call{2} (" q ")")
 
-(callub "call (_: " p ", " q ")")
-(callube "call (_: " p ", " p ", " q ")")
+(calub "call (_: " p ", " q ")")
+(calube "call (_: " p ", " p ", " q ")")
 
-(ecall "ecall (" q ")")
-(ecall1 "ecall{1} (" q ")")
-(ecall2 "ecall{2} (" q ")")
+(eca "ecall (" q ")")
+(eca1 "ecall{1} (" q ")")
+(eca2 "ecall{2} (" q ")")
 
-(swap1 "swap{1} " p " " q )
-(swap2 "swap{2} " p " " q )
+(swa1 "swap{1} " p " " q )
+(swa2 "swap{2} " p " " q )
 
-(swapbl "swap [" p ".." p "] " q)
-(swap1bl "swap{1} [" p ".." p "] " q)
-(swap2bl "swap{2} [" p ".." p "] " q)
+(swabl "swap [" p ".." p "] " q)
+(swa1bl "swap{1} [" p ".." p "] " q)
+(swa2bl "swap{2} [" p ".." p "] " q)
 
-(swap1s "swap{1} " p " " p " " q)
-(swap2s "swap{2} " p " " p " " q)
+(swa1s "swap{1} " p " " p " " q)
+(swa2s "swap{2} " p " " p " " q)
 
-(inline1 "inline{1} " q)
-(inline2 "inline{2} " q)
+(inl1 "inline{1} " q)
+(inl2 "inline{2} " q)
 
-(inlines "inline *")
-(inline1s "inline{1} *")
-(inline2s "inline{2} *")
+(inls "inline *")
+(inl1s "inline{1} *")
+(inl2s "inline{2} *")
 
-(inlineo "inline (" p ") " q)
-(inline1o "inline{1} (" p ") " q)
-(inline2o "inline{2} (" p ") " q)
+(inlo "inline (" p ") " q)
+(inl1o "inline{1} (" p ") " q)
+(inl2o "inline{2} (" p ") " q)
 
-(outline "outline{" p "} " p " ~ " q)
-(outline1 "outline{1} " p " ~ " q)
-(outline2 "outline{2} " p " ~ " q)
+(out "outline{" p "} " p " ~ " q)
+(out1 "outline{1} " p " ~ " q)
+(out2 "outline{2} " p " ~ " q)
 
-(outlinebl "outline{" p "} [" p ".." p "] ~ " q)
-(outline1bl "outline{1} [" p ".." p "] ~ " q)
-(outline2bl "outline{2} [" p ".." p "] ~ " q)
+(outbl "outline{" p "} [" p ".." p "] ~ " q)
+(out1bl "outline{1} [" p ".." p "] ~ " q)
+(out2bl "outline{2} [" p ".." p "] ~ " q)
 
-(outlinecode "outline{" p "} " p " by { " q " }")
-(outline1code "outline{1} " p " by { " q " }")
-(outline2code "outline{2} " p " by { " q " }")
+(outc "outline{" p "} " p " by { " q " }")
+(out1c "outline{1} " p " by { " q " }")
+(out2c "outline{2} " p " by { " q " }")
 
-(outlineblcode "outline{" p "} [" p ".." p "] by { " q " }")
-(outline1blcode "outline{1} [" p ".." p "] by { " q " }")
-(outline2blcode "outline{2} [" p ".." p "] by { " q " }")
+(outblc "outline{" p "} [" p ".." p "] by { " q " }")
+(out1blc "outline{1} [" p ".." p "] by { " q " }")
+(out2blc "outline{2} [" p ".." p "] by { " q " }")
 
-(rcondt1 "rcondt{1} " q)
-(rcondt2 "rcondt{2} " q)
+(rco1 "rcondt{1} " q)
+(rco2 "rcondt{2} " q)
 
-(rcondf1 "rcondf{1} " q)
-(rcondf2 "rcondf{2} " q)
+(rco1 "rcondf{1} " q)
+(rco2 "rcondf{2} " q)
 
-(unroll1 "unroll{1} " q)
-(unroll2 "unroll{2} " q)
+(unr1 "unroll{1} " q)
+(unr2 "unroll{2} " q)
 
-(splitwhile "splitwhile " p " : (" q ")")
-(splitwhile1 "splitwhile{1} " p " : (" q ")")
-(splitwhile2 "splitwhile{2} " p " : (" q ")")
+(splwhi "splitwhile " p " : (" q ")")
+(splwhi1 "splitwhile{1} " p " : (" q ")")
+(splwhi2 "splitwhile{2} " p " : (" q ")")
 
-(fission "fission " p "!" p " @ " p ", " q)
-(fission1 "fission{1} " p "!" p " @ " p ", " q)
-(fission2 "fission{2} " p "!" p " @ " p ", " q)
+(fis "fission " p "!" p " @ " p ", " q)
+(fis1 "fission{1} " p "!" p " @ " p ", " q)
+(fis2 "fission{2} " p "!" p " @ " p ", " q)
 
-(fusion "fusion " p "!" p " @ " p ", " q)
-(fusion1 "fusion{1} " p "!" p " @ " p ", " q)
-(fusion2 "fusion{2} " p "!" p " @ " p ", " q)
+(fus "fusion " p "!" p " @ " p ", " q)
+(fus1 "fusion{1} " p "!" p " @ " p ", " q)
+(fus2 "fusion{2} " p "!" p " @ " p ", " q)
 
-(alias "alias " p " with " q)
-(alias1 "alias{1} " p " with " q)
-(alias2 "alias{2} " p " with " q)
+(ali "alias " p " with " q)
+(ali1 "alias{1} " p " with " q)
+(ali2 "alias{2} " p " with " q)
 
-(aliase "alias " p " " p " = " q)
-(alias1e "alias{1} " p " " p " = " q)
-(alias2e "alias{2} " p " " p " = " q)
+(alie "alias " p " " p " = " q)
+(ali1e "alias{1} " p " " p " = " q)
+(ali2e "alias{2} " p " " p " = " q)
 
-(cfold "cfold " p " " q)
-(cfold1 "cfold{1} " p " " q)
-(cfold2 "cfold{2} " p " " q)
+(cfo "cfold " p " " q)
+(cfo1 "cfold{1} " p " " q)
+(cfo2 "cfold{2} " p " " q)
 
-(kill "kill " p " ! " q)
-(kill1 "kill{1} " p " ! " q)
-(kill2 "kill{2} " p " ! " q)
+(kil "kill " p " ! " q)
+(kil1 "kill{1} " p " ! " q)
+(kil2 "kill{2} " p " ! " q)
 
-(transitivity "transitivity " p " (" p " ==> " p ") (" p " ==> " q ")")
-(transitivitycode "transitivity{" p "} { " p " } " p " (" p " ==> " p ") (" p " ==> " q ")")
+(tra "transitivity " p " (" p " ==> " p ") (" p " ==> " q ")")
+(trac "transitivity{" p "} { " p " } " p " (" p " ==> " p ") (" p " ==> " q ")")
 
-(conseq "conseq (_: " p " ==> " q ")")
-(conseqpt "conseq (" q ")")
-(conseqcr "conseq />")
-(conseqeqvhoahoa "conseq (_: " p " ==> " p ") (_: " p " ==> " p ") (_: " p " ==> " q ")")
-(conseqphhoahoa "conseq (_: " p " ==> " p ": " p ") (_: " p " ==> " q ")")
-(conseqeqvhoa "conseq (" p ") (_: " p " ==> " q ")")
+(cons "conseq (_: " p " ==> " q ")")
+(conspt "conseq (" q ")")
+(conscr "conseq />")
+(consehh "conseq (_: " p " ==> " p ") (_: " p " ==> " p ") (_: " p " ==> " q ")")
+(consphh "conseq (_: " p " ==> " p ": " p ") (_: " p " ==> " q ")")
+(conseh "conseq (" p ") (_: " p " ==> " q ")")
 
-(byequiv "byequiv (_: " p " ==> " q ")")
-(byequivpt "byequiv (" q ")")
-(byequivupbad "byequiv (_: " p " ==> " p ") : " q)
-(byequivupbadpt "byequiv (" p ") : " q)
+(bye "byequiv (_: " p " ==> " q ")")
+(byept "byequiv (" q ")")
+(byeub "byequiv (_: " p " ==> " p ") : " q)
+(byeubpt "byequiv (" p ") : " q)
 
-(byphoare "byphoare (_: " p " ==> " q ")")
-(byphoarept "byphoare (" q ")")
+(byp "byphoare (_: " p " ==> " q ")")
+(byppt "byphoare (" q ")")
 
 (bypr "bypr (" p ") (" q ")")
 
-(existss "exists* " q)
-(elims "elim* " q)
+(exis "exists* " q)
+(elis "elim* " q)
 
-(exlimi "exlim " p " => " q)
+(exli "exlim " p " => " q)
 
-(phoaresplitjunc "phoare split " p " " p " " q)
-(phoaresplitneg "phoare split ! " p " " q)
+(phosplj "phoare split " p " " p " " q)
+(phospln "phoare split ! " p " " q)
 
 (sim "sim : (" q ")")
-(siminv "sim / " p " : (" q ")")
-(simprinv "sim " p " / " p " : (" q ")")
+(simi "sim / " p " : (" q ")")
+(simpi "sim " p " / " p " : (" q ")")
 
 (fel "fel " p " (" p ") (" p ") (" p ") (" p ") [" p "] (" q ")")
 
-(rewriteequiv "rewrite equiv [{" p "} " q "]")
-(rewriteequiv1 "rewrite equiv [{1} " q "]")
-(rewriteequiv2 "rewrite equiv [{2} " q "]")
-(rewriteequivrv "rewrite equiv [{" p "} " p " (" p " :@ " q ")]")
-(rewriteequiv1rv "rewrite equiv [{1} " p " (" p " :@ " q ")]")
-(rewriteequiv2rv "rewrite equiv [{2} " p " (" p " :@ " q ")]")
+(rewequ "rewrite equiv [{" p "} " q "]")
+(rewequ1 "rewrite equiv [{1} " q "]")
+(rewequ2 "rewrite equiv [{2} " q "]")
+(rewequrv "rewrite equiv [{" p "} " p " (" p " :@ " q ")]")
+(rewequ1rv "rewrite equiv [{1} " p " (" p " :@ " q ")]")
+(rewequ2rv "rewrite equiv [{2} " p " (" p " :@ " q ")]")
 
-(procchange "proc change " p " : " q)
-(procchange1 "proc change{1} " p " : " q)
-(procchange2 "proc change{2} " p " : " q)
+(procha "proc change " p " : " q)
+(procha1 "proc change{1} " p " : " q)
+(procha2 "proc change{2} " p " : " q)
 
-(procrewrite "proc rewrite " q)
-(procrewrite1 "proc rewrite{1} " q)
-(procrewrite2 "proc rewrite{2} " q)
+(prorew "proc rewrite " q)
+(prorew1 "proc rewrite{1} " q)
+(prorew2 "proc rewrite{2} " q)
 
 
 ;; Miscellaneous
