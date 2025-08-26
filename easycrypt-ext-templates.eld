@@ -407,7 +407,8 @@ hint simplify oget_some, oget_none.")
 (the "theory " (p "" thid)  "." n>
      q n>
      "end " (s thid) "." >)
-(absthe "abstract " (i theory))
+
+(absthe "abstract " (i the))
 
 (sec "section." n>
      q >
@@ -416,8 +417,8 @@ hint simplify oget_some, oget_none.")
        q >
        "end section " (s secid) "." >)
 
-(decmod "declare module " p " <: " p "{ " q " }.")
-(decmodnm "declare module " p " <: " q ".")
+(decmod "declare module " p " <: " q ".")
+(decmodr "declare module " p " <: " p "{ " q " }.")
 
 (Pr "Pr[" p " @ " p " : " q "]")
 (Prn "Pr[" n>
@@ -542,8 +543,8 @@ hint simplify oget_some, oget_none.")
 (exi "exists (" p "), " q)
 (exin "exists (" p ")," n>
       q)
-(iftheels "if " p " then " p " else " q)
-(iftheelsn "if " p n>
+(ifte "if " p " then " p " else " q)
+(iften "if " p n>
            "then " p n>
            "else " q)
 
@@ -601,12 +602,12 @@ hint simplify oget_some, oget_none.")
 (if "if (" p ") {" n>
     q n>
     "}" >)
-(ifels "if (" p ") {" n>
+(ifel "if (" p ") {" n>
        p n>
        "} else {" > n>
        q n>
        "}" >)
-(ifeliels "if (" p ") {" n>
+(ifeliel "if (" p ") {" n>
           p n>
           "} elif {" > n>
           p n>
@@ -623,8 +624,8 @@ hint simplify oget_some, oget_none.")
 (sam p "<$" q ";")
 
 
-;; Tactics
-;;; Ambient
+;;; Tactics
+;; Ambient
 (smt "smt(" q ")")
 
 (movi "move=> " q)
@@ -646,7 +647,7 @@ hint simplify oget_some, oget_none.")
 (rewin "rewrite " p " in " q)
 
 
-;;; Program
+;; Program
 (proc "proc (" q ")")
 (procub "proc (" p ") (" q ")")
 (procube "proc (" p ") (" p ") (" q ")")
@@ -809,64 +810,10 @@ hint simplify oget_some, oget_none.")
 (rewequ1rv "rewrite equiv [{1} " p " (" p " :@ " q ")]")
 (rewequ2rv "rewrite equiv [{2} " p " (" p " :@ " q ")]")
 
-(procha "proc change " p " : " q)
-(procha1 "proc change{1} " p " : " q)
-(procha2 "proc change{2} " p " : " q)
+(proccha "proc change " p " : " q)
+(proccha1 "proc change{1} " p " : " q)
+(proccha2 "proc change{2} " p " : " q)
 
-(prorew "proc rewrite " q)
-(prorew1 "proc rewrite{1} " q)
-(prorew2 "proc rewrite{2} " q)
-
-
-;; Miscellaneous
-(Prbnd (i Pr) n>
-       "<=" n>
-       (i Pr))
-(Prnbnd (i Prn) n>
-        "<=" n>
-        (i Prn))
-(Prmbnd (i Prm) n>
-        "<=" n>
-        (i Prm))
-(Prmrbnd (i Prmr) n>
-         "<=" n>
-         (i Prmr))
-
-(Preq (i Pr) n>
-      "=" n>
-      (i Pr))
-(Prneq (i Prn) n>
-       "=" n>
-       (i Prn))
-(Prmeq (i Prm) n>
-       "=" n>
-       (i Prm))
-(Prmreq (i Prmr) n>
-        "=" n>
-        (i Prmr))
-
-(lemPrbnd "lemma " p " :" n>
-          (i Prbnd) "." n>
-          (i proof))
-(lemPrnbnd "lemma " p " :" n>
-           (i Prnbnd) "." n>
-           (i proof))
-(lemPrmbnd "lemma " p " &m :" n>
-           (i Prmbnd) "." n>
-           (i proof))
-(lemPrmrbnd "lemma " p " &m :" n>
-            (i Prmrbnd) "." n>
-            (i proof))
-
-(lemPreq "lemma " p " :" n>
-         (i Preq) "." n>
-         (i proof))
-(lemPrneq "lemma " p " :" n>
-          (i Prneq) "." n>
-          (i proof))
-(lemPrmeq "lemma " p " &m :" n>
-          (i Prmeq) "." n>
-          (i proof))
-(lemPrmreq "lemma " p " &m :" n>
-           (i Prmreq) "." n>
-           (i proof))
+(procrew "proc rewrite " q)
+(procrew1 "proc rewrite{1} " q)
+(procrew2 "proc rewrite{2} " q)
