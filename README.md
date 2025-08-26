@@ -466,7 +466,13 @@ possible completions based on a set of known pragmas.
 
 ## Executable (Command Line)
 
-
+EasyCrypt Ext lets you run EasyCrypt's executable subcommands directly from
+Emacs, so there’s no need to switch contexts. While the executable subcommands
+typically operate on a single file, EasyCrypt Ext provides commands that lift
+them to the project or directory level, executing them on every relevant file.
+The automatic detection of the project root or relevant directory should work
+well for most cases, though you can still specify files or directories manually
+if needed.
 
 | Command                    | Keybinding              | Description                                                                             |
 |----------------------------|-------------------------|-----------------------------------------------------------------------------------------|
@@ -483,15 +489,15 @@ possible completions based on a set of known pragmas.
 | `ece-exec-why3config-dflt` | `C-c C-y e w`           | `why3config` (configure Why3) using default configuration file                          |
 | `ece-exec-why3config`      | `C-c C-y e W`           | Prompt for configuration file to use with `why3config` (configure Why3).                |
 
-| Customization variable                 | Value          | Description                                                                           |
-|----------------------------------------|----------------|---------------------------------------------------------------------------------------|
-| `ece-exec-runtest-default-test-file`   | "tests.config" | Default test file (relative to project root/parent directory) to use with `runtest`   |
-| `ece-exec-runtest-default-scenario`    | "default"      | Default test scenario name to use with `runtest`                                      |
-| `ece-exec-runtest-default-report-file` | "report.log"   | Default report file (relative to project root/parent directory) to use with `runtest` |
-| `ece-exec-docgen-default-outdir`       | "docs/"        | Default output directory to use with `docgen`                                         |
-|                                        |                |                                                                                       |
+| Customization variable                 | Value            | Description                                                                                |
+|----------------------------------------|------------------|--------------------------------------------------------------------------------------------|
+| `ece-exec-runtest-default-test-file`   | `"tests.config"` | Default test file (relative to project root/parent directory) to use with `runtest`        |
+| `ece-exec-runtest-default-scenario`    | `"default"`      | Default test scenario name to use with `runtest`                                           |
+| `ece-exec-runtest-default-report-file` | `"report.log"`   | Default report file (relative to project root/parent directory) to use with `runtest`      |
+| `ece-exec-docgen-default-outdir`       | `"docs/"`        | Default output directory  (relative to project root/parent directory) to use with `docgen` |
 
-## Templates
+## Keyword Completion and Templates
+
 - Built-in template map.
 - Viewing documentation (with Corfu), Corfu info popup buffer
 
