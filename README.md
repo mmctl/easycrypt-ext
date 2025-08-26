@@ -1,7 +1,5 @@
 # EasyCrypt Extensions for Emacs (Proof-General)
 
------
-
 # THIS IS WIP. DONT USE.
 
 [EasyCrypt](https://www.easycrypt.info/) is a toolset primarily designed for the
@@ -52,7 +50,10 @@ Specifically, these features are the following.
 > The current version of this package should be compatible with (at least)
 > Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
 
-# Installation and Configuration
+## Table of Contents
+
+
+# Getting Started
 
 -----
 
@@ -92,7 +93,7 @@ for additional quality-of-life improvements.
 > To check which one your Emacs uses:
 > 1. Open Emacs.
 > 2. Press `C-h v` (Control + h, then v).
-> 3. Type `user-init-file` and hit enter.
+> 3. Type `user-init-file` and hit Enter.
 > Emacs will display something like:
 > ```
 > Its value is "/home/you/.emacs.d/init.el"
@@ -368,16 +369,25 @@ For a full overview of EasyCrypt Ext's features and how to use them, see
 additional quality-of-life tweaks and refinements, check out [Tips and
 Tricks](#tips-and-tricks).
 
-# Features, Commands, and Keybindings
-
 -----
+
+# Features, Commands, and Keybindings
 
 The following provides an overview of the main (interactive) features of
 EasyCrypt Ext and explains how to use them. It also lists the most relevant
 commands and their default keybindings. Although often not mentioned explicitly,
 some commands are also available through the menu bar and mode line menus.
 
-> :eyes: **Default keybindings and changing them** :eyes:  
+> :eyes: **General configuration** :eyes:  
+> Most packages, including EasyCrypt Ext and the external ones mentioned here,
+> expose configuration options through customization variables. If you know the
+> name of a variable, you can look up its documentation by pressing `C-h v`
+> (Control + h, then v), typing the variable name, and hitting Enter. You can
+> set these variables with `setopt` in your initialization file. Alternatively,
+> you can search and set these variables through [Emacs's customization
+> interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html),
+
+> :eyes: **Keybindings** :eyes:  
 > To avoid conflicts with other keybindings (from Proof General or elsewhere),
 > nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
 >
@@ -392,6 +402,7 @@ some commands are also available through the menu bar and mode line menus.
 > ```
 > (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
 > its commands.)
+
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
@@ -420,6 +431,9 @@ details, see the documentation of the relevant commands.
 | `ece-indent-for-tab-command-nonlocal` | `<backtab>`[^7] | "Non-local" variant of default indentation |
 
 [^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
+
+| Customization variable | Default | Description                                                |
+| `ece-indentation`      | `t`     | Enable (`t`) or disable (`nil` EasyCrypt Ext's indentation |
 
 ## Proof Shell
 
@@ -456,6 +470,8 @@ details, see the documentation of the relevant commands.
 - Imenu
 - Auto centering and echoing of remaining goals
 
+-----
+
 # Tips and Tricks
 
 ## Corfu automatic (including templates)
@@ -466,13 +482,5 @@ details, see the documentation of the relevant commands.
 
 
 > :eyes: **Configuration** :eyes:  
-> EasyCrypt Ext provides several configuration options for more advanced use
-> cases (e.g., enabling or disabling specific features, or executing
-> EasyCrypt command-line commands from inside Emacs) through customization
-> variables. You can view the documentation for a customization variable
-> with `C-h v` (Control + h, then v), then typing the variable name and
-> pressing enter. Searching for the prefix `ece-` should bring up all the
-> available variables. You can set these variables with `setopt` inside an
-> `:init` block of the `use-package easycrypt-ext` statement. For an example
-> of such an `:init` block , see the the Proof General configuration in
+
 > [Prerequisites](#prerequisites).
