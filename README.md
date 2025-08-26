@@ -513,6 +513,7 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%">
+  <br>
   <em><code>cape-keyword</code> (with Corfu)</em>
 </p>
 
