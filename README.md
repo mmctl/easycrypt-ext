@@ -488,7 +488,8 @@ possible completions based on a set of known pragmas.
 | `ece-exec-runtest-default-test-file`   | "tests.config" | Default test file (relative to project root/parent directory) to use with `runtest`   |
 | `ece-exec-runtest-default-scenario`    | "default"      | Default test scenario name to use with `runtest`                                      |
 | `ece-exec-runtest-default-report-file` | "report.log"   | Default report file (relative to project root/parent directory) to use with `runtest` |
-| `ece-exec-docgen-default-outdir`       | "docs/"        | Default output directory to use `docgen`                                              |
+| `ece-exec-docgen-default-outdir`       | "docs/"        | Default output directory to use with `docgen`                                         |
+|                                        |                |                                                                                       |
 
 ## Templates
 - Built-in template map.
