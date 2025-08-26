@@ -385,8 +385,10 @@ and mode line menus.
 > expose configuration options through customization variables. If you know the
 > name of a variable, you can look up its documentation by pressing `C-h v`
 > (Control + h, then v), typing the variable name, and hitting Enter. You can
-> set these variables with `setopt` in your initialization file. Alternatively,
-> you can search and set these variables through [Emacs's customization
+> set these variables with `setopt` in your initialization file, typically in
+> the `:init` block of the corresponding package's `use-package` declaration.
+> Alternatively, you can search and set these variables through [Emacs's
+> customization
 > interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html),
 
 > :eyes: **Keybindings** :eyes:  
@@ -434,9 +436,9 @@ details, see the documentation of the relevant commands.
 
 [^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
 
-| Customization variable | Default | Description                                                |
-|------------------------|---------|------------------------------------------------------------|
-| `ece-indentation`      | `t`     | Enable (`t`) or disable (`nil` EasyCrypt Ext's indentation |
+| Customization variable | Value | Description                                                 |
+|------------------------|-------|-------------------------------------------------------------|
+| `ece-indentation`      | `t`   | Enable (`t`) or disable (`nil`) EasyCrypt Ext's indentation |
 
 ## Proof Shell
 
@@ -449,52 +451,60 @@ them again (or leave them in, cluttering your script). EasyCrypt Ext streamlines
 this workflow by providing dedicated commands that (1) directly
 print/search/locate the highlighted item, the item at point, or an item you
 click with the mouse, or (2) prompt you for the item to use print/search/locate,
-or the pragma to set.
+or the pragma to set. When prompting for a pragma, EasyCrypt Ext provides
+possible completions based on a set of known pragmas.
 
-| Command             | Keybinding                      | Description                                       |
-|---------------------|---------------------------------|---------------------------------------------------|
-| `ece-locate`        | `C-c C-y l` and `C-S-<mouse 2>` | `locate` highlighted item, or item at point/click |
-| `ece-print`         | `C-c C-y p` and `C-S-<mouse 1>` | `print` highlighted, or item at point/click       |
-| `ece-search`        | `C-c C-y p` and `C-S-<mouse 3>` | `search` highlighted item, or at point/click      |
-| `ece-prompt-locate` | `C-c C-y L` and `C-c -`         | Prompt for item to `locate`                       |
-| `ece-prompt-print`  | `C-c C-y P` and `C-c =`         | Prompt for item to `print`                        |
-| `ece-prompt-search` | `C-c C-y S` and `C-c /`         | Prompt for item to `search`                       |
+| Command                        | Keybinding                      | Description                                                 |
+|--------------------------------|---------------------------------|-------------------------------------------------------------|
+| `ece-proofshell-locate`        | `C-c C-y l` and `C-S-<mouse 2>` | `locate` highlighted item, or item at point/click           |
+| `ece-proofshell-print`         | `C-c C-y p` and `C-S-<mouse 1>` | `print` highlighted, or item at point/click                 |
+| `ece-proofshell-search`        | `C-c C-y p` and `C-S-<mouse 3>` | `search` highlighted item, or item at point/click           |
+| `ece-proofshell-prompt`        | `C-c C-y z` and `C-c :`         | Prompt (with completion) for proof shell command to execute |
+| `ece-proofshell-prompt-locate` | `C-c C-y L` and `C-c -`         | Prompt for item to `locate`                                 |
+| `ece-proofshell-prompt-print`  | `C-c C-y P` and `C-c =`         | Prompt for item to `print`                                  |
+| `ece-proofshell-prompt-search` | `C-c C-y S` and `C-c /`         | Prompt for item to `search`                                 |
 
 ## Executable (Command Line)
 
-| Command               | Keybinding      | Description                                                                           |
-|-----------------------|-----------------|---------------------------------------------------------------------------------------|
-| `ece-compile-file`    | `C-c C-y e c`   | `compile` (check) visited EasyCrypt file                                              |
-| `ece-compile-dir`     | `C-c C-y e C`   | `compile` (check) EasyCrypt files in visited directory and its children               |
-| `ece-compile`         | `C-c C-y e C-c` | Prompt for EasyCrypt file(s) to `compile` (check)                                     |
-| `ece-docgen-file`     | `C-c C-y e d`   | `docgen` (generate documentation) visited EasyCrypt file                              |
-| `ece-docgen-dir`      | `C-c C-y e D`   | `docgen` generate documentation EasyCrypt files in visited directory and its children |
-| `ece-docgen`          | `C-c C-y e C-d` | Prompt for EasyCrypt file(s) to `docgen` (generate documentation)                     |
-| `ece-help`            | `C-c C-y e h`   | Print help (as output by `easycrypt --help`)                                          |
-| `ece-runtest-dflt`    | `C-c C-y e r`   | `runtest` (test) using default test file and scenario (relative to visited directory) |
-| `ece-runtest`         | `C-c C-y e R`   | Prompt for configuration to use with `runtest` (test)                                 |
-| `ece-why3config-dflt` | `C-c C-y e w`   | `why3config` (configure Why3) using default configuration file                        |
-| `ece-why3config`      | `C-c C-y e W`   | Prompt for configuration file to use with `why3config` (configure Why3).              |
+
+
+| Command                    | Keybinding              | Description                                                                             |
+|----------------------------|-------------------------|-----------------------------------------------------------------------------------------|
+| `ece-exec`                 | `C-c C-y x` and `C-c !` | Prompt (with completion) for executable command to execute                              |
+| `ece-exec-compile-file`    | `C-c C-y e c`           | `compile` (check) current EasyCrypt file                                                |
+| `ece-exec-compile-projdir` | `C-c C-y e C`           | `compile` (check) EasyCrypt files in current project/directory tree                     |
+| `ece-exec-compile`         | `C-c C-y e C-c`         | Prompt for EasyCrypt file(s) to `compile` (check)                                       |
+| `ece-exec-docgen-file`     | `C-c C-y e d`           | `docgen` (generate documentation for) current EasyCrypt file                            |
+| `ece-exec-docgen-projdir`  | `C-c C-y e D`           | `docgen` (generate documentation for) EasyCrypt files in current project/directory tree |
+| `ece-exec-docgen`          | `C-c C-y e C-d`         | Prompt for EasyCrypt file(s) to `docgen` (generate documentation for)                   |
+| `ece-exec-help`            | `C-c C-y e h`           | Print help (as output by `easycrypt --help`)                                            |
+| `ece-exec-runtest-dflt`    | `C-c C-y e r`           | `runtest` (test) using default test file and scenario                                   |
+| `ece-exec-runtest`         | `C-c C-y e R`           | Prompt for configuration to use with `runtest` (test)                                   |
+| `ece-exec-why3config-dflt` | `C-c C-y e w`           | `why3config` (configure Why3) using default configuration file                          |
+| `ece-exec-why3config`      | `C-c C-y e W`           | Prompt for configuration file to use with `why3config` (configure Why3).                |
+
+| Customization variable                 | Value          | Description                                                                           |
+|----------------------------------------|----------------|---------------------------------------------------------------------------------------|
+| `ece-exec-runtest-default-test-file`   | "tests.config" | Default test file (relative to project root/parent directory) to use with `runtest`   |
+| `ece-exec-runtest-default-scenario`    | "default"      | Default test scenario name to use with `runtest`                                      |
+| `ece-exec-runtest-default-report-file` | "report.log"   | Default report file (relative to project root/parent directory) to use with `runtest` |
+| `ece-exec-docgen-default-outdir`       | "docs/"        | Default output directory to use `docgen`                                              |
 
 ## Templates
 - Built-in template map.
-- Viewing documentation (with Corfu)
+- Viewing documentation (with Corfu), Corfu info popup buffer
 
 ## Miscellaneous
 - Imenu
 - Auto centering and echoing of remaining goals
+- Mouse scrolling through goals/response history
 
 -----
 
 # Tips and Tricks
 
 ## Corfu automatic (including templates)
+## Corfu info pop-up buffer
 ## Cape dabbrev
 ## Consult Imenu
-## Behavior of Shift-TAB
 ## Silencing bufhist buttons
-
-
-> :eyes: **Configuration** :eyes:  
-
-> [Prerequisites](#prerequisites).

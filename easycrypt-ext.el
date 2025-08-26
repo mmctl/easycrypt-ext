@@ -1377,8 +1377,7 @@ mode-specific maps."
 
 (defvar-keymap easycrypt-ext-mode-map
   :doc "Keymap for `easycrypt-ext-mode'."
-  :parent easycrypt-ext-general-map
-  "C-c C-y t" 'ece-template-map-prefix)
+  :parent easycrypt-ext-general-map)
 
 (defvar-keymap easycrypt-ext-goals-mode-map
   :doc "Keymap for `easycrypt-ext-goals-mode'."
@@ -1499,7 +1498,7 @@ Meant for `proof-shell-handle-delayed-output-hook'."
   (add-hook 'proof-shell-handle-delayed-output-hook #'ece--recenter-goals-window 90))
 
 (defun ece--goals-teardown ()
-  "Tears down EasyCrypt extensions (goals)."
+  "Tears down EasyCrypt Ext (goals)."
   (unless (ece--check-other-buffers-mode 'easycrypt-ext-goals-mode)
     (remove-hook 'proof-shell-handle-delayed-output-hook #'ece--recenter-goals-window)
     (remove-hook 'proof-shell-handle-delayed-output-hook #'ece--echo-remaining-goals)))
