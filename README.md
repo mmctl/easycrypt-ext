@@ -521,20 +521,10 @@ prefix. In such situations, representative names are chosen on a case-by-case
 basis. All templates are defined in `easycrypt-ext-templates.eld`.
 
 <p align="center">
-  <figure style="display:inline-block; width:45%; margin: 2%;">
-    <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" alt="Image 1" style="width:100%;"/>
-    <figcaption>Caption 1</figcaption>
-  </figure>
-  <figure style="display:inline-block; width:45%; margin: 2%;">
-    <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" alt="Image 2" style="width:100%;"/>
-    <figcaption>Caption 2</figcaption>
-  </figure>
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%">
+&nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%">
 </p>
-
-<figure>
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif"/>
-  <figcaption>`cape-keyword` (with Corfu)</figcaption>
-</figure>
 
 
 | ![Demonstration of `cape-keyword` (with Corfu)](/assets/example-cape-keyword.gif?raw=true) |
