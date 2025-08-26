@@ -52,10 +52,9 @@ Specifically, these features are the following.
 
 ## Table of Contents
 
+-----
 
 # Getting Started
-
------
 
 > :speech_balloon: **Target audience** :speech_balloon:  
 > Since many EasyCrypt users only pick up Emacs for EasyCrypt, these
@@ -76,12 +75,15 @@ more features:[^1]
 4. [Enhancements](#enhancements): Improve Emacs features that this package relies
    on; these also benefit your general Emacs usage.
 
-Each step includes ready-to-use code snippets with comments explaining what
-they do. Customization is optional, but the snippets also suggest common tweaks
-if you’d like to go beyond the defaults.
+Each step provides ready-to-use code snippets with explanatory comments. You can
+copy and paste them as-is for a complete setup with sensible defaults; no
+changes required. Of course, there’s plenty of room for customization if you’d
+like.
 
-When you’re done here, check out [Tips and Tricks](#tips-and-tricks)
-for additional quality-of-life improvements.
+When you’re done here, check out [Features, Commands, and
+Keybindings](#features-commands-and-keybindings) for an overview and explanation
+of the available features, and [Tips and Tricks](#tips-and-tricks) for further
+quality-of-life improvements.
 
 > :eyes: **Finding your initialization file** :eyes:  
 > Most of the instructions below involve editing your
@@ -199,9 +201,9 @@ for additional quality-of-life improvements.
 
 That’s it! EasyCrypt Ext should now load automatically with EasyCrypt (e.g.,
 when you open an `.ec` or `.eca` file). To get familiar with the available
-features, commands, and keybindings, see the relevant parts of [Features,
-Commands, and Keybindings](#features-commands-and-keybindings). Alternatively,
-check out [Extras](#extras), [Enhancements](#enhancements), or [Tips and
+features, see [Features, Commands, and
+Keybindings](#features-commands-and-keybindings). Alternatively, check out
+[Extras](#extras), [Enhancements](#enhancements), or [Tips and
 Tricks](#tips-and-tricks) to unlock additional features and further improve your
 experience!
 
@@ -294,9 +296,9 @@ experience!
    you should be good to go.
 
 And you're done! The extra integration features should now load automatically
-alongside EasyCrypt Ext and work out of the box. The available features and
-corresponding commands are further detailed in [Features, Commands, and
-Keybindings](#features-commands-and-keybindings). For further improvement of
+alongside EasyCrypt Ext and work out of the box. The available featuresare
+further detailed in [Features, Commands, and
+Keybindings](#features-commands-and-keybindings). For additional improvement of
 your experience, check out [Enhancements](#enhancements) or [Tips and
 Tricks](#tips-and-tricks)!
 
@@ -347,10 +349,9 @@ pop-up) and Vertico (for a minibuffer completion interface). [^2]
    ```
 
 2. **Restart Emacs**  
-   Restart Emacs to ensure necessary operations are performed
-   and changes take effect. If Emacs starts without errors, you
-   should be good to go.
-
+   Restart Emacs for the changes to take effect. If Emacs starts without errors,
+   you should be good to go.
+   
 Done! Corfu and Vertico should now be up-and-running from launch.
 To test them right away, try the following:
 - Open your initialization file with `find-file`, bound by default to `C-x C-f`
@@ -364,9 +365,9 @@ To test them right away, try the following:
 
 [^4]: Typically, `Meta` is `Alt` (or `Command` on Mac).
 
-For a full overview of EasyCrypt Ext's features and how to use them, see
-[Features, Commands, and Keybindings](#features-commands-and-keybindings). For
-additional quality-of-life tweaks and refinements, check out [Tips and
+For an overview and explanation of EasyCrypt Ext's features, see [Features,
+Commands, and Keybindings](#features-commands-and-keybindings). For additional
+quality-of-life tweaks and refinements, check out [Tips and
 Tricks](#tips-and-tricks).
 
 -----
@@ -374,9 +375,10 @@ Tricks](#tips-and-tricks).
 # Features, Commands, and Keybindings
 
 The following provides an overview of the main (interactive) features of
-EasyCrypt Ext and explains how to use them. It also lists the most relevant
-commands and their default keybindings. Although often not mentioned explicitly,
-some commands are also available through the menu bar and mode line menus.
+EasyCrypt Ext and explains how to use (and potentially configure) them. It also
+lists the most relevant commands and their default keybindings. Although often
+not mentioned explicitly, some commands are also available through the menu bar
+and mode line menus.
 
 > :eyes: **General configuration** :eyes:  
 > Most packages, including EasyCrypt Ext and the external ones mentioned here,
@@ -433,18 +435,30 @@ details, see the documentation of the relevant commands.
 [^7]: `<backtab>` is a special key usually triggered by Shift + TAB.
 
 | Customization variable | Default | Description                                                |
+|------------------------|---------|------------------------------------------------------------|
 | `ece-indentation`      | `t`     | Enable (`t`) or disable (`nil` EasyCrypt Ext's indentation |
 
 ## Proof Shell
 
-| Command             | Keybinding                      | Description                     |
-|---------------------|---------------------------------|---------------------------------|
-| `ece-locate`        | `C-c C-y l` and `C-S-<mouse 2>` | `locate` item at point or click |
-| `ece-print`         | `C-c C-y p` and `C-S-<mouse 1>` | `print` item at point or click  |
-| `ece-search`        | `C-c C-y p` and `C-S-<mouse 3>` | `search` item at point or click |
-| `ece-prompt-locate` | `C-c C-y L` and `C-c -`         | Prompt for item to `locate`     |
-| `ece-prompt-print`  | `C-c C-y P` and `C-c =`         | Prompt for item to `print`      |
-| `ece-prompt-search` | `C-c C-y S` and `C-c /`         | Prompt for item to `search`     |
+The proof shell is the part of EasyCrypt that processes proof script commands,
+including not only regular proof steps but also meta-commands such as
+printing/searching/locating items in the current context and setting pragmas
+(i.e., proof shell options). Normally, you would type these commands directly
+into your proof script, process them like any other proof step, and then remove
+them again (or leave them in, cluttering your script). EasyCrypt Ext streamlines
+this workflow by providing dedicated commands that (1) directly
+print/search/locate the highlighted item, the item at point, or an item you
+click with the mouse, or (2) prompt you for the item to use print/search/locate,
+or the pragma to set.
+
+| Command             | Keybinding                      | Description                                       |
+|---------------------|---------------------------------|---------------------------------------------------|
+| `ece-locate`        | `C-c C-y l` and `C-S-<mouse 2>` | `locate` highlighted item, or item at point/click |
+| `ece-print`         | `C-c C-y p` and `C-S-<mouse 1>` | `print` highlighted, or item at point/click       |
+| `ece-search`        | `C-c C-y p` and `C-S-<mouse 3>` | `search` highlighted item, or at point/click      |
+| `ece-prompt-locate` | `C-c C-y L` and `C-c -`         | Prompt for item to `locate`                       |
+| `ece-prompt-print`  | `C-c C-y P` and `C-c =`         | Prompt for item to `print`                        |
+| `ece-prompt-search` | `C-c C-y S` and `C-c /`         | Prompt for item to `search`                       |
 
 ## Executable (Command Line)
 
