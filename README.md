@@ -543,9 +543,9 @@ instead show a documentation popup beside the completions (see [Documentation
 Popup (Corfu)](documentation-popup-corfu))
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="66%" alt="Demonstration of template documentation (with Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="95%" alt="Demonstration of template documentation (with Corfu, window)">
   <br>
-  <em>Template documentation, with Corfu</em>
+  <em>Template documentation, with Corfu (window)</em>
 </p>
 
 In addition, EasyCrypt Ext provides a dedicated keymap for directly inserting
@@ -587,6 +587,13 @@ lists a few of the remaining ones.
 
 ## Automatic Completion Popup (Corfu)
 ## Documentation Popup (Corfu)
+
+<p align="center">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="95%" alt="Demonstration of template documentation (with Corfu, popup)">
+  <br>
+  <em>Template documentation, with Corfu (popup)</em>
+</p>
+
 ## Additional Completion Functions (Cape)
 ## Enhanced Imenu (Consult)
 ## Remove Buffer History Buttons
