@@ -520,6 +520,17 @@ without keywords or cases where several keywords share the same three-letter
 prefix. In such situations, representative names are chosen on a case-by-case
 basis. All templates are defined in `easycrypt-ext-templates.eld`.
 
+<p align="center">
+  <figure style="display:inline-block; width:45%; margin: 2%;">
+    <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" alt="Image 1" style="width:100%;"/>
+    <figcaption>Caption 1</figcaption>
+  </figure>
+  <figure style="display:inline-block; width:45%; margin: 2%;">
+    <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" alt="Image 2" style="width:100%;"/>
+    <figcaption>Caption 2</figcaption>
+  </figure>
+</p>
+
 <figure>
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif"/>
   <figcaption>`cape-keyword` (with Corfu)</figcaption>
@@ -529,12 +540,6 @@ basis. All templates are defined in `easycrypt-ext-templates.eld`.
 | ![Demonstration of `cape-keyword` (with Corfu)](/assets/example-cape-keyword.gif?raw=true) |
 |:------------------------------------------------------------------------------------------:|
 | _`cape-keyword` (with Corfu)_                                                              |
-
-<p align="center">
-  <img alt="Light" src="./light.png" width="45%">
-&nbsp; &nbsp; &nbsp; &nbsp;
-  <img alt="Dark" src="./dark.png" width="45%">
-</p>
 
 
 | ![Demonstration of `tempel-complete` (with Corfu)](/assets/example-tempel-complete.gif?raw=true) | ![Demonstration of `tempel-expand` (with Corfu)](/assets/example-tempel-expand.gif?raw=true) |
