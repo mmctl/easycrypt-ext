@@ -512,9 +512,9 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 `tempel-expand` are available on dedicated keybindings.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of cape-keyword (with Corfu)">
   <br>
-  <em><code>cape-keyword</code> (with Corfu)</em>
+  <em><code>cape-keyword</code>, with Corfu</em>
 </p>
 
 Template names follow a simple convention: three letters from the first keyword,
@@ -526,14 +526,13 @@ without keywords or cases where several keywords share the same three-letter
 prefix. In such situations, representative names are chosen on a case-by-case
 basis. All templates are defined in `easycrypt-ext-templates.eld`.
 
-| ![Demonstration of `cape-keyword` (with Corfu)](/assets/example-cape-keyword.gif?raw=true) |
-|:------------------------------------------------------------------------------------------:|
-| _`cape-keyword` (with Corfu)_                                                              |
-
-
-| ![Demonstration of `tempel-complete` (with Corfu)](/assets/example-tempel-complete.gif?raw=true) | ![Demonstration of `tempel-expand` (with Corfu)](/assets/example-tempel-expand.gif?raw=true) |
-|:------------------------------------------------------------------------------------------------:|:--------------------------------------------------------------------------------------------:|
-| _`tempel-complete` (with Corfu)_                                                                 | _`tempel-expand` (with Corfu)_                                                               |
+<p align="center">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-complete.gif" width="45%" alt="Demonstration of tempel-complete (with Corfu)">
+  &nbsp; &nbsp; &nbsp; &nbsp;
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel-expand (with Corfu)">
+  <br>
+  <em><code>tempel-complete</code> (left) and <code>tempel-expand</code> (right), with Corfu</em>
+</p>
 
 If you use Corfu (recommended), you can configure it to show completions
 automatically as you type (see [Automatic Completion Popup
@@ -542,6 +541,12 @@ documentation by pressing `M-h` while a template is selected in the completion
 popup. By default this opens a separate window, but it can be configured to
 instead show a documentation popup beside the completions (see [Documentation
 Popup (Corfu)](documentation-popup-corfu))
+
+<p align="center">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="66%" alt="Demonstration of template documentation (with Corfu)">
+  <br>
+  <em>Template documentation, with Corfu</em>
+</p>
 
 In addition, EasyCrypt Ext provides a dedicated keymap for directly inserting
 specific templates. By default this keymap is available under the prefix `C-c
