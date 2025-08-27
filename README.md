@@ -314,8 +314,10 @@ Some features of this package—especially the integrations with Cape and
 Tempel—make heavy use of Emacs’s completion system (both in-buffer and
 minibuffer). The built-in completion works fine if you’re comfortable with it,
 but you may prefer a smoother and more user-friendly experience. For that, we
-recommend two lightweight external packages: Corfu (for an in-buffer completion
-pop-up) and Vertico (for a minibuffer completion interface). [^2]
+recommend two lightweight external packages:
+[Corfu](https://github.com/minad/corfu) (for an in-buffer completion pop-up) and
+[Vertico](https://github.com/minad/vertico) (for a minibuffer completion
+interface). [^2]
 
 [^2]: Both are by the same author as Cape and Tempel, ensuring great interoperability.
 
@@ -520,7 +522,7 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of keyword completion (with Corfu)">
   <br>
-  <em>Keyword completion with <code>cape-keyword</code>, and Corfu</em>
+  <em>Keyword completion using <code>cape-keyword</code> with Corfu</em>
 </p>
 
 Template names follow a simple convention: three letters from the first keyword,
@@ -537,7 +539,7 @@ basis. All templates are defined in `easycrypt-ext-templates.eld`.
   &nbsp; &nbsp; &nbsp; &nbsp;
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel expansion (and Corfu)">
   <br>
-  <em>Template completion and expansion with <code>tempel-complete</code> (left) and <code>tempel-expand</code> (right), and Corfu</em>
+  <em>Template completion and expansion using <code>tempel-complete</code> (left) and <code>tempel-expand</code> (right) with Corfu</em>
 </p>
 
 If you use Corfu (recommended), you can configure it to show completions
@@ -551,7 +553,7 @@ Popup (Corfu)](documentation-popup-corfu))
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="95%" alt="Demonstration of template documentation (with Corfu, window)">
   <br>
-  <em>Template documentation, with Corfu (window)</em>
+  <em>Template documentation with Corfu (window)</em>
 </p>
 
 In addition, EasyCrypt Ext provides a dedicated keymap for directly inserting
@@ -615,12 +617,53 @@ want to consider, either as complements to the features described above or
 independently.
 
 ## Automatic Completion Popup (Corfu)
+
+If you prefer completion suggestions to appear automatically as you type, you
+can enable this behavior in Corfu by setting the `corfu-auto` customization
+variable to `t`. In that case, you may also want to adjust a few other Corfu
+settings, since the defaults are geared toward explicitly invoking completion.
+Particularly, consider (1) setting `corfu-on-exact-match`
+to `nil` to prevent Corfu from automatically inserting completions when
+there is only single match (left), and (2) _unsetting_ some Corfu  keybindings
+that may interfere with regular editing, e.g., `<up>`, `<down>` and `RET`.
+
+Below is an example use-package configuration that incorporates these changes.
+You can further customize Corfu’s behavior (such as the delay before the popup
+appears) via other variables; see [the Corfu
+repository](https://github.com/minad/corfu) for details.
+
+```emacs-lisp
+(use-package corfu
+  :ensure t
+
+  :init
+  ;; Disable auto-insertion
+  (setopt corfu-on-exact-match nil)
+
+  ;; Enable automatic completion popup
+  (setopt corfu-auto t)
+
+  :config
+  ;; Unset default keybindings that may interfere with editing
+  (keymap-unset corfu-map "<remap> <previous-line>")
+  (keymap-unset corfu-map "<remap> <next-line>")
+  (keymap-unset corfu-map "RET")
+  (keymap-unset corfu-map "<up>")
+  (keymap-unset corfu-map "<down>")
+
+  ;; Set alternative keybindings for navigation/completion
+  ;; (change these to whatever keybindings you prefer)
+  (keymap-set corfu-map "M-p" #'corfu-previous)
+  (keymap-set corfu-map "M-n" #'corfu-next)
+  (keymap-set corfu-map "M-RET" #'corfu-insert)
+```
+
 ## Documentation Popup (Corfu)
 
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="75%" alt="Demonstration of template documentation (with Corfu, popup)">
   <br>
-  <em>Template documentation, with Corfu (popup)</em>
+  <em>Template documentation with Corfu (popup)</em>
 </p>
 
 ## Additional Completion Functions (Cape)
