@@ -627,9 +627,9 @@ to `nil` to prevent Corfu from automatically inserting completions when
 there is only single match (left), and (2) _unsetting_ some Corfu  keybindings
 that may interfere with regular editing, e.g., `<up>`, `<down>` and `RET`.
 
-Below is an example use-package configuration that incorporates these changes.
-You can further customize Corfu’s behavior (such as the delay before the popup
-appears) via other variables; see [the Corfu
+Below is an example `use-package` configuration for Corfu that incorporates
+these changes. You can further customize Corfu’s behavior (such as the delay
+before the popup appears) via other variables; see [the Corfu
 repository](https://github.com/minad/corfu) for details.
 
 ```emacs-lisp
@@ -660,11 +660,33 @@ repository](https://github.com/minad/corfu) for details.
 
 ## Documentation Popup (Corfu)
 
+By default, Corfu displays completion documentation in a separate window when
+requested (see [Keyword Completion and
+Templates](#keyword-completion-and-templates)). The extension `corfu-popupinfo`
+(included with Corfu) provides an alternative: it shows the documentation in a
+popup next to the completion menu, either explicitly on request or automatically
+after a short, configurable delay.
+
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="75%" alt="Demonstration of template documentation (with Corfu, popup)">
   <br>
   <em>Template documentation with Corfu (popup)</em>
 </p>
+
+The following `use-package` declaration enables `corfu-popupinfo`. For
+additional configuration options, see [the Corfu
+repository](https://github.com/minad/corfu).
+
+```emacs-lisp
+(use-package corfu-popupinfo
+  :ensure nil ; Comes with Corfu
+
+  :after corfu ; Load after Corfu
+
+  :config
+  ;; Activation
+  (corfu-popupinfo-mode 1))
+```
 
 ## Additional Completion Functions (Cape)
 ## Enhanced Imenu (Consult)
