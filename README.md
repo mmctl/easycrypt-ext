@@ -1,7 +1,5 @@
 # EasyCrypt Extensions for Emacs (Proof-General)
 
-# THIS IS WIP. DONT USE.
-
 [EasyCrypt](https://www.easycrypt.info/) is a toolset primarily designed for the
 formal verification of code-based, game-playing crytpographic proofs. At its
 core, it features an interactive theorem prover with a front-end implemented in
@@ -689,5 +687,73 @@ repository](https://github.com/minad/corfu).
 ```
 
 ## Additional Completion Functions (Cape)
+
+Although EasyCrypt Ext only deals with `cape-keyword`, Cape provides many other
+completion functions you can use alongside it ([see the Cape
+repository](https://github.com/minad/cape)). A particularly useful one is
+`cape-dabbrev`, which suggests completions based on words in the current buffer
+(and in other buffers with the same mode, e.g., all your open EasyCrypt
+buffers). This means it can also complete any axioms, lemmas, and operators you
+have defined or used earlier, which is great if you don't always remember their
+exact names.
+
+The snippet below extends the original configuration (see [Extras](#extras)) by
+adding `cape-dabbrev` after `cape-keyword` in `completion-at-point-functions`.
+The order matters: Emacs will only use the first completion function that
+returns results. This means that if you put `cape-dabbrev` before
+`cape-keyword`, keyword completions would be hidden whenever a buffer word
+matches.[^10]
+
+[^10]: To avoid this, Cape also provides `cape-capf-super`, a way to combine multiple
+completion functions into one, so they are tried together rather than
+sequentially.
+
+```emacs-lisp
+(use-package easycrypt-ext-cape
+    :ensure nil ; Comes with EasyCrypt Ext
+
+    :hook
+    ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
+    (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
+
+    :config
+    ;; Add (resp. remove) `cape-keyword' and `cape-dabbrev` to (resp. from)
+    ;; the functions used for completion whenever EasyCrypt Ext loads (resp. unloads)
+    (defun setup-ece-cape-keyword ()
+        (if easycrypt-ext-mode
+            (progn
+                (add-hook 'completion-at-point-functions #'cape-dabbrev nil t)
+                (add-hook 'completion-at-point-functions #'cape-keyword nil t))
+          (remove-hook 'completion-at-point-functions #'cape-dabbrev t)
+          (remove-hook 'completion-at-point-functions #'cape-keyword t)))
+    (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
+```
+
+If you use `cape-dabbrev`, it’s also worth checking the options
+`dabbrev-upcase-means-case-search`, `dabbrev-case-distinction`, and
+`dabbrev-case-replace`, which control how case sensitivity and case preservation
+are handled during completion.
+
 ## Enhanced Imenu (Consult)
-## Remove Buffer History Buttons
+
+[Consult](https://github.com/minad/consult) is another great package by the
+author of Cape, Tempel, and Corfu. One of the many features it provides is an
+enhanced Imenu with live preview of items and smoother navigation between
+categories. To make this work well in non-standard modes, a bit of extra setup
+is needed. The details are out of scope here, but the snippet below can be added
+to the `:config` block of your `use-package` declaration for `easycrypt-ext` to enable
+a sensible default configuration.
+
+```emacs-lisp
+(with-eval-after-load 'consult-imenu
+    (add-to-list 'consult-imenu-config
+                 '(easycrypt-mode :types
+                    ((?t "Types" font-lock-type-face)
+                     (?o "Operators" font-lock-function-name-face)
+                     (?c "Constants" font-lock-constant-face)
+                     (?m "Modules" font-lock-property-use-face)
+                     (?M "Module Types" font-lock-type-face)
+                     (?a "Axioms" font-lock-builtin-face)
+                     (?l "Lemmas" font-lock-keyword-face)
+                     (?T "Theories" font-lock-type-face)))))
+```
