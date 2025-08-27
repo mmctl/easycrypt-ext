@@ -456,6 +456,12 @@ highlighted item, the item at point, or the item you click with the mouse, or
 When prompting for a pragma, EasyCrypt Ext provides possible completions based
 on a set of known pragmas.
 
+<p align="center">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-print-commands.gif" width="95%" alt="Demonstration of print commands">
+  <br>
+  <em>Printing item at point (first) and at mouse click (second).</em>
+</p>
+
 | Command                        | Keybinding                      | Description                                                 |
 |--------------------------------|---------------------------------|-------------------------------------------------------------|
 | `ece-proofshell-locate`        | `C-c C-y l` and `C-S-<mouse 2>` | `locate` highlighted item, or item at point/click           |
@@ -512,9 +518,9 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 `tempel-expand` are available on dedicated keybindings.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of cape-keyword (with Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of keyword completion (with Corfu)">
   <br>
-  <em><code>cape-keyword</code>, with Corfu</em>
+  <em>Keyword completion with <code>cape-keyword</code>, and Corfu</em>
 </p>
 
 Template names follow a simple convention: three letters from the first keyword,
@@ -527,11 +533,11 @@ prefix. In such situations, representative names are chosen on a case-by-case
 basis. All templates are defined in `easycrypt-ext-templates.eld`.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-complete.gif" width="45%" alt="Demonstration of tempel-complete (with Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-complete.gif" width="45%" alt="Demonstration of tempel completion (and Corfu)">
   &nbsp; &nbsp; &nbsp; &nbsp;
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel-expand (with Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel expansion (and Corfu)">
   <br>
-  <em><code>tempel-complete</code> (left) and <code>tempel-expand</code> (right), with Corfu</em>
+  <em>Template completion and expansion with <code>tempel-complete</code> (left) and <code>tempel-expand</code> (right), and Corfu</em>
 </p>
 
 If you use Corfu (recommended), you can configure it to show completions
@@ -576,20 +582,43 @@ While EasyCrypt Ext includes additional features beyond those described above,
 most are non-interactive or require no change to your usual workflow. The below
 lists a few of the remaining ones.
 
-- **Imenu integration**
-  Imenu is a menu 
-- **goals/response history
-- ** ** Auto centering and echoing of remaining goals
+- **Imenu integration**  
+  Imenu provides an index menu for quick navigation, by default bound to `M-g i`
+  (Meta + g, then i). While Emacs supports this out of the box, each mode is
+  responsible for defining how the menu is populated. Proof General does not
+  provide a suitable definition for EasyCrypt, so EasyCrypt Ext provides one: it
+  fills the menu with types, operators, constants, module types, modules,
+  axioms, lemmas, and theories defined in the current file, also creating
+  corresponding categories.
+- **Scrolling through goals/response history**  
+  If Proof General’s goal and response histories are enabled (as in the default
+  setup of [Getting Started](#getting-started)), EasyCrypt Ext adds commands for
+  scrolling through them with the mouse wheel. By default, `C-S-<wheel-down>`
+  (command: `ece-bufhist-prev`) scrolls backward, and `C-S-<wheel-up>` (command:
+  `ece-bufhist-next`) scrolls forward.
+- **Automatic centering of goals and echoing number of remaining goals**  
+  When a proof command is processed, Proof General redraws the goal/response
+  buffer without adjusting the window position, often leaving the interesting
+  parts scrolled out of view. This is especially inconvenient for goals with
+  large contexts or programs, where the interesting part is usually at the end
+  or middle. EasyCrypt Ext improves this by automatically centering the window
+  around (what it thinks is) a relevant point depending on the goal type. Since
+  this can hide the number of remaining goals (displayed at the top), EasyCrypt
+  Ext echoes this information in the minibuffer instead.
 
 -----
 
 # Tips and Tricks
 
+The following gathers a few additional quality-of-life improvements you might
+want to consider, either as complements to the features described above or
+independently.
+
 ## Automatic Completion Popup (Corfu)
 ## Documentation Popup (Corfu)
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="95%" alt="Demonstration of template documentation (with Corfu, popup)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="75%" alt="Demonstration of template documentation (with Corfu, popup)">
   <br>
   <em>Template documentation, with Corfu (popup)</em>
 </p>
