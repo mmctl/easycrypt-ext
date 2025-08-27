@@ -1,4 +1,36 @@
-;;; easycrypt-ext-cape.el --- Cape Integration for EasyCrypt Extensions -*- lexical-binding: t; -*-
+;;; easycrypt-ext-cape.el --- Cape Integration for EasyCrypt Ext -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2025 Matthias Meijers
+
+;; Author: Matthias Meijers <kernel@mmeijers.com>
+;; Maintainer: Matthias Meijers <kernel@mmeijers.com>
+;; URL: https://github.com/mmctl/easycrypt-ext
+
+;; This file is not part of GNU Emacs.
+
+;; This file is free software: you can redistribute it and/or modify it under
+;; the terms of the GNU General Public License as published by the Free Software
+;; Foundation, either version 3 of the License, or (at your option) any later
+;; version. This file is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+;; FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+;; details. You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+;; Package-Requires: ((emacs "29.1") (cape "2.1") (easycrypt-ext))
+
+;;; Commentary:
+;; Cape integration for EasyCrypt Ext, enabling keyword completion.
+;; Keywords are defined in `easycrypt-ext-consts.el'.
+
+;; For setup and usage instructions, see the README at
+;; https://github.com/mmctl/easycrypt-ext
+
+;; For more information on Cape, visit
+;; https://github.com/minad/cape
+
+;;; Code:
+
 (require 'easycrypt-ext)
 (require 'easycrypt-ext-consts)
 

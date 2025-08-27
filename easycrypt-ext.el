@@ -4,8 +4,7 @@
 
 ;; Author: Matthias Meijers <kernel@mmeijers.com>
 ;; Maintainer: Matthias Meijers <kernel@mmeijers.com>
-;; Created: 22 April 2025
-
+;; Created: April 2025
 ;; Keywords: abbrev, convenience, mouse, tools
 ;; URL: https://github.com/mmctl/easycrypt-ext
 
@@ -55,13 +54,14 @@
 ;; other packages. Each of these is provided in a separate file/feature
 ;; called `easycrypt-ext-X', where `X' is the name of the other package.
 ;; Specifically, these features are the following.
-;; - Keyword completion (requires `cape', specifically `cape-keyword',
-;;   see `easycrypt-ext-cape').
-;; - Code templates (requires `tempel', see `easycrypt-ext-tempel').
-;; - Execution of proof shell commands from a distance (requires `avy').
+;; - Keyword completion (requires Cape, specifically `cape-keyword';
+;;   see `easycrypt-ext-cape.el').
+;; - Code templates (requires Tempel; see `easycrypt-ext-tempel.el').
+;; - Execution of proof shell commands from a distance (requires `avy';
+;;   see `easycrypt-ext-avy.el').
 ;;
-;; For setup and usage instructions, refer to the accompanying README file
-;; (or https://github.com/mmctl/easycrypt-ext).
+;; For setup and usage instructions, see the README at
+;; https://github.com/mmctl/easycrypt-ext).
 ;;
 ;;; Code:
 

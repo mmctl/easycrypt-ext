@@ -1,4 +1,37 @@
-;;; easycrypt-ext-tempel.el --- Tempel Integration for EasyCrypt Extensions -*- lexical-binding: t; -*-
+;;; easycrypt-ext-tempel.el --- Tempel Integration for EasyCrypt Ext -*- lexical-binding: t; -*-
+;;
+;; Copyright (C) 2025 Matthias Meijers
+
+;; Author: Matthias Meijers <kernel@mmeijers.com>
+;; Maintainer: Matthias Meijers <kernel@mmeijers.com>
+;; URL: https://github.com/mmctl/easycrypt-ext
+
+;; This file is not part of GNU Emacs.
+
+;; This file is free software: you can redistribute it and/or modify it under
+;; the terms of the GNU General Public License as published by the Free Software
+;; Foundation, either version 3 of the License, or (at your option) any later
+;; version. This file is distributed in the hope that it will be useful, but
+;; WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+;; FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+;; details. You should have received a copy of the GNU General Public License
+;; along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+;; Package-Requires: ((emacs "29.1") (tempel "1.5") (easycrypt-ext))
+
+;;; Commentary:
+;; Tempel integration for EasyCrypt Ext, providing code template functionality.
+;; Templates are defined in `easycrypt-ext-templates.eld'.
+
+;; For setup and usage instructions, see the README at
+;; https://github.com/mmctl/easycrypt-ext
+
+;; For more information on Tempel, visit
+;; https://github.com/minad/tempel
+
+;;; Code:
+
+
 (require 'easycrypt-ext)
 (require 'tempel)
 
