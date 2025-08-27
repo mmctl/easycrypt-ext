@@ -477,7 +477,7 @@ When prompting for a pragma, EasyCrypt Ext provides possible completions based
 on a set of known pragmas.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-print-commands.gif" width="95%" alt="Demonstration of print commands">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-print-commands.gif" width="95%" alt="Demonstration of print commands">
   <br>
   <em>Printing item at point (first) and at mouse click (second).</em>
 </p>
@@ -538,7 +538,7 @@ is included in `completion-at-point-functions`, while `tempel-complete` and
 `tempel-expand` are available on dedicated keybindings.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of keyword completion (with Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-cape-keyword.gif" width="45%" alt="Demonstration of keyword completion (with Corfu)">
   <br>
   <em>Keyword completion using <code>cape-keyword</code> with Corfu</em>
 </p>
@@ -553,9 +553,9 @@ prefix. In such situations, representative names are chosen on a case-by-case
 basis. All templates are defined in `easycrypt-ext-templates.eld`.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-complete.gif" width="45%" alt="Demonstration of tempel completion (and Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-tempel-complete.gif" width="45%" alt="Demonstration of tempel completion (and Corfu)">
   &nbsp; &nbsp; &nbsp; &nbsp;
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel expansion (and Corfu)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-tempel-expand.gif" width="45%" alt="Demonstration of tempel expansion (and Corfu)">
   <br>
   <em>Template completion and expansion using <code>tempel-complete</code> (left) and <code>tempel-expand</code> (right) with Corfu</em>
 </p>
@@ -569,7 +569,7 @@ instead show a documentation popup beside the completions (see [Documentation
 Popup (Corfu)](#documentation-popup-corfu))
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="95%" alt="Demonstration of template documentation (with Corfu, window)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-tempel-documentation-corfu.gif" width="95%" alt="Demonstration of template documentation (with Corfu, window)">
   <br>
   <em>Template documentation with Corfu (window)</em>
 </p>
@@ -685,7 +685,7 @@ popup next to the completion menu, either explicitly on request or automatically
 after a short, configurable delay.
 
 <p align="center">
-  <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu-popup.gif" width="75%" alt="Demonstration of template documentation (with Corfu, popup)">
+  <img src="https://github.com/mmctl/easycrypt-ext/blob/assets/example-tempel-documentation-corfu-popup.gif" width="75%" alt="Demonstration of template documentation (with Corfu, popup)">
   <br>
   <em>Template documentation with Corfu (popup)</em>
 </p>
