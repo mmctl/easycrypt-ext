@@ -50,6 +50,26 @@ Specifically, these features are the following.
 
 ## Table of Contents
 
+- [EasyCrypt Extensions for Emacs (Proof-General)](#easycrypt-extensions-for-emacs-proof-general)
+  - [Table of Contents](#table-of-contents)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Basics](#basics)
+  - [Extras](#extras)
+  - [Enhancements](#enhancements)
+- [Features, Commands, and Keybindings](#features-commands-and-keybindings)
+  - [Indentation](#indentation)
+  - [Proof Shell](#proof-shell)
+  - [Executable (Command Line)](#executable-command-line)
+  - [Keyword Completion and Templates](#keyword-completion-and-templates)
+  - [Acting From a Distance](#acting-from-a-distance)
+  - [Miscellaneous](#miscellaneous)
+- [Tips and Tricks](#tips-and-tricks)
+  - [Automatic Completion Popup (Corfu)](#automatic-completion-popup-corfu)
+  - [Documentation Popup (Corfu)](#documentation-popup-corfu)
+  - [Additional Completion Functions (Cape)](#additional-completion-functions-cape)
+  - [Enhanced Imenu (Consult)](#enhanced-imenu-consult)
+
 -----
 
 # Getting Started
@@ -546,7 +566,7 @@ automatically as you type (see [Automatic Completion Popup
 documentation by pressing `M-h` while a template is selected in the completion
 popup. By default this opens a separate window, but it can be configured to
 instead show a documentation popup beside the completions (see [Documentation
-Popup (Corfu)](documentation-popup-corfu))
+Popup (Corfu)](#documentation-popup-corfu))
 
 <p align="center">
   <img src="https://github.com/mmctl/easycrypt-ext/blob/main/assets/example-tempel-documentation-corfu.gif" width="95%" alt="Demonstration of template documentation (with Corfu, window)">
@@ -567,9 +587,8 @@ C-y t`, though both the prefix and the bound templates are fully configurable.
 
 EasyCrypt Ext integrates with Avy by adding configurable dispatch actions for
 printing, searching, and locating items at a distance (optionally moving point
-as well). A detailed explanation of Avy’s dispatch system is out of scope for
-this README; see [Avy's repository](https://github.com/abo-abo/avy) for more
-information.
+as well). A detailed explanation of Avy’s dispatch system is out of scope here;
+see [Avy's repository](https://github.com/abo-abo/avy) for more information.
 
 | Customization variable   | Value                      | Description                      |
 |--------------------------|----------------------------|----------------------------------|
@@ -740,9 +759,9 @@ are handled during completion.
 author of Cape, Tempel, and Corfu. One of the many features it provides is an
 enhanced Imenu with live preview of items and smoother navigation between
 categories. To make this work well in non-standard modes, a bit of extra setup
-is needed. The details are out of scope here, but the snippet below can be added
-to the `:config` block of your `use-package` declaration for `easycrypt-ext` to enable
-a sensible default configuration.
+is needed. The details are out of scope here, but the snippet below provides a
+ready-to-use setup: simply add it to the `:config` block of your `use-package`
+declaration for `easycrypt-ext`.
 
 ```emacs-lisp
 (with-eval-after-load 'consult-imenu
