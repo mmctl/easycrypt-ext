@@ -72,19 +72,15 @@ require Distr.")
 
 (imp "import " q "."
      :doc
-     "Loads specified (theory) namespaces into the current context.
+     "Syntax: import THEORY_1 ... THEORY_n.
+
+Loads (namespace corresponding to) each THEORY_i into the current context.
+THEORY_i must be in the current context, which can be achieved by using
+`require' on the files containing the theories (see the `req' template for more
+information).
 
 Loading a namespace enables direct referencing to items from that
 namespace (i.e., without explicitly specifying the namespace).
-
-The theories for which to load the namespaces should be given as a
-space-separated list. It is allowed to have multiple `import' commands
-throughout a script/session, so it is not mandatory to specify all theories at
-once.
-
-Provided theories must be present into the current context, which can be achieved
-by using `require' on the files containing the theories (see the `req' template
-for more information).
 
 Example:
 import AllCore.
@@ -92,8 +88,10 @@ import List Distr.")
 
 (reqimp "require import " q "."
         :doc
-        "Loads specified EasyCrypt files and corresponding namespaces into the
-current context.
+        "Syntax: require import FILE_1 ... FILE_N.
+
+Loads (theory and namespace corresponding to) each FILE_i into the current
+context.
 
 Essentially syntactic sugar for a `require' statement followed by an `import'
 statement with the same arguments.
@@ -106,11 +104,13 @@ require import AllCore List Distr.")
 
 (froreq "from " p " require " q
         :doc
-        "Loads EasyCrypt files (given to `require') from the library (given to
-`from') into the current context.
+        "Syntax: from LIBRARY require FILE_1 ... FILE_N.
 
-The specified library must be in the current load path,
-typically added via an EasyCrypt project file or the `-I' command line option.
+Loads (theory corresponding to) each FILE_i from library LIBRARY into the
+current context.
+
+LIBRARY must be in the current load path, typically added via an EasyCrypt
+project file or the `-I' command line option.
 
 See the `req' template for more information on `require'.
 
@@ -119,8 +119,10 @@ from Jasmin require JModel JArray.")
 
 (froreqimp "from " p " require import " q
            :doc
-           "Loads EasyCrypt files and corresponding namespaces (given to `require
-import') from the library (given to `from') into the current context.
+           "Syntax: from LIBRARY require import FILE_1 ... FILE_N.
+
+Loads (theory and namespace corresponding to) each FILE_i from library LIBRARY
+into the current context.
 
 Essentially syntactic sugar for a `from require' statement followed by an
 `import' statement with the same arguments.
@@ -133,32 +135,30 @@ from Jasmin require import JModel JArray.")
 
 (clo "clone " q "."
      :doc
-     "Creates an instance of the specified theory in the current context.
+     "Syntax: clone THEORY.
+
+Creates an instance of THEORY in the current context. THEORY must be in
+the current context, which can be achieved by using `require' on the files
+containing THEORY (see the `req' template for more information).
 
 Instantiating a (potentially abstract) theory and its components through cloning
 allows for the reuse of definitions/results from the theory in different
-context, facilitating modularity.
-
-Only a single theory can be cloned at a time.
-
-The provided theory must be present in the current context, which can be
-achieved by using `require' on the files containing the theories (see the `req'
-template for more information).
+context, facilitating modularity. Only a single theory can be cloned at a time.
 
 See the other templates starting with `clo' for more information on the cloning
 mechanism and its features. Particularly, see the templates `cloas', `clowi',
-`cloimp', and `cloinc' for the `as', `with', `import' and `include' features.
+`cloimp', and `cloinc' for the use of `as', `with', `import' and `include'
+with `clone'.
 
 Example:
 clone KeyedHashFunctions.")
 
 (cloas "clone " p " as " q "."
        :doc
-       "Creates an instance of the theory (given to `clone')
-under the name (given to `as') in the current context.
+       "Syntax: clone THEORY as INSTNAME.
 
-The specified name should be a valid theory name not yet used in
-the current context.
+Creates an instance of THEORY under the name INSTNAME in the current context.
+INSTNAME should be a valid theory name not yet used in the current context.
 
 See the `clo' template for more information on `clone'.
 
@@ -168,35 +168,34 @@ clone KeyedHashFunctions as KHFs.")
 (clowi "clone " p " with" n>
        q "."
        :doc
-       "Creates an instance of the theory (given to `clone') in the current
-context with some of its items instantiated using items from the current context
-(as specified by the argument of `with').
+       "Syntax: clone THEORY with INSTSPEC.
 
-The argument of `with' should be a comma-separated list
-(whitespace is allowed but ignored) with entries of the form
-`<itemkind> <origitemname> <inst> <newitemname>':
-- `<itemkind>' is the kind of the item to instantiate, e.g., `type', `op'.
+Creates an instance of THEORY with its items instantiated as specified by
+INSTSPEC.
+
+INSTSPEC should be a comma-separated list (whitespace is allowed but ignored)
+with entries of the form `<itemkind> <origitemname> <inst> <newitemexpr>':
+- `<itemkind>' is the kind of the item to
+  instantiate, e.g., `type', `op'.
 - `<origitemname>' is the name of the item to instantiate.
-- `<inst>' is the type of instantiation, which may be one of
-  `<-', `<=', or `='. The first fully replaces every reference to the
-  original item from the cloned theory, removing the original definition;
-  the second fully replaces every reference to the original item from the
-  cloned theory, changing the original definition to be an equality with the
-  new item; the third keeps every reference to the original item from the
-  cloned theory, only changing the original definition to be
-  an equality with the new item.
-- `<newitemname>' is the name of the item from the current context
-  to instantiate the original item from the cloned theory with.
+- `<inst>' is the type of instantiation, which may be one of `<-',
+   `<=', or `='. The first fully replaces every reference to the original item from
+   THEORY, removing the original definition; the second fully replaces
+   every reference to the original item from THEORY, changing the
+   original definition to be an equality with the new item; the third keeps every
+   reference to the original item from THEORY, only changing the
+   original definition to be an equality with the new item.
+- `<newitemexpr>' is an expression, typically involving items from the current
+   context, to instantiate `<origitemname>'  with.
 
 The list should be terminated with a period (`.').
 
-When you instantiate abstract items that have axiomatized properties in the
-cloned theory, you probably (should) want to prove these axioms actually hold
-for the concrete items you used to instantiate them. This can be achieved by
-using the special keyword `proof' as the final entry. There should be no comma
-between the last actual (instantiation) entry and `proof'. As argument, this
-keyword takes a comma-separated list of axioms to prove. To prove every axiom,
-pass `*' as argument, i.e., `proof *'.
+When you instantiate abstract items that have axiomatized properties in THEORY,
+you probably (should) want to prove these axioms actually hold the
+instantiations. This can be achieved by using the special keyword `proof' as the
+final entry of INSTSPEC. There should be no comma between the last
+actual (instantiation) entry and `proof'. As arguments, `proof' takes a
+comma-separated list of axioms to prove. You can pass `*' to prove every axiom.
 
 See the `clo' template for more information on `clone'.
 
@@ -205,36 +204,39 @@ clone KeyedHashFunctions with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (cloaswi "clone " p " as " p " with" n>
          q "."
          :doc
-         "Creates an instance of the theory (given to `clone') under the name
-(given to `as') in the current context with some of its items instantiated using
-items from the current context (as specified by the argument of `with').
+         "Syntax: clone THEORY as INSTNAME with INSTSPEC
+
+Creates an instance of THEORY under the name INSTNAME with its items
+instantiated as specified by INSTSPEC.
 
 See the `clo', `cloas', and `clowi' templates for more information on
-`clone' and its `as'/`with' features.
+`clone' and `as'/`with'.
 
 Example:
 clone KeyedHashFunctions as KHFs with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (cloimp "clone import " q "."
         :doc
-        "Creates an instance of the theory (given to `clone import') and loads
-the corresponding namespace in the current context.
+        "Syntax: clone import THEORY.
+
+Creates an instance of THEORY and loads the corresponding namespace in the
+current context.
 
 Essentially syntactic sugar for a `clone' statement followed by an `import'
-statement with the same theory argument.
+statement with the same argument.
 
 See the `clo' and `imp' templates for more information on `clone' and
 `import'.
@@ -244,12 +246,13 @@ clone import KeyedHashFunctions.")
 
 (cloimpas "clone import " p " as " q "."
           :doc
-          "Creates an instance of the theory (given to `clone import') under the
-name (given to `as') and loads the corresponding namespace in the current
-context.
+          "Syntax: clone import THEORY as INSTNAME.
+
+Creates an instance of THEORY under the name INSTNAME and loads the
+corresponding namespace in the current context.
 
 Essentially syntactic sugar for a `clone as' statement followed by an `import'
-statement with the specified name (given to `as') as argument.
+statement with INSTNAME.
 
 See the `cloas' and `imp' templates for more information on `clone as' and
 `import'.
@@ -260,13 +263,13 @@ clone import KeyedHashFunctions as KHFs.")
 (cloimpwi "clone import " p " with" n>
           q "."
           :doc
-          "Creates an instance of the theory (given to `clone import') with some
-of its items instantiated using items from the current context (as specified by
-the argument of `with') and loads the corresponding namespace in the current
-context.
+          "Syntax: clone import THEORY with INSTSPEC.
+
+Creates an instance of THEORY with its items instantiated as specified by
+INSTSPEC, and loads the corresponding namespace in the current context.
 
 Essentially syntactic sugar for a `clone with' statement followed by an `import'
-statement with the same theory argument.
+statement with THEORY.
 
 See the `clowi' and `imp' templates for more information on `clone with' and
 `import'.
@@ -276,20 +279,21 @@ clone import KeyedHashFunctions with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (cloimpaswi "clone import " p " as " p " with" n>
             q "."
             :doc
-            "Creates an instance of the theory (given to `clone import') under
-the name (given to `as') with some of its items instantiated using items from
-the current context (as specified by the argument of `with') and loads the
-corresponding namespace in the current context.
+            "Syntax: clone import THEORY as INSTNAME with INSTSPEC.
+
+Creates an instance of THEORY under the name INSTNAME with its items
+instantiated as specified by INSTSPEC, and loads the corresponding namespace in
+the current context.
 
 Essentially syntactic sugar for a `clone as with' statement followed by an
-`import' statement with the specified name (given to `as') as argument.
+`import' statement with INSTNAME.
 
 See the `cloaswi' and `imp' templates for more information on `clone as with'
 and `import'.
@@ -299,18 +303,20 @@ clone import KeyedHashFunctions as KHFs with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (cloinc "clone include " q "."
         :doc
-        "Creates an instance of the specified theory and includes it in the
-current context as if the code of the resulting instance was inserted literally.
+        "Syntax: clone include THEORY.
+
+Creates an instance of THEORY and includes it in the current context as if the
+code of the resulting instance was inserted literally.
 
 Certain statements do not have the same effect as they would have if the
-statements were inserted literally, particularly \"meta-statements\" like
-`import'.
+statements were actually inserted literally, particularly some
+\"meta-statements\" like `import'.
 
 See the `clo' template for more information on `clone'.
 
@@ -319,59 +325,63 @@ clone include KeyedHashFunctions.")
 
 (cloincas "clone include " p " as " q "."
           :doc
-          "Creates an instance of the theory (given to `clone include') under
-the name (given to `as') and includes it in the current context as if the code
-of the resulting instance was inserted literally.
+          "Syntax: clone include THEORY as INSTNAME.
+
+Creates an instance of THEORY under the name INSTNAME and includes it in the
+current context as if the code of the resulting instance was inserted literally.
 
 See the `cloinc' and `cloas' templates for more information on `clone include'
-and the `as' feature.
+and `as'.
 
 clone include KeyedHashFunctions as KHFs.")
 
 (cloincwi "clone include " p " with" n>
           q "."
           :doc
-          "Creates an instance of the theory (given to `clone include') with
-some of its items instantiated using items from the current context (as
-specified by the argument of `with') and includes it in the current context as
-if the code of the resulting instance was inserted literally.
+          "Syntax: clone include THEORY with INSTSPEC.
+
+Creates an instance of THEORY with its items instantiated as specified by
+INSTSPEC, and includes it in the current context as if the code of the resulting
+instance was inserted literally.
 
 See the `cloinc' and `clowi' templates for more information on `clone include'
-and the `with' feature.
+and `with'.
 
 Example:
 clone include KeyedHashFunctions with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (cloincaswi "clone include " p " as " p " with" n>
             q "."
             :doc
-            "Creates an instance of the theory (given to `clone inclue') under
-the name (given to `as') with some of its items instantiated using items from
-the current context (as specified by the argument to `with') and includes it in
-the current context as if the code of the resulting instance was inserted
-literally.
+            "Syntax: clone include THEORY as INSTNAME with INSTSPEC.
+
+Creates an instance of THEORY under the name INSTNAME with its items
+instantiated as specified by INSTSPEC, and includes it in the current context as
+if the code of the resulting instance was inserted literally.
 
 See the `cloinc', `cloas', and `clowi' templates for more information
-on `clone include' and the `as/with' feature.
+on `clone include' and `as/with'.
 
 Example:
 clone include KeyedHashFunctions as KHFs with
   type key_t <- keys,
   type in_t <- input,
   type out_t <- output,
-  op f <- hashfun
+  op f <- (fun k x => hash (k ++ x))
 
   proof *.")
 
 (hinsim "hint simplify " q
         :doc
-        "Adds the specified axioms/lemmas as hints for the `simplify' tactic.
+        "Syntax: hint simplify AXLEM_1, ..., AXLEM_N.
+
+Adds each axiom/lemma AXLEM_i as hint for the `simplify' tactic.
 
 Example:
 hint simplify oget_some, oget_none.")
@@ -385,7 +395,11 @@ hint simplify oget_some, oget_none.")
 
 
 ;;; Functional specification
-(typ "type " p " = " q ".")
+(typ "type " p " = " q "."
+     :doc
+     "Syntax: type TYPENAME = TYPEEXPR.
+")
+
 (typn "type " p " =" n>
       q "." >)
 
@@ -615,9 +629,9 @@ hint simplify oget_some, oget_none.")
           q n>
           "}" >)
 
-(whis "while (" p ") {" n>
-      q
-      "}" >)
+(while "while (" p ") {" n>
+       q
+       "}" >)
 
 (ass p "<-" q ";")
 (cals p "<@" q ";")

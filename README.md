@@ -79,7 +79,7 @@ Specifically, these features are the following.
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
 > skipping most of the explanatory text and jumping straight to the code
-> snippets. 
+> snippets.
 
 The setup is presented in layers. You can stop at any stage or continue stacking
 more features:[^1]
@@ -104,7 +104,7 @@ of the available features, and [Tips and Tricks](#tips-and-tricks) for further
 quality-of-life improvements.
 
 <details>
-<summary>:eyes: <em>Initialization file</em> :eyes:</summary>
+<summary>:eyes: <em>Your initialization file</em> :eyes:</summary>
 
 Most of the instructions below involve editing your
 [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html).
