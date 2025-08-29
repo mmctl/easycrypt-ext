@@ -173,11 +173,11 @@ quality-of-life improvements.
     ```
 
     <details>
-        <summary>:eyes: *Changing settings* :eyes:</summary>
+    <summary>:eyes: <em>Changing settings</em> :eyes:</summary>
 
-        In the above, you can enable (resp. disable) a setting by assigning `t`
-        (resp. `nil`). (For `setopt`, the first argument is the variable and the
-        second argument is the assigned value.)
+    In the above, you can enable (resp. disable) a setting by assigning `t`
+    (resp. `nil`). (For `setopt`, the first argument is the variable and the
+    second argument is the assigned value.)
     </details>
 
 3. **Restart Emacs**  
