@@ -29,24 +29,24 @@
 ;; This package aims to add useful extensions to this EasyCrypt front-end.
 ;; Basic/standalone features include the following.
 ;; - Improved (but still ad-hoc) indentation.
-;; - Imenu integration; i.e., proper indexing of items (like
-;;   axioms, lemmas, types, operators, theorems) to allow for
-;;   quick navigation through Imenu.
 ;; - Execution of proof shell commands through keybindings or mouse clicks
 ;;   (eliminating the need to manually type the corresponding commands).
 ;;   Supported commands are `print', `search', and `locate'.
-;; - Interactive setting of pragmas, with completion for most of them.
-;;   Allows for, e.g., quickly enabling/disabling weak-check mode
-;;   to process parts of the proof script faster.
 ;; - Execution of command line (sub)commands from Emacs through keybindings.
 ;;   Supported commands are `compile', `docgen', `runtest', `why3config',
 ;;   and `--help' (which is actually an option, but you get the point).
 ;;   Where relevant, this functionality is extended to the directory/project
 ;;   level, enabling you to execute a (sub)commands for each EasyCrypt
 ;;   file in a project or directory (tree).
+;; - Imenu integration; i.e., proper indexing of items (like
+;;   axioms, lemmas, types, operators, theorems) to allow for
+;;   quick navigation through Imenu.
 ;; - Automatic "smart" centering of goal buffer and echoing of remaining goals.
 ;;   This tries to minimize the need for scrolling each time you processing
 ;;   a command when dealing with larger goals.
+;; - Interactive setting of pragmas, with completion for most of them.
+;;   Allows for, e.g., quickly enabling/disabling weak-check mode
+;;   to process parts of the proof script faster.
 ;; - Menu bar and mode line menu for managing and using (selected features of)
 ;;   EasyCrypt Ext.
 

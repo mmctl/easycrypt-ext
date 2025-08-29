@@ -8,28 +8,28 @@ core, it features an interactive theorem prover with a front-end implemented in
 This package aims to add useful extensions to this EasyCrypt front-end.
 Basic/standalone features include the following.
 - Improved (but still ad-hoc) indentation.
-- Imenu integration; i.e., proper indexing of items (like
-  axioms, lemmas, types, operators, theorems) to allow for
-  quick navigation through Imenu.
-- Repeat (key)maps for quickly repeating certain commands
-  after issuing them once. Currently implemented for processing,
-  undoing, and deleting proof commands, as well as browsing
-  through goal/response history (if enabled through Proof General).
 - Execution of proof shell commands through keybindings or mouse clicks
   (eliminating the need to manually type the corresponding commands).
   Supported commands are `print`, `search`, and `locate`.
-- Interactive setting of pragmas, with completion for most of them.
-  Allows for, e.g., quickly enabling/disabling weak-check mode
-  to process parts of the proof script faster.
 - Execution of command line (sub)commands from Emacs through keybindings.
   Supported commands are `compile`, `docgen`, `runtest`, `why3config`,
   and `--help` (which is actually an option, but you get the point).
   Where relevant, this functionality is extended to the directory/project
   level, enabling you to execute a (sub)commands for each EasyCrypt
   file in a project or directory (tree).
+- Imenu integration; i.e., proper indexing of items (like
+  axioms, lemmas, types, operators, theorems) to allow for
+  quick navigation through Imenu.
 - Automatic "smart" centering of goal buffer and echoing of remaining goals.
   This tries to minimize the need for scrolling each time you process
   a command, especially when dealing with larger goals.
+- Interactive setting of pragmas, with completion for most of them.
+  Allows for, e.g., quickly enabling/disabling weak-check mode
+  to process parts of the proof script faster.
+- Repeat (key)maps for quickly repeating certain commands
+  after issuing them once. Currently implemented for processing,
+  undoing, and deleting proof commands, as well as browsing
+  through goal/response history (if enabled through Proof General).
 - Menu bar and mode line menu for managing and using (selected features of)
   EasyCrypt Ext.
 
@@ -103,22 +103,25 @@ Keybindings](#features-commands-and-keybindings) for an overview and explanation
 of the available features, and [Tips and Tricks](#tips-and-tricks) for further
 quality-of-life improvements.
 
-> :eyes: **Finding your initialization file** :eyes:  
-> Most of the instructions below involve editing your
-> [Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html).
-> This file can live in different places, most commonly:
-> - `~/emacs.d/init.el`
-> - `~/.emacs`
-> - `~/.config/emacs/init.el`
+<details>
+<summary>:eyes: <em>Initialization file</em> :eyes:</summary>
 
-> To check which one your Emacs uses:
-> 1. Open Emacs.
-> 2. Press `C-h v` (Control + h, then v).
-> 3. Type `user-init-file` and hit Enter.
-> Emacs will display something like:
-> ```
-> Its value is "/home/you/.emacs.d/init.el"
-> ```
+Most of the instructions below involve editing your
+[Emacs initialization file](https://www.gnu.org/software/emacs/manual/html_node/emacs/Init-File.html).
+This file can live in different places, most commonly:
+- `~/emacs.d/init.el`
+- `~/.emacs`
+- `~/.config/emacs/init.el`
+ To check which one your Emacs uses:
+1. Open Emacs.
+2. Press `C-h v` (Control + h, then v).
+3. Type `user-init-file` and hit Enter.
+Emacs will display something like:
+```
+Its value is "/home/you/.emacs.d/init.el"
+```
+This is your initialization file.
+</details>
 
 ## Prerequisites
 
@@ -380,7 +383,7 @@ interface). [^2]
 2. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs starts without errors,
    you should be good to go.
-   
+
 Done! Corfu and Vertico should now be up-and-running from launch.
 To test them right away, try the following:
 - Open your initialization file with `find-file`, bound by default to `C-x C-f`
@@ -409,33 +412,38 @@ lists the most relevant commands and their default keybindings. Although often
 not mentioned explicitly, some commands are also available through the menu bar
 and mode line menus.
 
-> :eyes: **General configuration** :eyes:  
-> Most packages, including EasyCrypt Ext and the external ones mentioned here,
-> expose configuration options through customization variables. If you know the
-> name of a variable, you can look up its documentation by pressing `C-h v`
-> (Control + h, then v), typing the variable name, and hitting Enter. You can
-> set these variables with `setopt` in your initialization file, typically in
-> the `:init` block of the corresponding package's `use-package` declaration.
-> Alternatively, you can search and set these variables through [Emacs's
-> customization
-> interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html),
+<details>
+<summary>:eyes:<em>General configuration</em>:eyes:</summary>
 
-> :eyes: **Keybindings** :eyes:  
-> To avoid conflicts with other keybindings (from Proof General or elsewhere),
-> nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
->
-> Depending on your personal setup and workflow, there may be (a lot) more
-> convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
-> COMMAND)` in the `:config` block of the relevant `use-package` declaration
-> (typically of the package defining the command). For example, to bind the
-> command `ece-print` (provided by EasyCrypt Ext) to "C-c C-p", you could add
-> the following to the `use-package` declaration for `easycrypt-ext`:
-> ```
-> (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
-> ```
-> (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
-> its commands.)
+Most packages, including EasyCrypt Ext and the external ones mentioned here,
+expose configuration options through customization variables. If you know the
+name of a variable, you can look up its documentation by pressing `C-h v`
+(Control + h, then v), typing the variable name, and hitting Enter. You can
+set these variables with `setopt` in your initialization file, typically in
+the `:init` block of the corresponding package's `use-package` declaration.
+Alternatively, you can search and set these variables through [Emacs's
+customization
+interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html),
+</details>
 
+<details>
+<summary>:eyes:<em>Keybindings</em>:eyes:</summary>
+
+To avoid conflicts with other keybindings (from Proof General or elsewhere),
+nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
+
+Depending on your personal setup and workflow, there may be (a lot) more
+convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
+COMMAND)` in the `:config` block of the relevant `use-package` declaration
+(typically of the package defining the command). For example, to bind the
+command `ece-print` (provided by EasyCrypt Ext) to "C-c C-p", you could add
+the following to the `use-package` declaration for `easycrypt-ext`:
+```
+(keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
+```
+(`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
+its commands.)
+</details>
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
