@@ -117,7 +117,7 @@ This file can live in different places, most commonly:
 2. Press `C-h v` (Control + h, then v).
 3. Type `user-init-file` and hit Enter.
 Emacs will display something like:
-```
+```emacs-lisp
 Its value is "/home/you/.emacs.d/init.el"
 ```
 This is your initialization file.
@@ -436,9 +436,9 @@ Depending on your personal setup and workflow, there may be (a lot) more
 convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
 COMMAND)` in the `:config` block of the relevant `use-package` declaration
 (typically of the package defining the command). For example, to bind the
-command `ece-print` (provided by EasyCrypt Ext) to "C-c C-p", you could add
+command `ece-print` (provided by EasyCrypt Ext) to `C-c C-p`, you could add
 the following to the `use-package` declaration for `easycrypt-ext`:
-```
+```emacs-lisp
 (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
 ```
 (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
