@@ -170,19 +170,15 @@ quality-of-life improvements.
 
         ;; Disable formatting for newlines after each command.
         (setopt easycrypt-one-command-per-line nil))
-     ```
+    ```
 
-      > :eyes: **Changing settings** :eyes:  
-      > In the above, you can enable (resp. disable) a setting by assigning `t`
-      > (resp. `nil`). (For `setopt`, the first argument is the variable and the
-      > second argument is the assigned value.)
+    <details>
+        <summary>:eyes: *Changing settings* :eyes:</summary>
 
-      <details>
-      <summary>Changing settings :eyes:</summary>
-      In the above, you can enable (resp. disable) a setting by assigning `t`
-      (resp. `nil`). (For `setopt`, the first argument is the variable and the
-      second argument is the assigned value.)
-      </details>
+        In the above, you can enable (resp. disable) a setting by assigning `t`
+        (resp. `nil`). (For `setopt`, the first argument is the variable and the
+        second argument is the assigned value.)
+    </details>
 
 3. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs launches without
