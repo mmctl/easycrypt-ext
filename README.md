@@ -79,7 +79,7 @@ Specifically, these features are the following.
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
 > skipping most of the explanatory text and jumping straight to the code
-> snippets.
+> snippets. 
 
 The setup is presented in layers. You can stop at any stage or continue stacking
 more features:[^1]
@@ -122,7 +122,7 @@ quality-of-life improvements.
 
 ## Prerequisites
 
-> :eyes: **Skipping prerequisites** :eyes:  
+> :speech_balloon: **Skipping prerequisites** :speech_balloon:  
 > Even if you already set up MELPA and Proof General, skimming these
 > instructions may still be useful for learning about recommended defaults and
 > configuration options that integrate better with this package.
@@ -133,10 +133,10 @@ quality-of-life improvements.
    package system the next time Emacs launches.
 
    > :exclamation: **No need to repeat** :exclamation:  
-   > If your initialization file already includes `(require 'package)` and
-   > `(package-initialize)`, you don’t need to add them again. In that case,
-   > simply add the second line from the snippet, placing it after `(require
-   > 'package)`.
+   > If your initialization file already includes any of the following lines,
+   > you don't need to add them again. Simply add the missing lines from the
+   > snippet in the same relative place (i.e., first`(require 'package)`,
+   > then `(add-to-list ...)`, and lastly `package-initialize`).
 
    ```emacs-lisp
    (require 'package)
@@ -176,6 +176,13 @@ quality-of-life improvements.
       > In the above, you can enable (resp. disable) a setting by assigning `t`
       > (resp. `nil`). (For `setopt`, the first argument is the variable and the
       > second argument is the assigned value.)
+
+      <details>
+      <summary>Changing settings :eyes:</summary>
+      In the above, you can enable (resp. disable) a setting by assigning `t`
+      (resp. `nil`). (For `setopt`, the first argument is the variable and the
+      second argument is the assigned value.)
+      </details>
 
 3. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs launches without
