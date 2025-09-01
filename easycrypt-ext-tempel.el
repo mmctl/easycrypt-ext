@@ -17,8 +17,6 @@
 ;; details. You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-;; Package-Requires: ((emacs "29.1") (tempel "1.5") (easycrypt-ext))
-
 ;;; Commentary:
 ;; Tempel integration for EasyCrypt Ext, providing code template functionality.
 ;; Templates are defined in `easycrypt-ext-templates.eld'.

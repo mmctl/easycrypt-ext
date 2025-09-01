@@ -17,8 +17,6 @@
 ;; details. You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
-;; Package-Requires: ((emacs "29.1") (cape "2.1") (easycrypt-ext))
-
 ;;; Commentary:
 ;; Cape integration for EasyCrypt Ext, enabling keyword completion.
 ;; Keywords are defined in `easycrypt-ext-consts.el'.

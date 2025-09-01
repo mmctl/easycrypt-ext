@@ -1,4 +1,4 @@
-;;; easycrypt-ext-tempel.el --- Avy Integration for EasyCrypt Ext -*- lexical-binding: t; -*-
+;;; easycrypt-ext-avy.el --- Avy Integration for EasyCrypt Ext -*- lexical-binding: t; -*-
 ;;
 ;; Copyright (C) 2025 Matthias Meijers
 
@@ -16,8 +16,6 @@
 ;; FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
 ;; details. You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <https://www.gnu.org/licenses/>.
-
-;; Package-Requires: ((emacs "29.1") (avy "0.5.0") (easycrypt-ext))
 
 ;;; Commentary:
 ;; Avy integration for EasyCrypt Ext, enabling actions from a distance.
