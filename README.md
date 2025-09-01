@@ -158,21 +158,21 @@ This is your initialization file.
     ;; Front-end framework for proof assistants, used by EasyCrypt.
     ;; See: https://github.com/ProofGeneral/PG (and https://proofgeneral.github.io/)
     (use-package proof-general
-        :ensure t ; Install if not already available
-        :pin melpa ; Get the version from Melpa
+      :ensure t ; Install if not already available
+      :pin melpa ; Get the version from Melpa
 
-        :init
-        ;; Disable splash screen
-        (setopt proof-splash-enable nil)
+      :init
+      ;; Disable splash screen
+      (setopt proof-splash-enable nil)
 
-        ;; Keep a browsable goal/response history without undoing steps
-        (setopt proof-keep-response-history t)
+      ;; Keep a browsable goal/response history without undoing steps
+      (setopt proof-keep-response-history t)
 
-        ;; Disable automatic indentation in EasyCrypt proof scripts.
-        (setopt easycrypt-script-indent nil)
+      ;; Disable automatic indentation in EasyCrypt proof scripts.
+      (setopt easycrypt-script-indent nil)
 
-        ;; Disable formatting for newlines after each command.
-        (setopt easycrypt-one-command-per-line nil))
+      ;; Disable formatting for newlines after each command.
+      (setopt easycrypt-one-command-per-line nil))
     ```
 
     <details>
@@ -200,25 +200,25 @@ This is your initialization file.
     ```emacs-lisp
     ;; Install EasyCrypt Ext if not already available
     (unless (package-installed-p 'easycrypt-ext)
-        (package-vc-install "https://github.com/mmctl/easycrypt-ext" nil 'Git
-        'easycrypt-ext))
+      (package-vc-install "https://github.com/mmctl/easycrypt-ext" nil 'Git
+                          'easycrypt-ext))
 
     ;; EasyCrypt Extensions
     ;; Extensions for EasyCrypt in Emacs
     ;; See: https://github.com/mmctl/easycrypt-ext
     (use-package easycrypt-ext
-        :ensure nil ; Already installed above
+      :ensure nil ; Already installed above
 
-        :hook
-        ;; Ensure EasyCrypt Ext loads whenever EasyCrypt loads
-        (easycrypt-mode . easycrypt-ext-mode)
-        (easycrypt-goals-mode . easycrypt-ext-goals-mode)
-        (easycrypt-response-mode . easycrypt-ext-response-mode)
+      :hook
+      ;; Ensure EasyCrypt Ext loads whenever EasyCrypt loads
+      (easycrypt-mode . easycrypt-ext-mode)
+      (easycrypt-goals-mode . easycrypt-ext-goals-mode)
+      (easycrypt-response-mode . easycrypt-ext-response-mode)
 
-        :config
-        ;; Enable repeat maps (globally) to quickly repeat certain commands
-        ;; after issuing them once.
-        (repeat-mode 1))
+      :config
+      ;; Enable repeat maps (globally) to quickly repeat certain commands
+      ;; after issuing them once.
+      (repeat-mode 1))
     ```
 
 2. **Restart Emacs**  
@@ -245,31 +245,31 @@ experience!
    repositories (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
 
     ```emacs-lisp
-;; Cape (keyword completion)
-;; https://github.com/minad/cape
-(use-package cape
-  :ensure t)
+    ;; Cape (keyword completion)
+    ;; https://github.com/minad/cape
+    (use-package cape
+      :ensure t)
 
-;; Tempel (code templates)
-;; https://github.com/minad/tempel
-(use-package tempel
-  :ensure t
+    ;; Tempel (code templates)
+    ;; https://github.com/minad/tempel
+    (use-package tempel
+      :ensure t
 
-  :bind
-  ;; Bind template completion and expansion to "M-+" and "M-*", respectively
-  ;; (change this to whatever keybindings you prefer)
-  ("M-+" . tempel-complete)
-  ("M-*" . tempel-expand))
+      :bind
+      ;; Bind template completion and expansion to "M-+" and "M-*", respectively
+      ;; (change this to whatever keybindings you prefer)
+      ("M-+" . tempel-complete)
+      ("M-*" . tempel-expand))
 
-;; Avy (jumping and acting from a distance)
-;; https://github.com/abo-abo/avy
-(use-package avy
-  :ensure t
+    ;; Avy (jumping and acting from a distance)
+    ;; https://github.com/abo-abo/avy
+    (use-package avy
+      :ensure t
 
-  :bind
-  ;; Bind character jump command to "M-g j"
-  ;; (change this to whatever jump command and keybinding you prefer)
-  ("M-g j" . avy-goto-char))
+      :bind
+      ;; Bind character jump command to "M-g j"
+      ;; (change this to whatever jump command and keybinding you prefer)
+      ("M-g j" . avy-goto-char))
     ```
 
 2. **Set up EasyCrypt Ext integration with external packages**  
@@ -281,42 +281,42 @@ experience!
    options, see [Tips and Tricks](#tips-and-tricks).
 
    ```emacs-lisp
-(use-package easycrypt-ext-cape
-  :ensure nil ; Comes with EasyCrypt Ext
+    (use-package easycrypt-ext-cape
+      :ensure nil ; Comes with EasyCrypt Ext
 
-  :hook
-  ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
-  (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
+      :hook
+      ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
+      (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
 
-  :init
-  ;; Add (resp. remove) `cape-keyword' to (resp. from) the functions
-  ;; used for completion whenever EasyCrypt Ext loads (resp. unloads)
-  (defun setup-ece-cape-keyword ()
-    (if easycrypt-ext-mode
-        (add-hook 'completion-at-point-functions #'cape-keyword nil t)
-      (remove-hook 'completion-at-point-functions #'cape-keyword t)))
-  (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
+      :init
+      ;; Add (resp. remove) `cape-keyword' to (resp. from) the functions
+      ;; used for completion whenever EasyCrypt Ext loads (resp. unloads)
+      (defun setup-ece-cape-keyword ()
+        (if easycrypt-ext-mode
+            (add-hook 'completion-at-point-functions #'cape-keyword nil t)
+          (remove-hook 'completion-at-point-functions #'cape-keyword t)))
+      (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
 
-(use-package easycrypt-ext-tempel
-  :ensure nil ; Comes with EasyCrypt Ext
+    (use-package easycrypt-ext-tempel
+      :ensure nil ; Comes with EasyCrypt Ext
 
-  :hook
-  ;; Ensure Tempel integration loads whenever EasyCrypt Ext loads
-  (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
+      :hook
+      ;; Ensure Tempel integration loads whenever EasyCrypt Ext loads
+      (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
 
-  :init
-  ;; Set keybinding to accesss predefined template map to "C-c C-y t",
-  ;; (change this to whatever keybinding you prefer)
-  (setopt ece-tempel-template-map-prefix "C-c C-y t"))
+      :init
+      ;; Set keybinding to accesss predefined template map to "C-c C-y t",
+      ;; (change this to whatever keybinding you prefer)
+      (setopt ece-tempel-template-map-prefix "C-c C-y t"))
 
-(use-package easycrypt-ext-avy
-  :ensure nil ; Comes with EasyCrypt Ext
+    (use-package easycrypt-ext-avy
+      :ensure nil ; Comes with EasyCrypt Ext
 
-  :hook
-  ;; Ensure Avy integration loads whenever EasyCrypt Ext loads
-  (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
-  (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
-  (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
+      :hook
+      ;; Ensure Avy integration loads whenever EasyCrypt Ext loads
+      (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
+      (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
+      (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
    ```
 
 3. **Restart Emacs**  
@@ -366,21 +366,21 @@ interface). [^2]
     ;; Corfu (in-buffer completion pop-up/interface)
     ;; https://github.com/minad/corfu
     (use-package corfu
-        :ensure t
+      :ensure t
 
-        :config
-        ;; Activate Corfu (globally)
-        (global-corfu-mode 1))
+      :config
+      ;; Activate Corfu (globally)
+      (global-corfu-mode 1))
 
     ;; Vertico (minibuffer completion interface)
     ;; https://github.com/minad/vertico
     (use-package vertico
-        :ensure t
+      :ensure t
 
-        :config
-        ;; Activate Vertico (globally)
-        (vertico-mode 1))
-   ```
+      :config
+      ;; Activate Vertico (globally)
+      (vertico-mode 1))
+    ```
 
 2. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs starts without errors,
