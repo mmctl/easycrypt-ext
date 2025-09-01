@@ -244,10 +244,6 @@ experience!
    for most use cases. For configuration options and ideas, see the package
    repositories (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
 
-[^11]: Technically, these packages are already installed automatically with
-EasyCrypt Ext, so separate `use-package` statements with `:ensure t` are not
-strictly necessary. We still include them here for consistency.
-
     ```emacs-lisp
     ;; Cape (keyword completion)
     ;; https://github.com/minad/cape
@@ -334,6 +330,10 @@ further detailed in [Features, Commands, and
 Keybindings](#features-commands-and-keybindings). For additional improvement of
 your experience, check out [Enhancements](#enhancements) or [Tips and
 Tricks](#tips-and-tricks)!
+
+[^11]: Technically, these packages are already installed automatically with
+    EasyCrypt Ext, so separate `use-package` statements with `:ensure t` are not
+    strictly necessary. We still include them here for consistency.
 
 ## Enhancements
 
