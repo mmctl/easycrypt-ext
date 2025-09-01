@@ -245,32 +245,31 @@ experience!
    repositories (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
 
     ```emacs-lisp
-    ;; Cape (keyword completion)
-    ;; https://github.com/minad/cape
-    (use-package cape
-        :ensure t)
+;; Cape (keyword completion)
+;; https://github.com/minad/cape
+(use-package cape
+  :ensure t)
 
-    ;; Tempel (code templates)
-    ;; https://github.com/minad/tempel
-    (use-package tempel
-        :ensure t
+;; Tempel (code templates)
+;; https://github.com/minad/tempel
+(use-package tempel
+  :ensure t
 
-        :bind
-        ;; Bind template completion and expansion to "M-+" and "M-*", respectively
-        ;; (change this to whatever keybindings you prefer)
-        ("M-+" . tempel-complete)
-        ("M-*" . tempel-expand)
+  :bind
+  ;; Bind template completion and expansion to "M-+" and "M-*", respectively
+  ;; (change this to whatever keybindings you prefer)
+  ("M-+" . tempel-complete)
+  ("M-*" . tempel-expand))
 
-    ;; Avy (jumping and acting from a distance)
-    ;; https://github.com/abo-abo/avy
-    (use-package avy
-        :ensure t
-        :pin melpa
+;; Avy (jumping and acting from a distance)
+;; https://github.com/abo-abo/avy
+(use-package avy
+  :ensure t
 
-        :bind
-        ;; Bind character jump command to "M-g j"
-        ;; (change this to whatever jump command and keybinding you prefer)
-        ("M-g j" . avy-goto-char))
+  :bind
+  ;; Bind character jump command to "M-g j"
+  ;; (change this to whatever jump command and keybinding you prefer)
+  ("M-g j" . avy-goto-char))
     ```
 
 2. **Set up EasyCrypt Ext integration with external packages**  
@@ -282,42 +281,42 @@ experience!
    options, see [Tips and Tricks](#tips-and-tricks).
 
    ```emacs-lisp
-    (use-package easycrypt-ext-cape
-        :ensure nil ; Comes with EasyCrypt Ext
+(use-package easycrypt-ext-cape
+  :ensure nil ; Comes with EasyCrypt Ext
 
-        :hook
-        ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
-        (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
+  :hook
+  ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
+  (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
 
-        :config
-        ;; Add (resp. remove) `cape-keyword' to (resp. from) the functions
-        ;; used for completion whenever EasyCrypt Ext loads (resp. unloads)
-        (defun setup-ece-cape-keyword ()
-            (if easycrypt-ext-mode
-                (add-hook 'completion-at-point-functions #'cape-keyword nil t)
-              (remove-hook 'completion-at-point-functions #'cape-keyword t)))
-        (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
+  :init
+  ;; Add (resp. remove) `cape-keyword' to (resp. from) the functions
+  ;; used for completion whenever EasyCrypt Ext loads (resp. unloads)
+  (defun setup-ece-cape-keyword ()
+    (if easycrypt-ext-mode
+        (add-hook 'completion-at-point-functions #'cape-keyword nil t)
+      (remove-hook 'completion-at-point-functions #'cape-keyword t)))
+  (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
 
-    (use-package easycrypt-ext-tempel
-        :ensure nil ; Comes with EasyCrypt Ext
+(use-package easycrypt-ext-tempel
+  :ensure nil ; Comes with EasyCrypt Ext
 
-        :hook
-        ;; Ensure Tempel integration loads whenever EasyCrypt Ext loads
-        (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
+  :hook
+  ;; Ensure Tempel integration loads whenever EasyCrypt Ext loads
+  (easycrypt-ext-mode . easycrypt-ext-mode-tempel-setup)
 
-        :init
-        ;; Set keybinding to accesss predefined template map to "C-c C-y t",
-        ;; (change this to whatever keybinding you prefer)
-        (setopt ece-tempel-template-map-prefix "C-c C-y t"))
+  :init
+  ;; Set keybinding to accesss predefined template map to "C-c C-y t",
+  ;; (change this to whatever keybinding you prefer)
+  (setopt ece-tempel-template-map-prefix "C-c C-y t"))
 
-    (use-package easycrypt-ext-avy
-        :ensure nil ; Comes with EasyCrypt Ext
+(use-package easycrypt-ext-avy
+  :ensure nil ; Comes with EasyCrypt Ext
 
-        :hook
-        ;; Ensure Avy integration loads whenever EasyCrypt Ext loads
-        (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
-        (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
-        (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
+  :hook
+  ;; Ensure Avy integration loads whenever EasyCrypt Ext loads
+  (easycrypt-ext-mode . easycrypt-ext-mode-avy-setup)
+  (easycrypt-ext-goals-mode . easycrypt-ext-goals-mode-avy-setup)
+  (easycrypt-ext-response-mode . easycrypt-ext-response-mode-avy-setup))
    ```
 
 3. **Restart Emacs**  
@@ -687,6 +686,9 @@ repository](https://github.com/minad/corfu) for details.
   (keymap-set corfu-map "M-p" #'corfu-previous)
   (keymap-set corfu-map "M-n" #'corfu-next)
   (keymap-set corfu-map "M-RET" #'corfu-insert)
+
+  ;; Activate Corfu (globally)
+  (global-corfu-mode 1))
 ```
 
 ## Documentation Popup (Corfu)
@@ -715,7 +717,7 @@ repository](https://github.com/minad/corfu).
   :after corfu ; Load after Corfu
 
   :config
-  ;; Activation
+  ;; Activate Corfu Popupinfo (globally)
   (corfu-popupinfo-mode 1))
 ```
 
@@ -743,23 +745,23 @@ sequentially.
 
 ```emacs-lisp
 (use-package easycrypt-ext-cape
-    :ensure nil ; Comes with EasyCrypt Ext
+  :ensure nil ; Comes with EasyCrypt Ext
 
-    :hook
-    ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
-    (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
+  :hook
+  ;; Ensure Cape integration loads whenever EasyCrypt Ext loads
+  (easycrypt-ext-mode . easycrypt-ext-mode-cape-setup)
 
-    :config
-    ;; Add (resp. remove) `cape-keyword' and `cape-dabbrev` to (resp. from)
-    ;; the functions used for completion whenever EasyCrypt Ext loads (resp. unloads)
-    (defun setup-ece-cape-keyword ()
-        (if easycrypt-ext-mode
-            (progn
-                (add-hook 'completion-at-point-functions #'cape-dabbrev nil t)
-                (add-hook 'completion-at-point-functions #'cape-keyword nil t))
-          (remove-hook 'completion-at-point-functions #'cape-dabbrev t)
-          (remove-hook 'completion-at-point-functions #'cape-keyword t)))
-    (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
+  :init
+  ;; Add (resp. remove) `cape-keyword' and `cape-dabbrev' to (resp. from)
+  ;; the functions used for completion whenever EasyCrypt Ext loads (resp. unloads)
+  (defun setup-ece-cape-keyword ()
+    (if easycrypt-ext-mode
+        (progn
+          (add-hook 'completion-at-point-functions #'cape-dabbrev nil t)
+          (add-hook 'completion-at-point-functions #'cape-keyword nil t))
+      (remove-hook 'completion-at-point-functions #'cape-dabbrev t)
+      (remove-hook 'completion-at-point-functions #'cape-keyword t)))
+  (add-hook 'easycrypt-ext-mode-hook #'setup-ece-cape-keyword))
 ```
 
 If you use `cape-dabbrev`, it’s also worth checking the options
@@ -779,14 +781,14 @@ declaration for `easycrypt-ext`.
 
 ```emacs-lisp
 (with-eval-after-load 'consult-imenu
-    (add-to-list 'consult-imenu-config
-                 '(easycrypt-mode :types
-                    ((?t "Types" font-lock-type-face)
-                     (?o "Operators" font-lock-function-name-face)
-                     (?c "Constants" font-lock-constant-face)
-                     (?m "Modules" font-lock-property-use-face)
-                     (?M "Module Types" font-lock-type-face)
-                     (?a "Axioms" font-lock-builtin-face)
-                     (?l "Lemmas" font-lock-keyword-face)
-                     (?T "Theories" font-lock-type-face)))))
+  (add-to-list 'consult-imenu-config
+               '(easycrypt-mode :types
+                                ((?t "Types" font-lock-type-face)
+                                 (?o "Operators" font-lock-function-name-face)
+                                 (?c "Constants" font-lock-constant-face)
+                                 (?m "Modules" font-lock-property-use-face)
+                                 (?M "Module Types" font-lock-type-face)
+                                 (?a "Axioms" font-lock-builtin-face)
+                                 (?l "Lemmas" font-lock-keyword-face)
+                                 (?T "Theories" font-lock-type-face)))))
 ```

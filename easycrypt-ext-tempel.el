@@ -43,17 +43,17 @@
   :group 'easycrypt-ext)
 
 (defcustom ece-tempel-template-map-entries
-  '(("a" axiomn) ("A" abbrevn) ("b" byequiv) ("B" byphoare)
-    ("c" conseq) ("C" conseqeqvhoahoa) ("d" doccommentn) ("D" declaremodule)
-    ("e" equivn) ("E" equivnlemman) ("f" funn) ("F" fel)
-    ("g" ge0) ("G" gt0) ("h" hoaren) ("H" hoarenlemman)
-    ("i" ifelse) ("I" ifthenelse) ("l" lemman) ("L" letinn)
-    ("m" module) ("M" modulept) ("o" op) ("O" opas)
-    ("p" proc) ("P" procsig) ("r" rewrited) ("R" rngin)
-    ("s" seq) ("S" seqph) ("t" moduletype) ("T" moduletypep)
-    ("u" Prmbnd) ("U" Prmrbnd) ("v" Prmeq) ("V" Prmreq)
-    ("w" whiles) ("W" whileph) ("x" cloneimportaswith) ("X" requireimport)
-    ("y" phoaren) ("Y" phoare1n) ("z" theory) ("Z" abstracttheory))
+    '(("a" axin) ("A" abbn) ("b" bye) ("B" byp)
+    ("c" cons) ("C" conseqehh) ("d" docc) ("D" decmod)
+    ("e" equn) ("E" equnln) ("f" funn) ("F" fel)
+    ("g" ge0) ("G" gt0) ("h" hoan) ("H" hoanln)
+    ("i" ifel) ("I" ifte) ("l" lemn) ("L" letinn)
+    ("m" mod) ("M" modpt) ("o" op) ("O" opas)
+    ("p" pro) ("P" pros) ("r" rewd) ("R" rngin)
+    ("s" seq) ("S" seqp) ("t" modtyp) ("T" modtypp)
+    ("u" Prm) ("U" Prmr) ("v" movi) ("V" smt)
+    ("w" whi) ("W" while) ("x" cloimpaswi) ("X" reqimp)
+    ("y" phon) ("Y" pho1n) ("z" the) ("Z" absthe))
   "Alist of (KEY TEMPLATE-NAME) pairs for which KEY should be bound to
 TEMPLATE-NAME in `ece-template-map'. KEY should be a string satisfying
 `key-valid-p', which see, and TEMPLATE-NAME should be a symbol matching a

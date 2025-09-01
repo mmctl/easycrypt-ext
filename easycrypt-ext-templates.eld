@@ -559,8 +559,8 @@ hint simplify oget_some, oget_none.")
       q)
 (ifte "if " p " then " p " else " q)
 (iften "if " p n>
-           "then " p n>
-           "else " q)
+       "then " p n>
+       "else " q)
 
 (ge0 "0 <= " q)
 (gt0 "0 < " q)
