@@ -191,11 +191,11 @@ This is your initialization file.
 
 1. **Set up EasyCrypt Ext (this package)**  
     Add the following snippet to your initialization file, which will install
-    EasyCrypt Ext the next time Emacs launches. The recommended configuration
-    appears under `:config`, which activates a _global setting_ (`repeat-mode`)
-    when EasyCrypt Ext loads to enable repeat maps. Although these maps are
-    generally useful, you can safely remove it if you prefer not to
-    alter your Emacs's behavior outside of EasyCrypt development.
+    and set up EasyCrypt Ext (+ dependencies) the next time Emacs launches. The
+    recommended configuration appears under `:config`, which activates a _global
+    setting_ (`repeat-mode`) when EasyCrypt Ext loads to enable repeat maps.
+    Although these maps are generally useful, you can safely remove it if you
+    prefer not to alter your Emacs's behavior outside of EasyCrypt development.
 
     ```emacs-lisp
     ;; Install EasyCrypt Ext if not already available
@@ -239,11 +239,14 @@ experience!
    Add the following snippet to your initialization file, which will install and
    configure [Cape](https://github.com/minad/cape),
    [Tempel](https://github.com/minad/tempel), and
-   [Avy](https://github.com/abo-abo/avy) the next time Emacs launches. If you
-   don't want a certain package, simply remove its `use-package` block. Although
-   these packages are quite configurable, their defaults should be fine for most
-   use cases. For configuration options and ideas, see the package repositories
-   (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
+   [Avy](https://github.com/abo-abo/avy) the next time Emacs launches.[^11]
+   Although these packages are quite configurable, their defaults should be fine
+   for most use cases. For configuration options and ideas, see the package
+   repositories (linked in the comments) or [Tips and Tricks](#tips-and-tricks).
+
+[^11]: Technically, these packages are already installed automatically with
+EasyCrypt Ext, so separate `use-package` statements with `:ensure t` are not
+strictly necessary. We still include them here for consistency.
 
     ```emacs-lisp
     ;; Cape (keyword completion)
@@ -274,7 +277,7 @@ experience!
         ("M-g j" . avy-goto-char))
     ```
 
-2. **Set up EasyCrypt Ext integration with external packages.**  
+2. **Set up EasyCrypt Ext integration with external packages**  
    Add the following snippet to your initialization file, which will configure
    EasyCrypt Ext's integration with the external packages the next time Emacs
    launches. If you don't want to use a certain package integration, simply

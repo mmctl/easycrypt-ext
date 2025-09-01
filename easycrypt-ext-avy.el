@@ -17,6 +17,8 @@
 ;; details. You should have received a copy of the GNU General Public License
 ;; along with this program. If not, see <https://www.gnu.org/licenses/>.
 
+;; Package-Requires: ((emacs "29.1") (avy "0.5.0"))
+
 ;;; Commentary:
 ;; Avy integration for EasyCrypt Ext, enabling actions from a distance.
 ;;
