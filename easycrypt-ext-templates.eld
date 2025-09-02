@@ -60,11 +60,10 @@ file.")
      :doc
      "Syntax: require FILE_1 ... FILE_n.
 
-Loads (theory corresponding to) each FILE_i into the current context.
-
-FILE_i should be the name of an EasyCrypt file (without file extension) present
-in the load path. It is allowed to have multiple `require' commands throughout a
-script/session, so it is not mandatory to specify all files at once.
+Loads (theory corresponding to) each FILE_i. FILE_i should be the name of an
+EasyCrypt file (without file extension) present in the load path. It is allowed
+to have multiple `require' commands throughout a script/session, so it is not
+mandatory to specify all files at once.
 
 Example:
 require AllCore List.
@@ -74,10 +73,9 @@ require Distr.")
      :doc
      "Syntax: import THEORY_1 ... THEORY_n.
 
-Loads (namespace corresponding to) each THEORY_i into the current context.
-THEORY_i must be in the current context, which can be achieved by using
-`require' on the files containing the theories (see the `req' template for more
-information).
+Loads (namespace corresponding to) each THEORY_i. THEORY_i should be in the
+current context, which can be achieved by using `require' on the files
+containing the theories (see the `req' template for more information).
 
 Loading a namespace enables direct referencing to items from that
 namespace (i.e., without explicitly specifying the namespace).
@@ -90,8 +88,7 @@ import List Distr.")
         :doc
         "Syntax: require import FILE_1 ... FILE_N.
 
-Loads (theory and namespace corresponding to) each FILE_i into the current
-context.
+Loads (theory and namespace corresponding to) each FILE_i.
 
 Essentially syntactic sugar for a `require' statement followed by an `import'
 statement with the same arguments.
@@ -106,10 +103,9 @@ require import AllCore List Distr.")
         :doc
         "Syntax: from LIBRARY require FILE_1 ... FILE_N.
 
-Loads (theory corresponding to) each FILE_i from library LIBRARY into the
-current context.
+Loads (theory corresponding to) each FILE_i from library LIBRARY.
 
-LIBRARY must be in the current load path, typically added via an EasyCrypt
+LIBRARY should be in the current load path, typically added via an EasyCrypt
 project file or the `-I' command line option.
 
 See the `req' template for more information on `require'.
@@ -121,8 +117,7 @@ from Jasmin require JModel JArray.")
            :doc
            "Syntax: from LIBRARY require import FILE_1 ... FILE_N.
 
-Loads (theory and namespace corresponding to) each FILE_i from library LIBRARY
-into the current context.
+Loads (theory and namespace corresponding to) each FILE_i from library LIBRARY.
 
 Essentially syntactic sugar for a `from require' statement followed by an
 `import' statement with the same arguments.
@@ -137,13 +132,13 @@ from Jasmin require import JModel JArray.")
      :doc
      "Syntax: clone THEORY.
 
-Creates an instance of THEORY in the current context. THEORY must be in
-the current context, which can be achieved by using `require' on the files
-containing THEORY (see the `req' template for more information).
+Creates an instance of THEORY. THEORY should be in the current context, which can
+be achieved by using `require' on the files containing THEORY (see the `req'
+template for more information).
 
 Instantiating a (potentially abstract) theory and its components through cloning
 allows for the reuse of definitions/results from the theory in different
-context, facilitating modularity. Only a single theory can be cloned at a time.
+contexts, facilitating modularity. Only a single theory can be cloned at a time.
 
 See the other templates starting with `clo' for more information on the cloning
 mechanism and its features. Particularly, see the templates `cloas', `clowi',
@@ -157,8 +152,7 @@ clone KeyedHashFunctions.")
        :doc
        "Syntax: clone THEORY as INSTNAME.
 
-Creates an instance of THEORY under the name INSTNAME in the current context.
-INSTNAME should be a valid theory name not yet used in the current context.
+Creates an instance of THEORY under the name INSTNAME.
 
 See the `clo' template for more information on `clone'.
 
@@ -232,8 +226,7 @@ clone KeyedHashFunctions as KHFs with
         :doc
         "Syntax: clone import THEORY.
 
-Creates an instance of THEORY and loads the corresponding namespace in the
-current context.
+Creates an instance of THEORY and loads the corresponding namespace.
 
 Essentially syntactic sugar for a `clone' statement followed by an `import'
 statement with the same argument.
@@ -249,7 +242,7 @@ clone import KeyedHashFunctions.")
           "Syntax: clone import THEORY as INSTNAME.
 
 Creates an instance of THEORY under the name INSTNAME and loads the
-corresponding namespace in the current context.
+corresponding namespace.
 
 Essentially syntactic sugar for a `clone as' statement followed by an `import'
 statement with INSTNAME.
@@ -266,7 +259,7 @@ clone import KeyedHashFunctions as KHFs.")
           "Syntax: clone import THEORY with INSTSPEC.
 
 Creates an instance of THEORY with its items instantiated as specified by
-INSTSPEC, and loads the corresponding namespace in the current context.
+INSTSPEC, and loads the corresponding namespace.
 
 Essentially syntactic sugar for a `clone with' statement followed by an `import'
 statement with THEORY.
@@ -289,8 +282,7 @@ clone import KeyedHashFunctions with
             "Syntax: clone import THEORY as INSTNAME with INSTSPEC.
 
 Creates an instance of THEORY under the name INSTNAME with its items
-instantiated as specified by INSTSPEC, and loads the corresponding namespace in
-the current context.
+instantiated as specified by INSTSPEC, and loads the corresponding namespace.
 
 Essentially syntactic sugar for a `clone as with' statement followed by an
 `import' statement with INSTNAME.
@@ -311,7 +303,7 @@ clone import KeyedHashFunctions as KHFs with
         :doc
         "Syntax: clone include THEORY.
 
-Creates an instance of THEORY and includes it in the current context as if the
+Creates an instance of THEORY and includes it as if the
 code of the resulting instance was inserted literally.
 
 Certain statements do not have the same effect as they would have if the
@@ -327,8 +319,8 @@ clone include KeyedHashFunctions.")
           :doc
           "Syntax: clone include THEORY as INSTNAME.
 
-Creates an instance of THEORY under the name INSTNAME and includes it in the
-current context as if the code of the resulting instance was inserted literally.
+Creates an instance of THEORY under the name INSTNAME and includes it as if the
+code of the resulting instance was inserted literally.
 
 See the `cloinc' and `cloas' templates for more information on `clone include'
 and `as'.
@@ -341,7 +333,7 @@ clone include KeyedHashFunctions as KHFs.")
           "Syntax: clone include THEORY with INSTSPEC.
 
 Creates an instance of THEORY with its items instantiated as specified by
-INSTSPEC, and includes it in the current context as if the code of the resulting
+INSTSPEC, and includes it as if the code of the resulting
 instance was inserted literally.
 
 See the `cloinc' and `clowi' templates for more information on `clone include'
@@ -362,7 +354,7 @@ clone include KeyedHashFunctions with
             "Syntax: clone include THEORY as INSTNAME with INSTSPEC.
 
 Creates an instance of THEORY under the name INSTNAME with its items
-instantiated as specified by INSTSPEC, and includes it in the current context as
+instantiated as specified by INSTSPEC, and includes it as
 if the code of the resulting instance was inserted literally.
 
 See the `cloinc', `cloas', and `clowi' templates for more information
@@ -398,14 +390,59 @@ hint simplify oget_some, oget_none.")
 (typ "type " p " = " q "."
      :doc
      "Syntax: type TYPENAME = TYPEEXPR.
-")
+
+Defines a new type named TYPENAME as TYPEEXPR.
+
+TYPEEXPR should be a valid type expression, including:
+- basic/built-in types (e.g., int, bool)
+- product types (e.g., int * bool)
+- function types (e.g., int -> bool).
+- (applied) type constructors (e.g., int list)
+- sum types (e.g., [ First | Second ] )
+- record types (e.g., { x : int, y : bool })
+
+Example:
+type t = int.
+type u = real * bool.
+
+type m = t -> u.")
 
 (typn "type " p " =" n>
-      q "." >)
+      q "." >
+      :doc
+      "Syntax: type TYPENAME = TYPEEXPR.
 
-(op "op " p " : " p " = " q ".")
+Defines a type named TYPENAME as TYPEEXPR.
+
+Semantically identical to the `typ' template; differs only in formatting.
+See `typ' for details and examples.")
+
+(op "op " p " : " p " = " q "."
+    :doc
+    "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR
+
+Defines an operator named OPNAME as EXPR. This operator takes n parameters,
+where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
+
+Note:
+- EXPR need not use all (or any) parameters, but must evaluate to a value of type RESTYPE.
+- Parameter types and the return type may be omitted if they can be inferred from EXPR.
+- Parameters of the same type may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
+
+Example:
+op f (x : int) (y : int) : int = x + y.
+op g (x y : int) = x + y.")
+
 (opn "op " p " : " p " =" n>
-     q "." >)
+     q "." >
+     "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR
+
+Defines an operator named OPNAME as EXPR. This operator takes n parameters,
+where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
+
+Semantically identical to the `op' template; differs only in formatting.
+See `op' for details and examples.")
+
 (opas "op " p " : { " p " | " p " } as " q ".")
 
 
