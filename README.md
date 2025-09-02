@@ -78,14 +78,12 @@ Specifically, these features are the following.
 > Since many EasyCrypt users only pick up Emacs for EasyCrypt, these
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
-> skipping most of the explanatory text and jumping straight to the code
-> snippets.
+> skipping most of the text and jumping straight to the code snippets.
 
 The setup is presented in layers. You can stop at any stage or continue stacking
 more features:[^1]
 
 [^1]: Technically, the _Enhancements_ "layer" is independent of the others but included here because it greatly improves the overall experience.
-
 
 1. [Prerequisites](#prerequisites): Set up your environment and Proof General for EasyCrypt.
 2. [Basics](#basics): Set up core features of this package (no external packages).
@@ -415,7 +413,7 @@ not mentioned explicitly, some commands are also available through the menu bar
 and mode line menus.
 
 <details>
-<summary>:eyes:<em>General configuration</em>:eyes:</summary>
+<summary>:eyes: <em>General configuration</em> :eyes:</summary>
 
 Most packages, including EasyCrypt Ext and the external ones mentioned here,
 expose configuration options through customization variables. If you know the
@@ -425,11 +423,11 @@ set these variables with `setopt` in your initialization file, typically in
 the `:init` block of the corresponding package's `use-package` declaration.
 Alternatively, you can search and set these variables through [Emacs's
 customization
-interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html),
+interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html).
 </details>
 
 <details>
-<summary>:eyes:<em>Keybindings</em>:eyes:</summary>
+<summary>:eyes: <em>Keybindings</em> :eyes:</summary>
 
 To avoid conflicts with other keybindings (from Proof General or elsewhere),
 nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
