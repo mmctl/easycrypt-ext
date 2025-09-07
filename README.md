@@ -44,7 +44,7 @@ Specifically, these features are the following.
 - Execution of proof shell commands from a distance (requires
   [Avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy.el`).
 
-> :exclamation: **Compatibility** :exclamation:  
+> [!IMPORTANT]
 > The current version of this package should be compatible with (at least)
 > Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
 
@@ -74,7 +74,7 @@ Specifically, these features are the following.
 
 # Getting Started
 
-> :speech_balloon: **Target audience** :speech_balloon:  
+> [!NOTE]
 > Since many EasyCrypt users only pick up Emacs for EasyCrypt, these
 > instructions assume no prior Emacs knowledge and are written to be
 > beginner-friendly. If you are an experienced Emacs user, you may prefer
@@ -123,7 +123,7 @@ This is your initialization file.
 
 ## Prerequisites
 
-> :speech_balloon: **Skipping prerequisites** :speech_balloon:  
+> [!TIP]
 > Even if you already set up MELPA and Proof General, skimming these
 > instructions may still be useful for learning about recommended defaults and
 > configuration options that integrate better with this package.
@@ -133,7 +133,7 @@ This is your initialization file.
    add MELPA to the considered package archives and initialize the
    package system the next time Emacs launches.
 
-   > :exclamation: **No need to repeat** :exclamation:  
+   > [!NOTE]
    > If your initialization file already includes any of the following lines,
    > you don't need to add them again. Simply add the missing lines from the
    > snippet in the same relative place (i.e., first`(require 'package)`,
@@ -176,9 +176,11 @@ This is your initialization file.
     <details>
     <summary>:eyes: <em>Changing settings</em> :eyes:</summary>
 
-    In the above, you can enable (resp. disable) a setting by assigning `t`
-    (resp. `nil`). (For `setopt`, the first argument is the variable and the
-    second argument is the assigned value.)
+    > [!TIP]
+    > You can enable (resp. disable) a setting by assigning `t`
+    > (resp. `nil`). (For `setopt`, the first argument is the variable and the
+    > second argument is the assigned value.)
+
     </details>
 
 3. **Restart Emacs**  
@@ -415,35 +417,33 @@ and mode line menus.
 <details>
 <summary>:eyes: <em>General configuration</em> :eyes:</summary>
 
-Most packages, including EasyCrypt Ext and the external ones mentioned here,
-expose configuration options through customization variables. If you know the
-name of a variable, you can look up its documentation by pressing `C-h v`
-(Control + h, then v), typing the variable name, and hitting Enter. You can
-set these variables with `setopt` in your initialization file, typically in
-the `:init` block of the corresponding package's `use-package` declaration.
-Alternatively, you can search and set these variables through [Emacs's
-customization
-interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html).
+> [!TIP]
+> Most packages, including EasyCrypt Ext and the external ones mentioned here,
+> expose configuration options through customization variables. If you know the
+> name of a variable, you can look up its documentation by pressing `C-h v`
+> (Control + h, then v), typing the variable name, and hitting Enter. You can
+> set these variables with `setopt` in your initialization file, typically in
+> the `:init` block of the corresponding package's `use-package` declaration.
+> Alternatively, you can search and set these variables through 
+> [Emacs's customization interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html).
+
 </details>
 
-<details>
-<summary>:eyes: <em>Keybindings</em> :eyes:</summary>
-
-To avoid conflicts with other keybindings (from Proof General or elsewhere),
-nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
-
-Depending on your personal setup and workflow, there may be (a lot) more
-convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
-COMMAND)` in the `:config` block of the relevant `use-package` declaration
-(typically of the package defining the command). For example, to bind the
-command `ece-print` (provided by EasyCrypt Ext) to `C-c C-p`, you could add
-the following to the `use-package` declaration for `easycrypt-ext`:
-```emacs-lisp
-(keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
-```
-(`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
-its commands.)
-</details>
+> [!NOTE]
+> To avoid conflicts with other keybindings (from Proof General or elsewhere),
+> nearly all EasyCrypt Ext keybindings use the prefix `C-c C-y`.
+>
+> Depending on your personal setup and workflow, there may be (a lot) more
+> convenient alternatives. You can rebind a command with `(keymap-set KEYMAP KEY
+> COMMAND)` in the `:config` block of the relevant `use-package` declaration
+> (typically of the package defining the command). For example, to bind the
+> command `ece-print` (provided by EasyCrypt Ext) to `C-c C-p`, you could add
+> the following to the `use-package` declaration for `easycrypt-ext`:
+> ```emacs-lisp
+> (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
+> ```
+> (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
+> its commands.)
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
@@ -620,7 +620,7 @@ lists a few of the remaining ones.
   fills the menu with types, operators, constants, module types, modules,
   axioms, lemmas, and theories defined in the current file, also creating
   corresponding categories.
-- **Scrolling through goals/response history**  
+- **Scrolling through goal/response history**  
   If Proof General’s goal and response histories are enabled (as in the default
   setup of [Getting Started](#getting-started)), EasyCrypt Ext adds commands for
   scrolling through them with the mouse wheel. By default, `C-S-<wheel-down>`
