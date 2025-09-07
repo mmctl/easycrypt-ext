@@ -133,7 +133,6 @@ This is your initialization file.
    add MELPA to the considered package archives and initialize the
    package system the next time Emacs launches.
 
-   > [!NOTE]
    > If your initialization file already includes any of the following lines,
    > you don't need to add them again. Simply add the missing lines from the
    > snippet in the same relative place (i.e., first`(require 'package)`,
@@ -176,10 +175,9 @@ This is your initialization file.
     <details>
     <summary>:eyes: <em>Changing settings</em> :eyes:</summary>
 
-    > [!TIP]
-    > You can enable (resp. disable) a setting by assigning `t`
-    > (resp. `nil`). (For `setopt`, the first argument is the variable and the
-    > second argument is the assigned value.)
+    You can enable (resp. disable) a setting by assigning `t`
+    (resp. `nil`). (For `setopt`, the first argument is the variable and the
+    second argument is the assigned value.)
 
     </details>
 
@@ -347,7 +345,7 @@ interface). [^2]
 
 [^2]: Both are by the same author as Cape and Tempel, ensuring great interoperability.
 
-> :exclamation: **Global settings ahead** :exclamation:  
+> [!WARNING]
 > The settings in this section apply globally across Emacs at startup, not just
 > when EasyCrypt Ext is active. If you already have specific preferences or
 > completion-related configurations, you may want to skip this section or at
@@ -417,15 +415,14 @@ and mode line menus.
 <details>
 <summary>:eyes: <em>General configuration</em> :eyes:</summary>
 
-> [!TIP]
-> Most packages, including EasyCrypt Ext and the external ones mentioned here,
-> expose configuration options through customization variables. If you know the
-> name of a variable, you can look up its documentation by pressing `C-h v`
-> (Control + h, then v), typing the variable name, and hitting Enter. You can
-> set these variables with `setopt` in your initialization file, typically in
-> the `:init` block of the corresponding package's `use-package` declaration.
-> Alternatively, you can search and set these variables through 
-> [Emacs's customization interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html).
+Most packages, including EasyCrypt Ext and the external ones mentioned here,
+expose configuration options through customization variables. If you know the
+name of a variable, you can look up its documentation by pressing `C-h v`
+(Control + h, then v), typing the variable name, and hitting Enter. You can
+set these variables with `setopt` in your initialization file, typically in
+the `:init` block of the corresponding package's `use-package` declaration.
+Alternatively, you can search and set these variables through
+[Emacs's customization interface](https://www.gnu.org/software/emacs/manual/html_node/emacs/Easy-Customization.html).
 
 </details>
 
