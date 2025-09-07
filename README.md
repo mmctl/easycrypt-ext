@@ -617,6 +617,16 @@ lists a few of the remaining ones.
   fills the menu with types, operators, constants, module types, modules,
   axioms, lemmas, and theories defined in the current file, also creating
   corresponding categories.
+- **Fast command repetition**  
+  If Emacs's `repeat-mode` is enabled (as in the default setup of [Getting
+  Started](#getting-started)), EasyCrypt Ext's repeat maps let you quickly
+  repeat related commands with short keybindings. Currently, repeat maps are
+  defined for proof command processing, undoing, and deleting, as well as
+  scrolling through goal/response history. For example, after processing a
+  command proof with `C-c C-n` (the default), you can immediately process, undo,
+  or delete another command by pressing *just* `n`, `u`, or `d`, respectively.
+  Pressing any other key exits the repeat map and returns you to normal
+  operation.[^12]
 - **Scrolling through goal/response history**  
   If Proof General’s goal and response histories are enabled (as in the default
   setup of [Getting Started](#getting-started)), EasyCrypt Ext adds commands for
@@ -632,6 +642,9 @@ lists a few of the remaining ones.
   around (what it thinks is) a relevant point depending on the goal type. Since
   this can hide the number of remaining goals (displayed at the top), EasyCrypt
   Ext echoes this information in the minibuffer instead.
+
+[^12]: When you "enter" a repeat map, Emacs notifies you in the echo area and
+shows the available keybindings.
 
 -----
 
