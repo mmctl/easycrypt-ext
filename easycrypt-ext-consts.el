@@ -115,7 +115,7 @@
     "exlim" "fel" "field" "fieldeq" "fission" "fusion"
     "gen" "have" "hoare" "idtac" "inline" "interleave"
     "iota" "kill" "left" "logic" "modpath" "move"
-    "outline" "pose" "pr_bounded" "progress" "rcondf" "rcondt"
+    "outline" "pose" "pr_bounded" "proc" "progress" "rcondf" "rcondt"
     "replace" "rewrite" "right" "ring" "ringeq" "rnd"
     "rndsem" "rwnormal" "seq" "sim" "simplify" "skip"
     "sp" "split" "splitwhile" "subst" "suff" "swap"
@@ -128,7 +128,7 @@
     "smt" "solve"))
 
 (defconst ece-keywords-tactic-dangerous
-  '("admit" "admitted"))
+  '("abort" "admit" "admitted"))
 
 (defconst ece-keywords-tactic-tactical
   '("do" "expect" "first" "last" "strict" "try"))

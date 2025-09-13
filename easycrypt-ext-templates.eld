@@ -391,7 +391,7 @@ hint simplify oget_some, oget_none.")
      :doc
      "Syntax: type TYPENAME = TYPEEXPR.
 
-Defines a new type named TYPENAME as TYPEEXPR.
+Defines a new type TYPENAME as TYPEEXPR.
 
 TYPEEXPR should be a valid type expression, including:
 - basic/built-in types (e.g., int, bool)
@@ -412,21 +412,21 @@ type m = t -> u.")
       :doc
       "Syntax: type TYPENAME = TYPEEXPR.
 
-Defines a type named TYPENAME as TYPEEXPR.
+Defines a type TYPENAME as TYPEEXPR.
 
 Semantically identical to the `typ' template; differs only in formatting.
 See `typ' for details and examples.")
 
 (op "op " p " : " p " = " q "."
     :doc
-    "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR
+    "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator named OPNAME as EXPR. This operator takes n parameters,
+Defines an operator OPNAME as EXPR. This operator takes n parameters,
 where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
 
 Note:
 - EXPR need not use all (or any) parameters, but must evaluate to a value of type RESTYPE.
-- Parameter types and the return type may be omitted if they can be inferred from EXPR.
+- Parameter types and the return type (including colons) may be omitted if they can be inferred from EXPR.
 - Parameters of the same type may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
 
 Example:
@@ -435,96 +435,271 @@ op g (x y : int) = x + y.")
 
 (opn "op " p " : " p " =" n>
      q "." >
-     "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR
+     :doc
+     "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator named OPNAME as EXPR. This operator takes n parameters,
+Defines an operator OPNAME as EXPR. This operator takes n parameters,
 where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
 
 Semantically identical to the `op' template; differs only in formatting.
 See `op' for details and examples.")
 
-(opas "op " p " : { " p " | " p " } as " q ".")
+(opas "op " p " : { " p " | " p " } as " q "."
+      :doc
+      "Syntax: op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
 
+Declares an operator OPNAME of type TYPE, together with an
+axiom AXIOMNAME asserting AXIOMSTAT.
 
-(const "const " p " : " p " = " q ".")
+Typically used to axiomatize a fundamental property of the operator,
+so AXIOMSTAT often refers to OPNAME. However, this is not enforced.
+
+Example:
+op f : { int -> int | forall (x y : int), x <= y => f x <= f y } as monotonic_f.")
+
+(const "const " p " : " p " = " q "."
+       :doc
+       "Syntax: const CONSTNAME : TYPE = EXPR.
+
+Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
+TYPE.
+
+The type (and colon) may be omitted if it can be inferred from EXPR.
+
+Example:
+const n : int = 2 ^ 12.")
+
 (constn "const " p " : " p " =" n>
-        q "." >)
+        q "." >
+        :doc
+        "Syntax: const CONSTNAME : TYPE = EXPR.
 
-(abb "abbrev " p " = " q ".")
-(abbt "abbrev " p " : " p " = " q ".")
-(abbn "abbrev " p " =" n>
-      q "." >)
+Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
+TYPE.
+
+Semantically identical to the `const' template; differs only in formatting.
+See `const' for details and examples.")
+
+(constas "const " p " : { " p " | " p " } as " q "."
+         :doc
+         "Syntax: const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
+
+Declares a constant CONSTNAME of type TYPE, and an axiom AXIOMNAME stating
+AXIOMSTAT.
+
+Typically used to axiomatize a fundamental property of the constant, so
+AXIOMSTAT often refers to CONSTNAME. However, this is not enforced.
+
+Example:
+const n : { int | 0 <= n } as ge0_n.")
+
+(abb "abbrev " p " : " p " = " q "."
+     :doc
+     "Syntax: abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+
+Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
+parameters, where the i-th has type TYPE_i, and evaluates to a value of type
+RESTYPE.
+
+Parameter types and the return type (including colons) may be omitted if they
+can be inferred from EXPR.
+
+Essentially an operator definition (see the `op' template) with a restricted set
+of possible EXPR. In addition, when printing an abbrevation, its definitions is
+printed instead of its name.
+
+Example: abbrev max (x y : int) = if x <= y then y else x.")
+
+(abbn "abbrev " p " : " p " =" n>
+      q "." >
+      :doc
+      "Syntax: abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+
+Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
+parameters, where the i-th has type TYPE_i, and evaluates to a value of type
+RESTYPE.
+
+Semantically identical to the `abb' template; differs only in formatting.
+See `abb' for details and examples.")
 
 (the "theory " (p "" thid)  "." n>
      q n>
-     "end " (s thid) "." >)
+     "end " (s thid) "." >
+     :doc
+     "Syntax: theory THEORYNAME. [THEORYBODY] end THEORYNAME.
 
-(absthe "abstract " (i the))
+Defines a theory THEORYNAME with [THEORYBODY] as its content, where [THEORYBODY]
+can be any sequence of valid sentences.
+
+A theory typically encapsulates a collection of related items (e.g.,
+definitions, properties, specifications, et cetera).
+
+A theory can be cloned for (re)use in different contexts, where its (abstract)
+items may be instantiated with other items from the considered context, allowing
+for modularity and flexibility. See the templates starting with `clo' for more
+information on the cloning mechanism and its features.
+
+Example:
+theory KeyedHashFunctions.
+type key_t.
+type in_t.
+type out_t.
+
+op f.
+end KeyedHashFunctions.")
+
+(absthe "abstract " (i the)
+        :doc
+        "Syntax: abstract theory THEORYNAME. [THEORYBODY] end THEORYNAME.
+
+Defines an abstract theory THEORYNAME with [THEORYBODY] as its content, where
+[THEORYBODY] can be any sequence of valid sentences.
+
+Similar to a regular theory, but must be cloned before it can be accessed.
+Although instantiating any items during cloning is optional,
+abstract theories are typically designed to be instantiated (at least partially).
+
+See the `the' and `clo' templates for more information on theories and cloning.
+
+Example:
+abstract theory KeyedHashFunctions.
+type key_t.
+type in_t.
+type out_t.
+
+op f.
+end KeyedHashFunctions.")
 
 (sec "section." n>
      q n>
-     "end section." >)
+     "end section." >
+     :doc
+     "Syntax: section. [SECTIONBODY] end section.")
+
 (secid "section" (p "" secid) "." n>
        q n>
-       "end section " (s secid) "." >)
+       "end section " (s secid) "." >
+       :doc
+       "Syntax: section SECTIONNAME. [SECTIONBODY] end section SECTIONNAME.")
 
-(decmod "declare module " p " <: " q ".")
-(decmodr "declare module " p " <: " p "{ " q " }.")
+(decty "declare type " q "."
+       :doc
+       "Syntax: declare type TYPENAME.")
 
-(Pr "Pr[" p " @ " p " : " q "]")
+(decop "declare op " p " : " q "."
+       :doc
+       "Syntax: declare op OPNAME : TYPE.")
+
+(decopas "declare op " p " : { " p " | " p " } as " q "."
+         :doc
+         "Syntax: declare op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
+
+(decmod "declare module " p " <: " q "."
+        :doc
+        "Syntax: declare module MODNAME <: MODTYPE.")
+
+(decmodr "declare module " p " <: " p "{ " q " }."
+         :doc
+         "Syntax: declare module MODNAME <: MODTYPE { MODRESTR }.")
+
+(Pr "Pr[" p " @ " p " : " q "]"
+    :doc
+    "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+
 (Prn "Pr[" n>
      p " @ " p " :" n>
-     q "]" >)
-(Prm "Pr[" p " @ &m : " q "]")
-(Prmr "Pr[" q " @ &m : res]")
+     q "]" >
+     :doc
+     "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
-(hoa "hoare[" p " : " p " ==> " q "]")
+(Prm "Pr[" p " @ &m : " q "]"
+     :doc
+     "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+
+(Prmr "Pr[" q " @ &m : res]"
+      :doc
+      "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+
+(hoa "hoare[" p " : " p " ==> " q "]"
+     :doc
+     "Syntax: hoare[MOD.PROC : PRE ==> POST]")
+
 (hoan "hoare[" n>
       p " :" n>
       p n>
       "==>" n>
       q n>
-      "]" >)
+      "]" >
+      :doc
+      "Syntax: hoare[MOD.PROC : PRE ==> POST]")
 
-(pho "phoare[" p " : " p " ==> " p "] = " q)
+(pho "phoare[" p " : " p " ==> " p "] = " q
+     :doc
+     "Syntax: phoare[MOD.PROC : PRE ==> POST] REL VAL")
 (phon "phoare[" n>
       p " :" n>
       p n>
       "==>" n>
       p n>
-      "] = " q >)
-(pho1 "phoare[" p " : " p " ==> " q "] = 1%r")
+      "] " q >
+      :doc
+      "Syntax: phoare[MOD.PROC : PRE ==> POST] REL VAL")
+
+(pho1 "phoare[" p " : " p " ==> " q "] = 1%r"
+      :doc
+      "Syntax: phoare[MOD.PROC : PRE ==> POST] = 1%r")
+
 (pho1n "phoare[" n>
        p " :" n>
        p n>
        "==>" n>
        q n>
-       "] = 1%r" >)
+       "] = 1%r" >
+       :doc
+       "Syntax: phoare[MOD.PROC : PRE ==> POST] = 1%r")
 
-(equ "equiv[" p " ~ " p " : " p " ==> " q "]")
+(equ "equiv[" p " ~ " p " : " p " ==> " q "]"
+     :doc
+     "Syntax: equiv[MOD1.PROC1 ~ MOD2.PROC2 : PRE ==> POST]")
 (equn "equiv[" n>
       p " ~ " p ":" n>
       p n>
       "==>" n>
       q n>
-      "]" >)
+      "]" >
+      :doc
+      "Syntax: equiv[MOD1.PROC1 ~ MOD2.PROC2 : PRE ==> POST]")
 
-(eho "ehoare[" p " : " p " ==> " q "]")
+(eho "ehoare[" p " : " p " ==> " q "]"
+     :doc
+     "Syntax: ehoare[MOD.PROC : PRE ==> POST]")
+
 (ehon "ehoare[" n>
       p " :" n>
       p n>
       "==>" n>
       q n>
-      "]" >)
+      "]" >
+      :doc
+      "Syntax: ehoare[MOD.PROC : PRE ==> POST]")
 
-(axi "axiom " p " : " q ".")
+(axi "axiom " p " : " q "."
+     :doc
+     "Syntax: axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
 (axin "axiom " p " :" n>
-      q "." >)
+      q "." >
+      :doc
+      "Syntax: axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
 
 (proof "proof." > n>
        q n>
-       "qed." >)
-(proofpq "proof." q "qed." >)
+       "qed." >
+       :doc
+       "Syntax: proof. [PROOFBODY] qed.")
+
+(proofpq "proof." q "qed." >
+         :doc
+         "Syntax: proof. [PROOFBODY] qed.")
 
 (lem "lemma " p " : " p "." n>
      (i proof))
@@ -654,17 +829,17 @@ See `op' for details and examples.")
     q n>
     "}" >)
 (ifel "if (" p ") {" n>
-       p n>
-       "} else {" > n>
-       q n>
-       "}" >)
+      p n>
+      "} else {" > n>
+      q n>
+      "}" >)
 (ifeliel "if (" p ") {" n>
-          p n>
-          "} elif {" > n>
-          p n>
-          "} else {" > n>
-          q n>
-          "}" >)
+         p n>
+         "} elif {" > n>
+         p n>
+         "} else {" > n>
+         q n>
+         "}" >)
 
 (while "while (" p ") {" n>
        q

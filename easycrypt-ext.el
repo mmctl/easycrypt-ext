@@ -56,7 +56,8 @@
 ;; Specifically, these features are the following.
 ;; - Keyword completion (requires Cape, specifically `cape-keyword';
 ;;   see `easycrypt-ext-cape.el').
-;; - Code templates (requires Tempel; see `easycrypt-ext-tempel.el').
+;; - Code templates with (in-editor) documentation
+;;   (requires Tempel; see `easycrypt-ext-tempel.el').
 ;; - Execution of proof shell commands from a distance (requires `avy';
 ;;   see `easycrypt-ext-avy.el').
 ;;

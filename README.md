@@ -39,8 +39,8 @@ called `easycrypt-ext-X`, where `X` is the name of the other package.
 Specifically, these features are the following.
 - Keyword completion (requires [Cape](https://github.com/minad/cape),
   specifically `cape-keyword`; see `easycrypt-ext-cape.el`).
-- Code templates *with documentation* (requires [Tempel](https://github.com/minad/tempel);
-  see `easycrypt-ext-tempel.el`).
+- Code templates *with (in-editor) documentation* (requires
+  [Tempel](https://github.com/minad/tempel); see `easycrypt-ext-tempel.el`).
 - Execution of proof shell commands from a distance (requires
   [Avy](https://github.com/abo-abo/avy); see `easycrypt-ext-avy.el`).
 
