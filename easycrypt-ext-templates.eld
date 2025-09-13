@@ -1,7 +1,5 @@
 ;; easycrypt.eld
 ;; Tempel templates for easycrypt mode
-;; Doesn't include possibilities that are too close to single keywords
-;; (as these should be covered by another mechanism)
 
 easycrypt-mode
 
@@ -58,7 +56,7 @@ file.")
 ;;; Meta
 (req "require " q "."
      :doc
-     "Syntax: require FILE_1 ... FILE_n.
+     "Syntax := require FILE_1 ... FILE_n.
 
 Loads (theory corresponding to) each FILE_i. FILE_i should be the name of an
 EasyCrypt file (without file extension) present in the load path. It is allowed
@@ -71,7 +69,7 @@ require Distr.")
 
 (imp "import " q "."
      :doc
-     "Syntax: import THEORY_1 ... THEORY_n.
+     "Syntax := import THEORY_1 ... THEORY_n.
 
 Loads (namespace corresponding to) each THEORY_i. THEORY_i should be in the
 current context, which can be achieved by using `require' on the files
@@ -86,7 +84,7 @@ import List Distr.")
 
 (reqimp "require import " q "."
         :doc
-        "Syntax: require import FILE_1 ... FILE_N.
+        "Syntax := require import FILE_1 ... FILE_N.
 
 Loads (theory and namespace corresponding to) each FILE_i.
 
@@ -101,7 +99,7 @@ require import AllCore List Distr.")
 
 (froreq "from " p " require " q
         :doc
-        "Syntax: from LIBRARY require FILE_1 ... FILE_N.
+        "Syntax := from LIBRARY require FILE_1 ... FILE_N.
 
 Loads (theory corresponding to) each FILE_i from library LIBRARY.
 
@@ -115,7 +113,7 @@ from Jasmin require JModel JArray.")
 
 (froreqimp "from " p " require import " q
            :doc
-           "Syntax: from LIBRARY require import FILE_1 ... FILE_N.
+           "Syntax := from LIBRARY require import FILE_1 ... FILE_N.
 
 Loads (theory and namespace corresponding to) each FILE_i from library LIBRARY.
 
@@ -130,7 +128,7 @@ from Jasmin require import JModel JArray.")
 
 (clo "clone " q "."
      :doc
-     "Syntax: clone THEORY.
+     "Syntax := clone THEORY.
 
 Creates an instance of THEORY. THEORY should be in the current context, which can
 be achieved by using `require' on the files containing THEORY (see the `req'
@@ -150,7 +148,7 @@ clone KeyedHashFunctions.")
 
 (cloas "clone " p " as " q "."
        :doc
-       "Syntax: clone THEORY as INSTNAME.
+       "Syntax := clone THEORY as INSTNAME.
 
 Creates an instance of THEORY under the name INSTNAME.
 
@@ -162,7 +160,7 @@ clone KeyedHashFunctions as KHFs.")
 (clowi "clone " p " with" n>
        q "."
        :doc
-       "Syntax: clone THEORY with INSTSPEC.
+       "Syntax := clone THEORY with INSTSPEC.
 
 Creates an instance of THEORY with its items instantiated as specified by
 INSTSPEC.
@@ -205,7 +203,7 @@ clone KeyedHashFunctions with
 (cloaswi "clone " p " as " p " with" n>
          q "."
          :doc
-         "Syntax: clone THEORY as INSTNAME with INSTSPEC
+         "Syntax := clone THEORY as INSTNAME with INSTSPEC
 
 Creates an instance of THEORY under the name INSTNAME with its items
 instantiated as specified by INSTSPEC.
@@ -224,7 +222,7 @@ clone KeyedHashFunctions as KHFs with
 
 (cloimp "clone import " q "."
         :doc
-        "Syntax: clone import THEORY.
+        "Syntax := clone import THEORY.
 
 Creates an instance of THEORY and loads the corresponding namespace.
 
@@ -239,7 +237,7 @@ clone import KeyedHashFunctions.")
 
 (cloimpas "clone import " p " as " q "."
           :doc
-          "Syntax: clone import THEORY as INSTNAME.
+          "Syntax := clone import THEORY as INSTNAME.
 
 Creates an instance of THEORY under the name INSTNAME and loads the
 corresponding namespace.
@@ -256,7 +254,7 @@ clone import KeyedHashFunctions as KHFs.")
 (cloimpwi "clone import " p " with" n>
           q "."
           :doc
-          "Syntax: clone import THEORY with INSTSPEC.
+          "Syntax := clone import THEORY with INSTSPEC.
 
 Creates an instance of THEORY with its items instantiated as specified by
 INSTSPEC, and loads the corresponding namespace.
@@ -279,7 +277,7 @@ clone import KeyedHashFunctions with
 (cloimpaswi "clone import " p " as " p " with" n>
             q "."
             :doc
-            "Syntax: clone import THEORY as INSTNAME with INSTSPEC.
+            "Syntax := clone import THEORY as INSTNAME with INSTSPEC.
 
 Creates an instance of THEORY under the name INSTNAME with its items
 instantiated as specified by INSTSPEC, and loads the corresponding namespace.
@@ -301,7 +299,7 @@ clone import KeyedHashFunctions as KHFs with
 
 (cloinc "clone include " q "."
         :doc
-        "Syntax: clone include THEORY.
+        "Syntax := clone include THEORY.
 
 Creates an instance of THEORY and includes it as if the
 code of the resulting instance was inserted literally.
@@ -317,7 +315,7 @@ clone include KeyedHashFunctions.")
 
 (cloincas "clone include " p " as " q "."
           :doc
-          "Syntax: clone include THEORY as INSTNAME.
+          "Syntax := clone include THEORY as INSTNAME.
 
 Creates an instance of THEORY under the name INSTNAME and includes it as if the
 code of the resulting instance was inserted literally.
@@ -330,7 +328,7 @@ clone include KeyedHashFunctions as KHFs.")
 (cloincwi "clone include " p " with" n>
           q "."
           :doc
-          "Syntax: clone include THEORY with INSTSPEC.
+          "Syntax := clone include THEORY with INSTSPEC.
 
 Creates an instance of THEORY with its items instantiated as specified by
 INSTSPEC, and includes it as if the code of the resulting
@@ -351,7 +349,7 @@ clone include KeyedHashFunctions with
 (cloincaswi "clone include " p " as " p " with" n>
             q "."
             :doc
-            "Syntax: clone include THEORY as INSTNAME with INSTSPEC.
+            "Syntax := clone include THEORY as INSTNAME with INSTSPEC.
 
 Creates an instance of THEORY under the name INSTNAME with its items
 instantiated as specified by INSTSPEC, and includes it as
@@ -371,7 +369,7 @@ clone include KeyedHashFunctions as KHFs with
 
 (hinsim "hint simplify " q
         :doc
-        "Syntax: hint simplify AXLEM_1, ..., AXLEM_N.
+        "Syntax := hint simplify AXLEM_1, ..., AXLEM_N.
 
 Adds each axiom/lemma AXLEM_i as hint for the `simplify' tactic.
 
@@ -387,13 +385,24 @@ hint simplify oget_some, oget_none.")
 
 
 ;;; Functional specification
-(typ "type " p " = " q "."
+(typ "type " q "."
      :doc
-     "Syntax: type TYPENAME = TYPEEXPR.
+     "Syntax := type TYPENAME.
 
-Defines a new type TYPENAME as TYPEEXPR.
+Declares a type TYPENAME without definition.
 
-TYPEEXPR should be a valid type expression, including:
+Example:
+type t.
+type u.
+type keys.")
+
+(typd "type " p " = " q "."
+     :doc
+     "Syntax := type TYPENAME = TYPE.
+
+Defines a type TYPENAME as TYPE.
+
+TYPE should be a valid type expression, including:
 - basic/built-in types (e.g., int, bool)
 - product types (e.g., int * bool)
 - function types (e.g., int -> bool).
@@ -410,24 +419,45 @@ type m = t -> u.")
 (typn "type " p " =" n>
       q "." >
       :doc
-      "Syntax: type TYPENAME = TYPEEXPR.
+      "Syntax := type TYPENAME = TYPE.
 
-Defines a type TYPENAME as TYPEEXPR.
+Defines a type TYPENAME as TYPE.
 
-Semantically identical to the `typ' template; differs only in formatting.
-See `typ' for details and examples.")
+Semantically identical to the `typd' template; differs only in formatting.
+See `typd' for details and examples.")
 
-(op "op " p " : " p " = " q "."
+(op "op " q "."
+     :doc
+     "Syntax := OPNAME : TYPE
+Syntax (alternative): OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE.
+
+Declares an operator OPNAME without definition. In the first syntax form, TYPE
+is a function type that encodes the types of the parameters and the return type.
+The second syntax form is equivalent, but allows naming parameters explicitly
+for documentation purposes. In this form, successive parameters of the same type
+may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
+
+(N.B. letting TYPE be TYPE_1 -> ... -> TYPE_n -> RESTYPE gives an equivalent
+formalization of the second form in the first.)
+
+Example:
+op f (x : int) (y : int) : bool.
+op g (x y : int) : bool.
+op h : int -> int -> bool.")
+
+(opd "op " p " : " p " = " q "."
     :doc
-    "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+    "Syntax := op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator OPNAME as EXPR. This operator takes n parameters,
-where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
+Defines an operator OPNAME as EXPR. This operator has n parameters,
+where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
 
 Note:
 - EXPR need not use all (or any) parameters, but must evaluate to a value of type RESTYPE.
 - Parameter types and the return type (including colons) may be omitted if they can be inferred from EXPR.
 - Parameters of the same type may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
+
+See template `op' for more information about operator declarations.
 
 Example:
 op f (x : int) (y : int) : int = x + y.
@@ -436,17 +466,17 @@ op g (x y : int) = x + y.")
 (opn "op " p " : " p " =" n>
      q "." >
      :doc
-     "Syntax: op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator OPNAME as EXPR. This operator takes n parameters,
-where the i-th has type TYPE_i, and evaluates to a value of type RESTYPE.
+Defines an operator OPNAME as EXPR. This operator has n parameters,
+where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
 
-Semantically identical to the `op' template; differs only in formatting.
-See `op' for details and examples.")
+Semantically identical to the `opd' template; differs only in formatting.
+See `opd' for details and examples.")
 
 (opas "op " p " : { " p " | " p " } as " q "."
       :doc
-      "Syntax: op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
+      "Syntax := op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
 
 Declares an operator OPNAME of type TYPE, together with an
 axiom AXIOMNAME asserting AXIOMSTAT.
@@ -459,7 +489,16 @@ op f : { int -> int | forall (x y : int), x <= y => f x <= f y } as monotonic_f.
 
 (const "const " p " : " p " = " q "."
        :doc
-       "Syntax: const CONSTNAME : TYPE = EXPR.
+       "Syntax := const CONSTNAME : TYPE = EXPR.
+
+Defines a constant CONSTNAME of type TYPE without definition.
+
+Example:
+const n : int.")
+
+(constd "const " p " : " p " = " q "."
+       :doc
+       "Syntax := const CONSTNAME : TYPE = EXPR.
 
 Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
 TYPE.
@@ -467,22 +506,23 @@ TYPE.
 The type (and colon) may be omitted if it can be inferred from EXPR.
 
 Example:
-const n : int = 2 ^ 12.")
+const t : bool = true.
+const n = 5.")
 
 (constn "const " p " : " p " =" n>
         q "." >
         :doc
-        "Syntax: const CONSTNAME : TYPE = EXPR.
+        "Syntax := const CONSTNAME : TYPE = EXPR.
 
 Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
 TYPE.
 
-Semantically identical to the `const' template; differs only in formatting.
-See `const' for details and examples.")
+Semantically identical to the `constd' template; differs only in formatting.
+See `constd' for details and examples.")
 
 (constas "const " p " : { " p " | " p " } as " q "."
          :doc
-         "Syntax: const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
+         "Syntax := const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
 
 Declares a constant CONSTNAME of type TYPE, and an axiom AXIOMNAME stating
 AXIOMSTAT.
@@ -495,14 +535,16 @@ const n : { int | 0 <= n } as ge0_n.")
 
 (abb "abbrev " p " : " p " = " q "."
      :doc
-     "Syntax: abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
 Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
 RESTYPE.
 
-Parameter types and the return type (including colons) may be omitted if they
-can be inferred from EXPR.
+Note:
+- EXPR need not use all (or any) parameters, but must evaluate to a value of type RESTYPE.
+- Parameter types and the return type (including colons) may be omitted if they can be inferred from EXPR.
+- Parameters of the same type may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
 
 Essentially an operator definition (see the `op' template) with a restricted set
 of possible EXPR. In addition, when printing an abbrevation, its definitions is
@@ -513,7 +555,7 @@ Example: abbrev max (x y : int) = if x <= y then y else x.")
 (abbn "abbrev " p " : " p " =" n>
       q "." >
       :doc
-      "Syntax: abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+      "Syntax := abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
 Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
@@ -526,12 +568,12 @@ See `abb' for details and examples.")
      q n>
      "end " (s thid) "." >
      :doc
-     "Syntax: theory THEORYNAME. [THEORYBODY] end THEORYNAME.
+     "Syntax := theory THEORYNAME. [THEORYBODY] end THEORYNAME.
 
-Defines a theory THEORYNAME with [THEORYBODY] as its content, where [THEORYBODY]
-can be any sequence of valid sentences.
+Defines a theory THEORYNAME. [THEORYBODY] represents the body of the
+theory, which can be any sequence of sentences valid in a theory.
 
-A theory typically encapsulates a collection of related items (e.g.,
+A theory typically contains a collection of related items (e.g.,
 definitions, properties, specifications, et cetera).
 
 A theory can be cloned for (re)use in different contexts, where its (abstract)
@@ -550,14 +592,15 @@ end KeyedHashFunctions.")
 
 (absthe "abstract " (i the)
         :doc
-        "Syntax: abstract theory THEORYNAME. [THEORYBODY] end THEORYNAME.
+        "Syntax := abstract theory THEORYNAME. [THEORYBODY] end THEORYNAME.
 
-Defines an abstract theory THEORYNAME with [THEORYBODY] as its content, where
-[THEORYBODY] can be any sequence of valid sentences.
+Defines an abstract theory THEORYNAME. [THEORYBODY] represents the body of the
+theory, which can be any sequence of sentences valid in a theory.
 
-Similar to a regular theory, but must be cloned before it can be accessed.
-Although instantiating any items during cloning is optional,
-abstract theories are typically designed to be instantiated (at least partially).
+An abstract theory is similar to a regular theory, but must be cloned before it
+can be accessed. Although instantiating any items during cloning is optional,
+abstract theories are typically designed to be instantiated (at least
+partially).
 
 See the `the' and `clo' templates for more information on theories and cloning.
 
@@ -574,55 +617,69 @@ end KeyedHashFunctions.")
      q n>
      "end section." >
      :doc
-     "Syntax: section. [SECTIONBODY] end section.")
+     "Syntax := section. [SECTIONBODY] end section.
+
+Defines a section. [SECTIONBODY] represents the body of the
+section, which can be any sequence of sentences valid in a section.")
 
 (secid "section" (p "" secid) "." n>
        q n>
        "end section " (s secid) "." >
        :doc
-       "Syntax: section SECTIONNAME. [SECTIONBODY] end section SECTIONNAME.")
+       "Syntax := section SECTIONNAME. [SECTIONBODY] end section SECTIONNAME.
+
+Defines a section SECTIONNAME. [SECTIONBODY] represents the body of the
+section, which can be any sequence of sentences valid in a section.")
 
 (decty "declare type " q "."
        :doc
-       "Syntax: declare type TYPENAME.")
+       "Syntax := declare type TYPENAME.")
 
 (decop "declare op " p " : " q "."
        :doc
-       "Syntax: declare op OPNAME : TYPE.")
+       "Syntax := declare op OPNAME : TYPE.")
 
 (decopas "declare op " p " : { " p " | " p " } as " q "."
          :doc
-         "Syntax: declare op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
+         "Syntax := declare op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
+
+(deccon "declare const " p " : " q "."
+       :doc
+       "Syntax := declare const CONSTNAME : TYPE.")
+
+(deconas "declare const " p " : { " p " | " p " } as " q "."
+         :doc
+         "Syntax := declare const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
 
 (decmod "declare module " p " <: " q "."
         :doc
-        "Syntax: declare module MODNAME <: MODTYPE.")
+        "Syntax := declare module MODNAME <: MODTYPE.")
 
 (decmodr "declare module " p " <: " p "{ " q " }."
          :doc
-         "Syntax: declare module MODNAME <: MODTYPE { MODRESTR }.")
+         "Syntax := declare module MODNAME <: MODTYPE { MODRESTR }.")
 
 (Pr "Pr[" p " @ " p " : " q "]"
     :doc
-    "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+    "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prn "Pr[" n>
      p " @ " p " :" n>
      q "]" >
      :doc
-     "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prm "Pr[" p " @ &m : " q "]"
      :doc
-     "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prmr "Pr[" q " @ &m : res]"
       :doc
-      "Syntax: Pr[MOD.PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
+      "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (hoa "hoare[" p " : " p " ==> " q "]"
      :doc
-     "Syntax: hoare[MOD.PROC : PRE ==> POST]")
+     "Syntax := hoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (hoan "hoare[" n>
       p " :" n>
@@ -631,11 +688,12 @@ end KeyedHashFunctions.")
       q n>
       "]" >
       :doc
-      "Syntax: hoare[MOD.PROC : PRE ==> POST]")
+      "Syntax := hoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (pho "phoare[" p " : " p " ==> " p "] = " q
      :doc
-     "Syntax: phoare[MOD.PROC : PRE ==> POST] REL VAL")
+     "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] REL VAL")
+
 (phon "phoare[" n>
       p " :" n>
       p n>
@@ -643,11 +701,11 @@ end KeyedHashFunctions.")
       p n>
       "] " q >
       :doc
-      "Syntax: phoare[MOD.PROC : PRE ==> POST] REL VAL")
+      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] REL VAL")
 
 (pho1 "phoare[" p " : " p " ==> " q "] = 1%r"
       :doc
-      "Syntax: phoare[MOD.PROC : PRE ==> POST] = 1%r")
+      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] = 1%r")
 
 (pho1n "phoare[" n>
        p " :" n>
@@ -656,11 +714,11 @@ end KeyedHashFunctions.")
        q n>
        "] = 1%r" >
        :doc
-       "Syntax: phoare[MOD.PROC : PRE ==> POST] = 1%r")
+       "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] = 1%r")
 
 (equ "equiv[" p " ~ " p " : " p " ==> " q "]"
      :doc
-     "Syntax: equiv[MOD1.PROC1 ~ MOD2.PROC2 : PRE ==> POST]")
+     "Syntax := equiv[MOD1(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD2(MOD2ARG_1, ..., MOD2ARG_N).PROC2 : PRE ==> POST]")
 (equn "equiv[" n>
       p " ~ " p ":" n>
       p n>
@@ -668,11 +726,11 @@ end KeyedHashFunctions.")
       q n>
       "]" >
       :doc
-      "Syntax: equiv[MOD1.PROC1 ~ MOD2.PROC2 : PRE ==> POST]")
+      "Syntax := equiv[MOD1(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD2(MOD2ARG_1, ..., MOD2ARG_N).PROC2 : PRE ==> POST]")
 
 (eho "ehoare[" p " : " p " ==> " q "]"
      :doc
-     "Syntax: ehoare[MOD.PROC : PRE ==> POST]")
+     "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (ehon "ehoare[" n>
       p " :" n>
@@ -681,98 +739,132 @@ end KeyedHashFunctions.")
       q n>
       "]" >
       :doc
-      "Syntax: ehoare[MOD.PROC : PRE ==> POST]")
+      "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (axi "axiom " p " : " q "."
      :doc
-     "Syntax: axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
+     "Syntax := axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
 (axin "axiom " p " :" n>
       q "." >
       :doc
-      "Syntax: axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
+      "Syntax := axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
 
 (proof "proof." > n>
        q n>
        "qed." >
        :doc
-       "Syntax: proof. [PROOFBODY] qed.")
-
-(proofpq "proof." q "qed." >
-         :doc
-         "Syntax: proof. [PROOFBODY] qed.")
+       "Syntax := proof. [PROOFBODY] qed.")
 
 (lem "lemma " p " : " p "." n>
-     (i proof))
-(lemby "lemma " p " : " p " by " q ".")
-(lempq "lemma " p " : " p "." n>
-       (i proofpq) >)
+     (i proof)
+     :doc
+     "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT.")
+
+(lemby "lemma " p " : " p " by " q "."
+       :doc
+       "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT by PROOFSENT.")
+
 (lemn "lemma " p " :" n>
       p "." n>
-      (i proof))
-(lemnpq "lemma " p " :" n>
-        p "." n>
-        (i proofpq))
+      (i proof)
+      :doc
+      "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT.")
 
 (lemll "lemma " p " : islossless " p "." n>
-       (i proof))
-(lemllpq "lemma " p " : islossless " p "." n>
-         (i proofpq))
+       (i proof)
+       :doc
+       "Syntax := lemma LEMMANAME : islossless MOD(MODARG_1, ..., MODARG_N).PROC.")
 
 (hoal "hoare " p " : " p " : " p " ==> " p "." n>
-      (i proof))
-(hoalpq "hoare " p " : " p " : " p " ==> " p "." n>
-        (i proofpq))
+      (i proof)
+      :doc
+      "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+
 (hoaln "hoare " p " :" n>
        p " : " p " ==> " p "." n>
-       (i proof))
+       (i proof)
+       :doc
+       "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 (hoanln "hoare " p " :" n>
         p " :" n>
         p n>
         "==>" n>
         p "." n>
-        (i proof))
+        (i proof)
+        :doc
+        "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (equl "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
-      (i proof))
-(equlpq "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
-        (i proofpq))
+      (i proof)
+      :doc
+      "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
+
 (equln "equiv " p " :" n>
        p " ~ " p " : " p " ==> "p "." n>
-       (i proof))
+       (i proof)
+       :doc
+       "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
+
 (equnln "equiv " p " :" n>
         p " ~ " p " :" n>
         p n>
         "==>" n>
         p "." n>
-        (i proof))
+        (i proof)
+        :doc
+        "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
 
 (ehol "ehoare " p " : " p " : " p " ==> " p "." n>
-      (i proof))
-(eholpq "ehoare " p " : " p " : " p " ==> " p "." n>
-        (i proofpq))
+      (i proof)
+      :doc
+      "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 (eholn "ehoare " p " :" n>
        p " : " p " ==> " p "." n>
-       (i proof))
-(eholn "ehoare " p " :" n>
+       (i proof)
+       :doc
+       "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+(ehonln "ehoare " p " :" n>
        p " :" n>
        p n>
        "==>" n>
        p "." n>
-       (i proof))
+       (i proof)
+       :doc
+       "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
-(fun "fun (" p ") => " q)
-(funn "fun (" p ") =>" n>
-      q)
-(for "forall (" p "), " q)
-(forn "forall (" p ")," n>
-      q)
-(exi "exists (" p "), " q)
+(fun "fun " p " => " q
+     :doc
+     "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => FUNBODY")
+
+(funn "fun " p " =>" n>
+      q
+      :doc
+      "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => FUNBODY")
+
+(for "forall " p ", " q
+     :doc
+     "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+
+(forn "forall " p ", " n>
+      q
+      :doc
+      "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+(exi "exists (" p "), " q
+     :doc
+     "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
 (exin "exists (" p ")," n>
-      q)
-(ifte "if " p " then " p " else " q)
+      q
+      :doc
+     "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+(ifte "if " p " then " p " else " q
+      :doc
+      "Syntax := if BOOLEXPR then THENEXPR else ELSEEXPR")
+
 (iften "if " p n>
        "then " p n>
-       "else " q)
+       "else " q
+       :doc
+       "Syntax := if BOOLEXPR then THENEXPR else ELSEEXPR")
 
 (ge0 "0 <= " q)
 (gt0 "0 < " q)
@@ -842,7 +934,7 @@ end KeyedHashFunctions.")
          "}" >)
 
 (while "while (" p ") {" n>
-       q
+       q n>
        "}" >)
 
 (ass p "<-" q ";")
@@ -882,15 +974,19 @@ end KeyedHashFunctions.")
 (seqh "seq " p " : (" q ")")
 (seqp "seq " p " : (" p ") (" p ") (" p ") (" p ") (" p ") (" q ")")
 
+(sp "sp " q)
 (sp1 "sp{1} " q)
 (sp2 "sp{2} " q)
 
+(wp "wp " q)
 (wp1 "wp{1} " q)
 (wp2 "wp{2} " q)
 
+(rnd "rnd " q)
 (rnd1 "rnd{1} " q)
 (rnd2 "rnd{2} " q)
 
+(ifz "if")
 (if1 "if{1}")
 (if2 "if{2}")
 
@@ -921,16 +1017,19 @@ end KeyedHashFunctions.")
 (eca1 "ecall{1} (" q ")")
 (eca2 "ecall{2} (" q ")")
 
-(swa1 "swap{1} " p " " q )
-(swa2 "swap{2} " p " " q )
+(swa "swap " p " " q)
+(swa1 "swap{1} " p " " q)
+(swa2 "swap{2} " p " " q)
 
 (swabl "swap [" p ".." p "] " q)
 (swa1bl "swap{1} [" p ".." p "] " q)
 (swa2bl "swap{2} [" p ".." p "] " q)
 
+(swas "swap " p " " p " " q)
 (swa1s "swap{1} " p " " p " " q)
 (swa2s "swap{2} " p " " p " " q)
 
+(inl "inline " q)
 (inl1 "inline{1} " q)
 (inl2 "inline{2} " q)
 
@@ -958,12 +1057,15 @@ end KeyedHashFunctions.")
 (out1blc "outline{1} [" p ".." p "] by { " q " }")
 (out2blc "outline{2} [" p ".." p "] by { " q " }")
 
-(rco1 "rcondt{1} " q)
-(rco2 "rcondt{2} " q)
+(rcot "rcondt " q)
+(rcot1 "rcondt{1} " q)
+(rcot2 "rcondt{2} " q)
 
-(rco1 "rcondf{1} " q)
-(rco2 "rcondf{2} " q)
+(rcof "rcondf " q)
+(rcof1 "rcondf{1} " q)
+(rcof2 "rcondf{2} " q)
 
+(unr "unroll " q)
 (unr1 "unroll{1} " q)
 (unr2 "unroll{2} " q)
 

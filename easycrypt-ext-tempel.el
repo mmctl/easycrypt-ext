@@ -43,7 +43,7 @@
   :group 'easycrypt-ext)
 
 (defcustom ece-tempel-template-map-entries
-    '(("a" axin) ("A" abbn) ("b" bye) ("B" byp)
+  '(("a" axin) ("A" abbn) ("b" bye) ("B" byp)
     ("c" cons) ("C" conseqehh) ("d" docc) ("D" decmod)
     ("e" equn) ("E" equnln) ("f" funn) ("F" fel)
     ("g" ge0) ("G" gt0) ("h" hoan) ("H" hoanln)
