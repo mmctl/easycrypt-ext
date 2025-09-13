@@ -441,6 +441,13 @@ Alternatively, you can search and set these variables through
 > ```
 > (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
 > its commands.)
+>
+> In any case, consider setting up
+> [Which-Key](https://github.com/justbur/emacs-which-key) to help you remember
+> keybindings and discover available follow-ups after pressing a prefix (see
+> [Keybinding Reminders (Which-Key)](#keybinding-reminders-which-key) for
+> details).
+
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
@@ -653,6 +660,28 @@ shows the available keybindings.
 The following gathers a few additional quality-of-life improvements you might
 want to consider, either as complements to the features described above or
 independently.
+
+## Keybinding Reminders (Which-Key)
+
+It can be difficult to remember keybindings, especially with the number provided
+by EasyCrypt Ext. The [Which-Key](https://github.com/justbur/emacs-which-key)
+package (built into Emacs from version 30) helps by automatically displaying a
+popup listing all valid key sequences that can follow your current prefix, along
+with their associated commands. As you can imagine, this is generally useful,
+not just for EasyCrypt Ext.
+
+The following `use-package` declaration enables Which-Key globally. The defaults
+work well in most casees, but you can further configure its behavior via the
+provided customization options.
+
+```emacs-lisp
+(use-package which-key
+  :ensure t
+
+  :config
+  ;; Activation
+  (which-key-mode 1))
+```
 
 ## Automatic Completion Popup (Corfu)
 
