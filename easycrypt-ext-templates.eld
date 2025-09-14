@@ -5,17 +5,23 @@ easycrypt-mode
 
 ;;; Comments and documentation
 (com "(* " q " *)"
+     :ann
+     "Comment"
      :doc
      "Regular, non-documentation comment on a single line.")
 
 (comn "(*" n>
       q n
       "*)" >
+      :ann
+      "Comment (\\n)"
       :doc
       "Regular, non-documentation comment with newline(s), putting the opener
 and closer on separate lines.")
 
 (docc "(*& " q " &*)"
+      :ann
+      "Documentation comment"
       :doc
       "Item documentation comment on a single line.
 
@@ -26,6 +32,8 @@ as (part of) its documentation. For example, this will show up alongside the
 (docn "(*&" n>
       q n
       "&*)" >
+      :ann
+      "Documentation comment (\\n)"
       :doc
       "Item documentation comment with newline(s), putting the opener and closer
 on separate lines.
@@ -41,6 +49,8 @@ See the `docc' template for more information on documentation comments.")
       "Description:" n>
       q n
       "^*)" >
+      :ann
+      "File documentation comment"
       :doc
       "File documentation comment, automatically inserting the name of the
 currently visited file as `header' (first line), as well as an author, date, and
@@ -55,6 +65,8 @@ file.")
 
 ;;; Meta
 (req "require " q "."
+     :ann
+     "require"
      :doc
      "Syntax := require FILE_1 ... FILE_n.
 
@@ -68,6 +80,8 @@ require AllCore List.
 require Distr.")
 
 (imp "import " q "."
+     :ann
+     "import"
      :doc
      "Syntax := import THEORY_1 ... THEORY_n.
 
@@ -83,6 +97,8 @@ import AllCore.
 import List Distr.")
 
 (reqimp "require import " q "."
+        :ann
+        "require import"
         :doc
         "Syntax := require import FILE_1 ... FILE_N.
 
@@ -98,6 +114,8 @@ Example:
 require import AllCore List Distr.")
 
 (froreq "from " p " require " q
+        :ann
+        "from require"
         :doc
         "Syntax := from LIBRARY require FILE_1 ... FILE_N.
 
@@ -112,6 +130,8 @@ Example:
 from Jasmin require JModel JArray.")
 
 (froreqimp "from " p " require import " q
+           :ann
+           "from require import"
            :doc
            "Syntax := from LIBRARY require import FILE_1 ... FILE_N.
 
@@ -127,6 +147,8 @@ Example:
 from Jasmin require import JModel JArray.")
 
 (clo "clone " q "."
+     :ann
+     "clone"
      :doc
      "Syntax := clone THEORY.
 
@@ -147,10 +169,12 @@ Example:
 clone KeyedHashFunctions.")
 
 (cloas "clone " p " as " q "."
+       :ann
+       "clone as"
        :doc
-       "Syntax := clone THEORY as INSTNAME.
+       "Syntax := clone THEORY as INST.
 
-Creates an instance of THEORY under the name INSTNAME.
+Creates an instance of THEORY under the name INST.
 
 See the `clo' template for more information on `clone'.
 
@@ -159,6 +183,8 @@ clone KeyedHashFunctions as KHFs.")
 
 (clowi "clone " p " with" n>
        q "."
+       :ann
+       "clone with"
        :doc
        "Syntax := clone THEORY with INSTSPEC.
 
@@ -202,6 +228,8 @@ clone KeyedHashFunctions with
 
 (cloaswi "clone " p " as " p " with" n>
          q "."
+         :ann
+         "clone as with"
          :doc
          "Syntax := clone THEORY as INSTNAME with INSTSPEC
 
@@ -221,6 +249,8 @@ clone KeyedHashFunctions as KHFs with
   proof *.")
 
 (cloimp "clone import " q "."
+        :ann
+        "clone import"
         :doc
         "Syntax := clone import THEORY.
 
@@ -236,14 +266,16 @@ Example:
 clone import KeyedHashFunctions.")
 
 (cloimpas "clone import " p " as " q "."
+          :ann
+          "clone import as"
           :doc
-          "Syntax := clone import THEORY as INSTNAME.
+          "Syntax := clone import THEORY as INST.
 
-Creates an instance of THEORY under the name INSTNAME and loads the
+Creates an instance of THEORY under the name INST and loads the
 corresponding namespace.
 
 Essentially syntactic sugar for a `clone as' statement followed by an `import'
-statement with INSTNAME.
+statement with INST.
 
 See the `cloas' and `imp' templates for more information on `clone as' and
 `import'.
@@ -253,6 +285,8 @@ clone import KeyedHashFunctions as KHFs.")
 
 (cloimpwi "clone import " p " with" n>
           q "."
+          :ann
+          "clone import with"
           :doc
           "Syntax := clone import THEORY with INSTSPEC.
 
@@ -276,6 +310,8 @@ clone import KeyedHashFunctions with
 
 (cloimpaswi "clone import " p " as " p " with" n>
             q "."
+            :ann
+            "clone import as with"
             :doc
             "Syntax := clone import THEORY as INSTNAME with INSTSPEC.
 
@@ -298,6 +334,8 @@ clone import KeyedHashFunctions as KHFs with
   proof *.")
 
 (cloinc "clone include " q "."
+        :ann
+        "clone include"
         :doc
         "Syntax := clone include THEORY.
 
@@ -314,10 +352,12 @@ Example:
 clone include KeyedHashFunctions.")
 
 (cloincas "clone include " p " as " q "."
+          :ann
+          "clone include as"
           :doc
-          "Syntax := clone include THEORY as INSTNAME.
+          "Syntax := clone include THEORY as INST.
 
-Creates an instance of THEORY under the name INSTNAME and includes it as if the
+Creates an instance of THEORY under the name INST and includes it as if the
 code of the resulting instance was inserted literally.
 
 See the `cloinc' and `cloas' templates for more information on `clone include'
@@ -327,6 +367,8 @@ clone include KeyedHashFunctions as KHFs.")
 
 (cloincwi "clone include " p " with" n>
           q "."
+          :ann
+          "clone include with"
           :doc
           "Syntax := clone include THEORY with INSTSPEC.
 
@@ -348,6 +390,8 @@ clone include KeyedHashFunctions with
 
 (cloincaswi "clone include " p " as " p " with" n>
             q "."
+            :ann
+            "clone include as with"
             :doc
             "Syntax := clone include THEORY as INSTNAME with INSTSPEC.
 
@@ -368,6 +412,8 @@ clone include KeyedHashFunctions as KHFs with
   proof *.")
 
 (hinsim "hint simplify " q
+        :ann
+        "hint simplify"
         :doc
         "Syntax := hint simplify AXLEM_1, ..., AXLEM_N.
 
@@ -377,19 +423,25 @@ Example:
 hint simplify oget_some, oget_none.")
 
 (hinrew "hint rewrite " p " : " q
+        :ann
+        "hint rewrite"
         :doc
         "Adds the specified axioms/lemmas as hints for the `rewrite' tactic.")
 (hinex "hint exact " p " : " q
+       :ann
+       "hint exact"
        :doc
        "Adds axioms/lemmas as hints for the `exact' tactic.")
 
 
 ;;; Functional specification
 (typ "type " q "."
+     :ann
+     "type (no def)"
      :doc
-     "Syntax := type TYPENAME.
+     "Syntax := type TYPE.
 
-Declares a type TYPENAME without definition.
+Declares a type TYPE without definition.
 
 Example:
 type t.
@@ -397,12 +449,14 @@ type u.
 type keys.")
 
 (typd "type " p " = " q "."
-     :doc
-     "Syntax := type TYPENAME = TYPE.
+      :ann
+      "type (def)"
+      :doc
+      "Syntax := type TYPENAME = TYPEEXPR.
 
-Defines a type TYPENAME as TYPE.
+Defines a type TYPENAME as TYPEEXPR.
 
-TYPE should be a valid type expression, including:
+TYPEEXPR should be a valid type expression, including:
 - basic/built-in types (e.g., int, bool)
 - product types (e.g., int * bool)
 - function types (e.g., int -> bool).
@@ -418,20 +472,24 @@ type m = t -> u.")
 
 (typn "type " p " =" n>
       q "." >
+      :ann
+      "type (def + \\n)"
       :doc
-      "Syntax := type TYPENAME = TYPE.
+      "Syntax := type TYPENAME = TYPEEXPR.
 
-Defines a type TYPENAME as TYPE.
+Defines a type TYPENAME as TYPEEXPR.
 
-Semantically identical to the `typd' template; differs only in formatting.
-See `typd' for details and examples.")
+Semantically identical to the `typd' template; differs only in formatting. See
+`typd' for details and examples.")
 
 (op "op " q "."
-     :doc
-     "Syntax := OPNAME : TYPE
-Syntax (alternative): OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE.
+    :ann
+    "op (no def)"
+    :doc
+    "Syntax := OP : TYPE
+Syntax (alternative): OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE.
 
-Declares an operator OPNAME without definition. In the first syntax form, TYPE
+Declares an operator OP without definition. In the first syntax form, TYPE
 is a function type that encodes the types of the parameters and the return type.
 The second syntax form is equivalent, but allows naming parameters explicitly
 for documentation purposes. In this form, successive parameters of the same type
@@ -446,10 +504,12 @@ op g (x y : int) : bool.
 op h : int -> int -> bool.")
 
 (opd "op " p " : " p " = " q "."
-    :doc
-    "Syntax := op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     :ann
+     "op (def)"
+     :doc
+     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator OPNAME as EXPR. This operator has n parameters,
+Defines an operator OP as EXPR. This operator has n parameters,
 where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
 
 Note:
@@ -465,42 +525,50 @@ op g (x y : int) = x + y.")
 
 (opn "op " p " : " p " =" n>
      q "." >
+     :ann
+     "op (def + \\n)"
      :doc
-     "Syntax := op OPNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an operator OPNAME as EXPR. This operator has n parameters,
+Defines an operator OP as EXPR. This operator has n parameters,
 where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
 
 Semantically identical to the `opd' template; differs only in formatting.
 See `opd' for details and examples.")
 
 (opas "op " p " : { " p " | " p " } as " q "."
+      :ann
+      "op as (axiom)"
       :doc
-      "Syntax := op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
+      "Syntax := op OP : { TYPE | AXIOMSTAT } as AXIOMNAME.
 
-Declares an operator OPNAME of type TYPE, together with an
+Declares an operator OP of type TYPE, together with an
 axiom AXIOMNAME asserting AXIOMSTAT.
 
 Typically used to axiomatize a fundamental property of the operator,
-so AXIOMSTAT often refers to OPNAME. However, this is not enforced.
+so AXIOMSTAT often refers to OP. However, this is not enforced.
 
 Example:
 op f : { int -> int | forall (x y : int), x <= y => f x <= f y } as monotonic_f.")
 
-(const "const " p " : " p " = " q "."
+(const "const " p " : " p "."
+       :ann
+       "constant (no def)"
        :doc
-       "Syntax := const CONSTNAME : TYPE = EXPR.
+       "Syntax := const CONST : TYPE.
 
-Defines a constant CONSTNAME of type TYPE without definition.
+Defines a constant CONST of type TYPE without definition.
 
 Example:
 const n : int.")
 
 (constd "const " p " : " p " = " q "."
-       :doc
-       "Syntax := const CONSTNAME : TYPE = EXPR.
+        :ann
+        "const (def)"
+        :doc
+        "Syntax := const CONST : TYPE = EXPR.
 
-Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
+Defines a constant CONST as EXPR, which evaluates to a value of type
 TYPE.
 
 The type (and colon) may be omitted if it can be inferred from EXPR.
@@ -511,33 +579,39 @@ const n = 5.")
 
 (constn "const " p " : " p " =" n>
         q "." >
+        :ann
+        "const (def + \\n)"
         :doc
-        "Syntax := const CONSTNAME : TYPE = EXPR.
+        "Syntax := const CONST : TYPE = EXPR.
 
-Defines a constant CONSTNAME as EXPR, which evaluates to a value of type
+Defines a constant CONST as EXPR, which evaluates to a value of type
 TYPE.
 
 Semantically identical to the `constd' template; differs only in formatting.
 See `constd' for details and examples.")
 
 (constas "const " p " : { " p " | " p " } as " q "."
+         :ann
+         "const as (axiom)"
          :doc
-         "Syntax := const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.
+         "Syntax := const CONST : { TYPE | AXIOMSTAT } as AXIOMNAME.
 
-Declares a constant CONSTNAME of type TYPE, and an axiom AXIOMNAME stating
+Declares a constant CONST of type TYPE, and an axiom AXIOMNAME stating
 AXIOMSTAT.
 
 Typically used to axiomatize a fundamental property of the constant, so
-AXIOMSTAT often refers to CONSTNAME. However, this is not enforced.
+AXIOMSTAT often refers to CONST. However, this is not enforced.
 
 Example:
 const n : { int | 0 <= n } as ge0_n.")
 
 (abb "abbrev " p " : " p " = " q "."
+     :ann
+     "abbrev"
      :doc
-     "Syntax := abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
+Defines an abbreviation ABBREV as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
 RESTYPE.
 
@@ -554,10 +628,12 @@ Example: abbrev max (x y : int) = if x <= y then y else x.")
 
 (abbn "abbrev " p " : " p " =" n>
       q "." >
+      :ann
+      "abbrev (\\n)"
       :doc
-      "Syntax := abbrev ABBREVNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+      "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
 
-Defines an abbreviation ABBREVNAME as EXPR. This abbreviation takes n
+Defines an abbreviation ABBREV as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
 RESTYPE.
 
@@ -567,10 +643,12 @@ See `abb' for details and examples.")
 (the "theory " (p "" thid)  "." n>
      q n>
      "end " (s thid) "." >
+     :ann
+     "theory"
      :doc
-     "Syntax := theory THEORYNAME. [THEORYBODY] end THEORYNAME.
+     "Syntax := theory THEORY. [BODY] end THEORY.
 
-Defines a theory THEORYNAME. [THEORYBODY] represents the body of the
+Defines a theory THEORY. [BODY] represents the body of the
 theory, which can be any sequence of sentences valid in a theory.
 
 A theory typically contains a collection of related items (e.g.,
@@ -591,10 +669,12 @@ op f.
 end KeyedHashFunctions.")
 
 (absthe "abstract " (i the)
+        :ann
+        "abstract theory"
         :doc
-        "Syntax := abstract theory THEORYNAME. [THEORYBODY] end THEORYNAME.
+        "Syntax := abstract theory THEORY. [BODY] end THEORY.
 
-Defines an abstract theory THEORYNAME. [THEORYBODY] represents the body of the
+Defines an abstract theory THEORY. [BODY] represents the body of the
 theory, which can be any sequence of sentences valid in a theory.
 
 An abstract theory is similar to a regular theory, but must be cloned before it
@@ -616,46 +696,64 @@ end KeyedHashFunctions.")
 (sec "section." n>
      q n>
      "end section." >
+     :ann
+     "section (no name)"
      :doc
-     "Syntax := section. [SECTIONBODY] end section.
+     "Syntax := section. [BODY] end section.
 
-Defines a section. [SECTIONBODY] represents the body of the
+Defines a section. [BODY] represents the body of the
 section, which can be any sequence of sentences valid in a section.")
 
 (secid "section" (p "" secid) "." n>
        q n>
        "end section " (s secid) "." >
+       :ann
+       "section (name)"
        :doc
-       "Syntax := section SECTIONNAME. [SECTIONBODY] end section SECTIONNAME.
+       "Syntax := section SECTION. [BODY] end section SECTION.
 
-Defines a section SECTIONNAME. [SECTIONBODY] represents the body of the
+Defines a section SECTION. [BODY] represents the body of the
 section, which can be any sequence of sentences valid in a section.")
 
 (decty "declare type " q "."
+       :ann
+       "declare type"
        :doc
-       "Syntax := declare type TYPENAME.")
+       "Syntax := declare type TYPE.")
 
 (decop "declare op " p " : " q "."
+       :ann
+       "declare op"
        :doc
-       "Syntax := declare op OPNAME : TYPE.")
+       "Syntax := declare op OP : TYPE.")
 
 (decopas "declare op " p " : { " p " | " p " } as " q "."
+         :ann
+         "declare op as (axiom)"
          :doc
-         "Syntax := declare op OPNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
+         "Syntax := declare op OP : { TYPE | AXIOMSTAT } as AXIOMNAME.")
 
 (deccon "declare const " p " : " q "."
-       :doc
-       "Syntax := declare const CONSTNAME : TYPE.")
+        :ann
+        "declare const"
+        :doc
+        "Syntax := declare const CONST : TYPE.")
 
 (deconas "declare const " p " : { " p " | " p " } as " q "."
+         :ann
+         "declare const as (axiom)"
          :doc
-         "Syntax := declare const CONSTNAME : { TYPE | AXIOMSTAT } as AXIOMNAME.")
+         "Syntax := declare const CONST : { TYPE | AXIOMSTAT } as AXIOMNAME.")
 
 (decmod "declare module " p " <: " q "."
+        :ann
+        "declare module (no restr)"
         :doc
         "Syntax := declare module MODNAME <: MODTYPE.")
 
 (decmodr "declare module " p " <: " p "{ " q " }."
+         :ann
+         "declare module (restr)"
          :doc
          "Syntax := declare module MODNAME <: MODTYPE { MODRESTR }.")
 
@@ -743,48 +841,48 @@ section, which can be any sequence of sentences valid in a section.")
 
 (axi "axiom " p " : " q "."
      :doc
-     "Syntax := axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
+     "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
 (axin "axiom " p " :" n>
       q "." >
       :doc
-      "Syntax := axiom AXIOMNAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : AXIOMSTAT.")
+      "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
 
 (proof "proof." > n>
        q n>
        "qed." >
        :doc
-       "Syntax := proof. [PROOFBODY] qed.")
+       "Syntax := proof. [BODY] qed.")
 
 (lem "lemma " p " : " p "." n>
      (i proof)
      :doc
-     "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT.")
+     "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
 
 (lemby "lemma " p " : " p " by " q "."
        :doc
-       "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT by PROOFSENT.")
+       "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMA by PROOF.")
 
 (lemn "lemma " p " :" n>
       p "." n>
       (i proof)
       :doc
-      "Syntax := lemma LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMASTAT.")
+      "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
 
 (lemll "lemma " p " : islossless " p "." n>
        (i proof)
        :doc
-       "Syntax := lemma LEMMANAME : islossless MOD(MODARG_1, ..., MODARG_N).PROC.")
+       "Syntax := lemma LEMMA : islossless MOD(MODARG_1, ..., MODARG_N).PROC.")
 
 (hoal "hoare " p " : " p " : " p " ==> " p "." n>
       (i proof)
       :doc
-      "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+      "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (hoaln "hoare " p " :" n>
        p " : " p " ==> " p "." n>
        (i proof)
        :doc
-       "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+       "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 (hoanln "hoare " p " :" n>
         p " :" n>
         p n>
@@ -792,18 +890,18 @@ section, which can be any sequence of sentences valid in a section.")
         p "." n>
         (i proof)
         :doc
-        "Syntax := hoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+        "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (equl "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
       (i proof)
       :doc
-      "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
+      "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
 
 (equln "equiv " p " :" n>
        p " ~ " p " : " p " ==> "p "." n>
        (i proof)
        :doc
-       "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
+       "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
 
 (equnln "equiv " p " :" n>
         p " ~ " p " :" n>
@@ -812,34 +910,34 @@ section, which can be any sequence of sentences valid in a section.")
         p "." n>
         (i proof)
         :doc
-        "Syntax := equiv LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
+        "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD(MOD1ARG_1, ..., MOD1ARG_N).PROC1 : PRE ==> POST.")
 
 (ehol "ehoare " p " : " p " : " p " ==> " p "." n>
       (i proof)
       :doc
-      "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+      "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 (eholn "ehoare " p " :" n>
        p " : " p " ==> " p "." n>
        (i proof)
        :doc
-       "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+       "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 (ehonln "ehoare " p " :" n>
-       p " :" n>
-       p n>
-       "==>" n>
-       p "." n>
-       (i proof)
-       :doc
-       "Syntax := ehoare LEMMANAME (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
+        p " :" n>
+        p n>
+        "==>" n>
+        p "." n>
+        (i proof)
+        :doc
+        "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (fun "fun " p " => " q
      :doc
-     "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => FUNBODY")
+     "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => BODY")
 
 (funn "fun " p " =>" n>
       q
       :doc
-      "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => FUNBODY")
+      "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => BODY")
 
 (for "forall " p ", " q
      :doc
@@ -855,7 +953,7 @@ section, which can be any sequence of sentences valid in a section.")
 (exin "exists (" p ")," n>
       q
       :doc
-     "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+      "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
 (ifte "if " p " then " p " else " q
       :doc
       "Syntax := if BOOLEXPR then THENEXPR else ELSEEXPR")
