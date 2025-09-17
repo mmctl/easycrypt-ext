@@ -69,6 +69,7 @@ Specifically, these features are the following.
   - [Documentation Popup (Corfu)](#documentation-popup-corfu)
   - [Additional Completion Functions (Cape)](#additional-completion-functions-cape)
   - [Enhanced Imenu (Consult)](#enhanced-imenu-consult)
+- [Contributing](#contributing)
 
 -----
 
