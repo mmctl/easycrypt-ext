@@ -46,7 +46,7 @@ Specifically, these features are the following.
 
 > [!IMPORTANT]
 > The current version of this package should be compatible with (at least)
-> Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1.
+> Emacs 29.1 or newer. However, it has only been tested with Emacs version 30.1 and newer.
 
 ## Table of Contents
 
@@ -110,7 +110,8 @@ This file can live in different places, most commonly:
 - `~/emacs.d/init.el`
 - `~/.emacs`
 - `~/.config/emacs/init.el`
- To check which one your Emacs uses:
+
+To check which one your Emacs uses:
 1. Open Emacs.
 2. Press `C-h v` (Control + h, then v).
 3. Type `user-init-file` and hit Enter.
