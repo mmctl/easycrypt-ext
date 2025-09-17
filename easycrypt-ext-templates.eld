@@ -839,6 +839,7 @@ section, which can be any sequence of sentences valid in a section.")
      "equiv"
      :doc
      "Syntax := equiv[MOD1(MOD1ARG_1, ..., MOD1ARG_N).PROC1 ~ MOD2(MOD2ARG_1, ..., MOD2ARG_N).PROC2 : PRE ==> POST]")
+
 (equn "equiv[" n>
       p " ~ " p ":" n>
       p n>
@@ -905,7 +906,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "lemma by"
        :doc
-       "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMA by PROOF.")
+       "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMA by PROOFSENT.")
 
 (lemn "lemma " p " :" n>
       p "." n>
@@ -1027,8 +1028,8 @@ section, which can be any sequence of sentences valid in a section.")
       "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
 
 (exi "exists (" p "), " q
-      :ann
-      "exists"
+     :ann
+     "exists"
      :doc
      "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
 
@@ -1093,14 +1094,14 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "let in"
        :doc
-       "Syntax := let LETVAR = LETEXPR in EXPR")
+       "Syntax := let BINDVAR = BINDEXPR in EXPR")
 
 (letinn "let " p " = " p n>
         "in " q
         :ann
         "let in (\\n)"
         :doc
-        "Syntax := let LETVAR = LETEXPR in EXPR")
+        "Syntax := let BINDVAR = BINDEXPR in EXPR")
 
 
 ;;; Imperative specification
@@ -1284,107 +1285,261 @@ section, which can be any sequence of sentences valid in a section.")
 ;; Ambient
 (smt "smt(" q ")"
      :ann
-     "smt limit")
+     "smt limit"
+     :doc
+     "Syntax := smt(Lemma_1|@Theory_1 ... Lemma_n|@Theory_n)")
 
 (movi "move=> " q
       :ann
-      "move (intro)")
+      "move (intro)"
+      :doc
+      "Syntax :=  move=> INTROPAT_1 ... INTROPAT_n")
 
 (movg "move: " q
       :ann
-      "move (gen)")
+      "move (gen)"
+      :doc
+      "Syntax :=  move: GENTERM_1 ... GENTERM_n")
 
 (pos "pose " p " := " q
      :ann
-     "pose")
+     "pose"
+     :doc
+     "Syntax := pose VAR := EXPR")
 
 (hav "have " p ": " q
      :ann
-     "have")
+     "have"
+     :doc
+     "Syntax := have INTROPAT_1 ... INTROPAT_n : BOOLEXPR")
 
-(havby "have " p ": " p " by " q "."
+(havby "have " p ": " p " by " q
        :ann
-       "have by")
+       "have by"
+       :doc
+       "Syntax := have INTROPAT_1 ... INTROPAT_n : BOOLEXPR by PROOFSENT")
 
 (havr "have ->: " q
       :ann
-      "have -> (rewr right)")
+      "have -> (rewr right)"
+      :doc
+      "Syntax := have ->: BOOLEXPR")
 
 (havl "have <-: " q
       :ann
-      "have <- (rewr left)")
+      "have <- (rewr left)"
+      :doc
+      "Syntax := have <-: BOOLEXPR")
 
 (havs "have /#: " q
       :ann
-      "have /# (smt)")
+      "have /# (smt)"
+      :doc
+      "Syntax := have /#: BOOLEXPR")
+
+(app "apply " q
+     :ann
+     "apply"
+     :doc
+     "Syntax := apply PROOFTERM
+Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
 
 (appin "apply " p " in " q
        :ann
-       "apply in")
+       "apply in"
+       :doc
+       "Syntax := apply PROOFTERM in HYPOTHESIS")
 
 (rew "rewrite " q
      :ann
-     "rewrite")
+     "rewrite"
+     :doc
+     "Syntax := rewrite REWRPAT_1 ... REWRPAT_n")
 
 (rewin "rewrite " p " in " q
        :ann
-       "rewrite in")
+       "Syntax := rewrite REWRPAT_1 ... REWRPAT_n in HYPOTHESIS")
 
 (rewl "rewrite (: " q ")"
       :ann
-      "rewrite lit")
+      "rewrite literal"
+      :doc
+      "Syntax := rewrite (: REWRTERM)")
 
 (rewle "rewrite (: " p " = " q ")"
-      :ann
-      "rewrite lit eq (=)")
+       :ann
+       "rewrite literal eq"
+       :doc
+       "Syntax := rewrite (: EXPR_1 = EXPR_2)")
 
 
 ;; Program
-(proc "proc (" q ")")
-(procub "proc (" p ") (" q ")")
-(procube "proc (" p ") (" p ") (" q ")")
+(proc "proc (" q ")"
+      :ann
+      "proc tactic"
+      :doc
+      "Syntax := proc (INVARIANT)")
 
-(seq "seq " p " " p " : (" q ")")
-(seqh "seq " p " : (" q ")")
-(seqp "seq " p " : (" p ") (" p ") (" p ") (" p ") (" p ") (" q ")")
+(procub "proc (" p ") (" q ")"
+        :ann
+        "proc tactic (up to bad)"
+        :doc
+        "Syntax := proc (BADEVENT) (INVARIANT-UP-TO-BAD)")
 
-(sp "sp " q)
-(sp1 "sp{1} " q)
-(sp2 "sp{2} " q)
+(procube "proc (" p ") (" p ") (" q ")"
+         :ann
+         "proc tactic (up to + after bad)"
+         :doc
+         "Syntax := proc (BADEVENT) (INVARIANT-UP-TO-BAD) (INVARIANT-AFTER-BAD)")
 
-(wp "wp " q)
-(wp1 "wp{1} " q)
-(wp2 "wp{2} " q)
+(seq "seq " p " " p " : (" q ")"
+     :ann
+     "seq (pRHL)"
+     :doc
+     "Syntax := seq CODEPOS_1 CODEPOS_2 : CONDITIONATCUT")
 
-(rnd "rnd " q)
-(rnd1 "rnd{1} " q)
-(rnd2 "rnd{2} " q)
+(seqh "seq " p " : (" q ")"
+      :ann
+      "seq (HL)"
+      :doc
+      "Syntax := seq CODEPOS : CONDITION-AT-CUT")
 
-(ifz "if")
-(if1 "if{1}")
-(if2 "if{2}")
+(seqp "seq " p " : (" p ") (" p ") (" p ") (" p ") (" p ") (" q ")"
+      :ann
+      "seq (pHL)"
+      :doc
+      "Syntax := seq CODEPOS : CONDITION-AT-CUT PROB-COND-AT-CUT PROB-POST-WHEN-COND PROB-NOT-COND-AT-CUT PROB-POST-WHEN-NOT-COND INVARIANT-AT-CUT")
 
-(whi "while (" q ")")
-(whip "while (" p ") (" p ") (" p ") (" q ")")
-(whi1 "while{1} (" p ") (" q ")")
-(whi2 "while{2} (" p ") (" q ")")
+(sp "sp " q
+    :ann
+    "sp"
+    :doc
+    "Syntax (pRHL) := sp CODEPOS_1 CODEPOS_2
+Syntax (HL/pHL) := sp CODEPOS")
 
-(cal "call (_: " q ")")
+(sp1 "sp{1} " q
+     :ann
+     "sp left program"
+     :doc
+     "Syntax := sp{1} CODEPOS")
+
+(sp2 "sp{2} " q
+     :ann
+     "sp right program"
+     :doc
+     "Syntax := sp{2} CODEPOS")
+
+(wp "wp " q
+    :ann
+    "wp"
+    :doc
+    "Syntax (pRHL) := wp CODEPOS_1 CODEPOS_2
+Syntax (HL/pHL) := wp CODEPOS")
+
+(wp1 "wp{1} " q
+     :ann
+     "wp left program"
+     :doc
+     "Syntax := wp{1} CODEPOS")
+
+(wp2 "wp{2} " q
+     :ann
+     "wp right program"
+     :doc
+     "Syntax := wp{2} CODEPOS")
+
+(rnd "rnd " q
+     :ann
+     "rnd"
+     :doc
+     "Syntax (pRHL) := rnd FUN INVFUN
+Syntax (HL) := rnd
+Syntax (pHL) := rnd EVENT")
+
+(rnd1 "rnd{1} " q
+      :ann
+      "rnd left program"
+      :doc
+      "Syntax := rnd{1}")
+
+(rnd2 "rnd{2} " q
+      :ann
+      "rnd right program"
+      :doc
+      "Syntax := rnd{2}")
+
+(ifd "if"
+     :ann
+     "if tactic"
+     :doc
+     "Syntax := if")
+
+(if1 "if{1}"
+     :ann
+     "if tactic left program"
+     :doc
+     "Syntax := if{1}")
+
+(if2 "if{2}"
+     :ann
+     "if tactic right program"
+     :doc
+     "Syntax := if{2}")
+
+(whi "while (" q ")"
+     :ann
+     "while tactic (pRHL/HL)"
+     :doc
+     "Syntax := while (INVARIANT)")
+
+(whip "while (" p ") (" p ") (" p ") (" q ")"
+      :ann
+      "while tactic (pHL)"
+      :doc
+      "Syntax := while (INVARIANT) (TERMINATION-VARIANT) (UPPERBOUND-TERM-VARIANT) (PROB-TERM-VARIANT-DECREASE)")
+
+(whi1 "while{1} (" p ") (" q ")"
+       :ann
+       "while tactic left program"
+       :doc
+       "Syntax := while{1} (INVARIANT) (TERMINATION-VARIANT)")
+
+(whi2 "while{2} (" p ") (" q ")"
+      :ann
+      "while tactic right program"
+      :doc
+       "Syntax := while{2} (INVARIANT) (TERMINATION-VARIANT)")
+
+(cal "call (_: " q ")"
+     :ann
+     ""
+     :doc
+     "")
+
 (cal1 "call{1} (_: " q ")")
+
 (cal2 "call{2} (_: " q ")")
+
 (calt "call (_: true)")
+
 (cal1t "call{1} (_: true)")
+
 (cal2t "call{2} (_: true)")
 
 (calc "call (_: " p " ==> " q ")")
+
 (cal1c "call{1} (_: " p " ==> " q ")")
+
 (cal2c "call{2} (_: " p " ==> " q ")")
 
 (calpt "call (" q ")")
+
 (cal1pt "call{1} (" q ")")
+
 (cal2pt "call{2} (" q ")")
 
 (calub "call (_: " p ", " q ")")
+
 (calube "call (_: " p ", " p ", " q ")")
 
 (eca "ecall (" q ")")
