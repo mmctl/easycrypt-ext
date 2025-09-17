@@ -830,3 +830,30 @@ declaration for `easycrypt-ext`.
                                  (?l "Lemmas" font-lock-keyword-face)
                                  (?T "Theories" font-lock-type-face)))))
 ```
+
+-----
+
+# Contributing
+
+Feedback, bug reports, and contributions are always welcome! If you would like to
+reach out about anything related to this project, please do so in the following
+order of preference:
+
+1. Open an issue or discussion on this repository.
+2. Post a message in the corresponding channel on [Formosa Crypto's
+   Zulip](https://formosa-crypto.zulipchat.com).
+3. Send an email to [kernel@mmeijers.com](mailto:kernel@mmeijers.com).
+
+Pull requests are also appreciated, whether for bug fixes, new features, or
+documentation improvements. Even small contributions, like fixing typos or
+clarifying wording, are helpful and much appreciated.
+
+Beyond proper testing of the currently available features,
+here are some ideas for additional features and improvements:
+
+- Improve and complete template documentation (many templates
+currently only have a syntax specification).
+- Expand template coverage (e.g., `async while` and the family of `eager` tactics).
+- Improve indentation mechanism (Tree-sitter?).
+- Improve indexing mechanism for Imenu.
+- Add transient menus for specifying options of executable commands.
