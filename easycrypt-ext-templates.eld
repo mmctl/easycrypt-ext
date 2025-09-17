@@ -1382,13 +1382,13 @@ Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
 
 (procub "proc (" p ") (" q ")"
         :ann
-        "proc tactic (up to bad)"
+        "proc tactic up to bad"
         :doc
         "Syntax := proc (BADEVENT) (INVARIANT-UP-TO-BAD)")
 
 (procube "proc (" p ") (" p ") (" q ")"
          :ann
-         "proc tactic (up to + after bad)"
+         "proc tactic up to + after bad"
          :doc
          "Syntax := proc (BADEVENT) (INVARIANT-UP-TO-BAD) (INVARIANT-AFTER-BAD)")
 
@@ -1512,51 +1512,141 @@ Syntax (pHL) := rnd EVENT")
 
 (cal "call (_: " q ")"
      :ann
-     ""
+     "call"
      :doc
-     "")
+     "Syntax := call (_: INVARIANT)")
 
-(cal1 "call{1} (_: " q ")")
+(cal1 "call{1} (_: " q ")"
+      :ann
+      "call left program"
+      :doc
+      "Syntax := call{1} (_: INVARIANT)")
 
-(cal2 "call{2} (_: " q ")")
+(cal2 "call{2} (_: " q ")"
+      :ann
+      "call right program"
+      :doc
+      "Syntax := call{2} (_: INVARIANT)")
 
-(calt "call (_: true)")
+(calt "call (_: true)"
+      :ann
+      "call true"
+      :doc
+      "Syntax := call (_: true)")
 
-(cal1t "call{1} (_: true)")
+(cal1t "call{1} (_: true)"
+       :ann
+       "call true left program"
+       :doc
+       "Syntax := call{1} (_: true)")
 
-(cal2t "call{2} (_: true)")
+(cal2t "call{2} (_: true)"
+       :ann
+       "call true right program"
+       :doc
+       "Syntax := call{2} (_: true)")
 
-(calc "call (_: " p " ==> " q ")")
+(calc "call (_: " p " ==> " q ")"
+      :ann
+      "call contract"
+      :doc
+      "Syntax := call (_: PRE ==> POST)")
 
-(cal1c "call{1} (_: " p " ==> " q ")")
+(cal1c "call{1} (_: " p " ==> " q ")"
+       :ann
+       "call contract left program"
+       :doc
+       "Syntax := call{1} (_: PRE ==> POST)")
 
-(cal2c "call{2} (_: " p " ==> " q ")")
+(cal2c "call{2} (_: " p " ==> " q ")"
+       :ann
+       "call contract right program"
+       :doc
+       "Syntax := call{2} (_: PRE ==> POST)")
 
-(calpt "call (" q ")")
+(calpt "call (" q ")"
+       :ann
+       "call proofterm"
+       :doc
+       "Syntax := call (PROOFTERM)")
 
-(cal1pt "call{1} (" q ")")
+(cal1pt "call{1} (" q ")"
+        :ann
+        "call proofterm left program"
+        :doc
+        "Syntax := call{1} (PROOFTERM)")
 
-(cal2pt "call{2} (" q ")")
+(cal2pt "call{2} (" q ")"
+        :ann
+        "call proofterm right program"
+        :doc
+        "Syntax := call{2} (PROOFTERM)")
 
-(calub "call (_: " p ", " q ")")
+(calub "call (_: " p ", " q ")"
+       :ann
+       "call up to bad"
+       :doc
+       "Syntax := call (_: BADEVENT, INVARIANT-UP-TO-BAD)")
 
-(calube "call (_: " p ", " p ", " q ")")
+(calube "call (_: " p ", " p ", " q ")"
+        :ann
+        "call up to + after bad"
+        :doc
+        "Syntax := call (_: BADEVENT, INVARIANT-UP-TO-BAD, INVARIANT-AFTER-BAD)")
 
-(eca "ecall (" q ")")
-(eca1 "ecall{1} (" q ")")
-(eca2 "ecall{2} (" q ")")
+(eca "ecall (" q ")"
+     :ann
+     "ecall"
+     :doc
+     "Syntax := ecall (PROOFTERM)")
 
-(swa "swap " p " " q)
-(swa1 "swap{1} " p " " q)
-(swa2 "swap{2} " p " " q)
+(eca1 "ecall{1} (" q ")"
+      :ann
+      "ecall left program"
+      :doc
+      "Syntax := ecall{1} (PROOFTERM)")
 
-(swabl "swap [" p ".." p "] " q)
-(swa1bl "swap{1} [" p ".." p "] " q)
-(swa2bl "swap{2} [" p ".." p "] " q)
+(eca2 "ecall{2} (" q ")"
+      :ann
+      "ecall right program"
+      :doc
+      "Syntax := ecall{2} (PROOFTERM)")
 
-(swas "swap " p " " p " " q)
-(swa1s "swap{1} " p " " p " " q)
-(swa2s "swap{2} " p " " p " " q)
+(swa "swap " p " " q
+     :ann
+     "swap")
+
+(swa1 "swap{1} " p " " q
+      :ann
+      "swap left program")
+
+(swa2 "swap{2} " p " " q
+      :ann
+      "swap right program")
+
+(swabl "swap [" p ".." p "] " q
+       :ann
+       "swap block")
+
+(swa1bl "swap{1} [" p ".." p "] " q
+        :ann
+        "swap block left program")
+
+(swa2bl "swap{2} [" p ".." p "] " q
+        :ann
+        "swap block right program")
+
+(swas "swap " p " " p " " q
+      :ann
+      "swap blocks")
+
+(swa1s "swap{1} " p " " p " " q
+       :ann
+       "swap blocks left program")
+
+(swa2s "swap{2} " p " " p " " q
+       :ann
+       "swap blocks right program")
 
 (inl "inline " q)
 (inl1 "inline{1} " q)
