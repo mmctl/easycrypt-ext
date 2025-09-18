@@ -1396,7 +1396,7 @@ Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
      :ann
      "seq (pRHL)"
      :doc
-     "Syntax := seq CODEPOS_1 CODEPOS_2 : CONDITIONATCUT")
+     "Syntax := seq CODEPOS-LEFT CODEPOS-RIGHT : CONDITION-AT-CUT")
 
 (seqh "seq " p " : (" q ")"
       :ann
@@ -1414,7 +1414,7 @@ Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
     :ann
     "sp"
     :doc
-    "Syntax (pRHL) := sp CODEPOS_1 CODEPOS_2
+    "Syntax (pRHL) := sp CODEPOS-LEFT CODEPOS-RIGHT
 Syntax (HL/pHL) := sp CODEPOS")
 
 (sp1 "sp{1} " q
@@ -1433,7 +1433,7 @@ Syntax (HL/pHL) := sp CODEPOS")
     :ann
     "wp"
     :doc
-    "Syntax (pRHL) := wp CODEPOS_1 CODEPOS_2
+    "Syntax (pRHL) := wp CODEPOS-LEFT CODEPOS-RIGHT
 Syntax (HL/pHL) := wp CODEPOS")
 
 (wp1 "wp{1} " q
@@ -1614,83 +1614,258 @@ Syntax (pHL) := rnd EVENT")
 
 (swa "swap " p " " q
      :ann
-     "swap")
+     "swap (HL/pHL)"
+     :doc
+     "Syntax := swap CODEPOS MOVE-AMOUNT")
 
 (swa1 "swap{1} " p " " q
       :ann
-      "swap left program")
+      "swap left program"
+      :doc
+      "Syntax := swap{1} CODEPOS MOVE-AMOUNT")
 
 (swa2 "swap{2} " p " " q
       :ann
-      "swap right program")
+      "swap right program"
+      :doc
+      "Syntax := swap{2} CODEPOS MOVE-AMOUNT")
 
 (swabl "swap [" p ".." p "] " q
        :ann
-       "swap block")
+       "swap block (HL/pHL)"
+       :doc
+       "Syntax := swap [CODEPOS-BEGIN .. CODEPOS-END] MOVE-AMOUNT")
 
 (swa1bl "swap{1} [" p ".." p "] " q
         :ann
-        "swap block left program")
+        "swap block left program"
+        :doc
+        "Syntax := swap{1} [CODEPOS-BEGIN .. CODEPOS-END] MOVE-AMOUNT")
 
 (swa2bl "swap{2} [" p ".." p "] " q
         :ann
-        "swap block right program")
+        "swap block right program"
+        :doc
+        "Syntax := swap{2} [CODEPOS-BEGIN .. CODEPOS-END] MOVE-AMOUNT")
 
 (swas "swap " p " " p " " q
       :ann
-      "swap blocks")
+      "swap blocks (HL/pHL)"
+      :doc
+      "Syntax := swap CODEPOS-BEGIN CODEPOS-MID CODEPOS-END")
 
 (swa1s "swap{1} " p " " p " " q
        :ann
-       "swap blocks left program")
+       "swap blocks left program"
+       :doc
+       "Syntax := swap{1} CODEPOS-BEGIN CODEPOS-MID CODEPOS-END")
 
 (swa2s "swap{2} " p " " p " " q
        :ann
-       "swap blocks right program")
+       "swap blocks right program"
+       :doc
+       "Syntax := swap CODEPOS-BEGIN CODEPOS-MID CODEPOS-END")
 
-(inl "inline " q)
-(inl1 "inline{1} " q)
-(inl2 "inline{2} " q)
+(inl "inline " q
+     :ann
+     "inline"
+     :doc
+     "Syntax := inline CODEPOS-OF-PROC
+Syntax := inline MOD_1.PROC_1, ..., MOD_n.PROC_n")
 
-(inls "inline *")
-(inl1s "inline{1} *")
-(inl2s "inline{2} *")
+(inl1 "inline{1} " q
+      :ann
+      "inline left program"
+      :doc
+      "Syntax := inline{1} CODEPOS-OF-PROC
+Syntax := inline{1} MOD_1.PROC_1, ..., MOD_n.PROC_n")
 
-(inlo "inline (" p ") " q)
-(inl1o "inline{1} (" p ") " q)
-(inl2o "inline{2} (" p ") " q)
+(inl2 "inline{2} " q
+      :ann
+      "inline right program"
+      :doc
+      "Syntax := inline{2} CODEPOS-OF-PROC
+Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
 
-(out "outline{" p "} " p " ~ " q)
-(out1 "outline{1} " p " ~ " q)
-(out2 "outline{2} " p " ~ " q)
+(inls "inline *"
+      :ann
+      "inline all"
+      :doc
+      "Syntax := inline *")
 
-(outbl "outline{" p "} [" p ".." p "] ~ " q)
-(out1bl "outline{1} [" p ".." p "] ~ " q)
-(out2bl "outline{2} [" p ".." p "] ~ " q)
+(inl1s "inline{1} *"
+       :ann
+       "inline all left program"
+       :doc
+       "Syntax := inline{1} *")
 
-(outc "outline{" p "} " p " by { " q " }")
-(out1c "outline{1} " p " by { " q " }")
-(out2c "outline{2} " p " by { " q " }")
+(inl2s "inline{2} *"
+       :ann
+       "inline all right program"
+       :doc
+       "Syntax := inline{2} *")
 
-(outblc "outline{" p "} [" p ".." p "] by { " q " }")
-(out1blc "outline{1} [" p ".." p "] by { " q " }")
-(out2blc "outline{2} [" p ".." p "] by { " q " }")
+(inlo "inline (" p ") " q
+       :ann
+       "inline occs"
+       :doc
+       "Syntax := inline (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
 
-(rcot "rcondt " q)
-(rcot1 "rcondt{1} " q)
-(rcot2 "rcondt{2} " q)
+(inl1o "inline{1} (" p ") " q
+       :ann
+       "inline occs left program"
+       :doc
+       "Syntax := inline{1} (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
 
-(rcof "rcondf " q)
-(rcof1 "rcondf{1} " q)
-(rcof2 "rcondf{2} " q)
+(inl2o "inline{2} (" p ") " q
+       :ann
+       "inline occs right program"
+       :doc
+       "Syntax := inline{2} (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
 
-(unr "unroll " q)
-(unr1 "unroll{1} " q)
-(unr2 "unroll{2} " q)
+(out "outline{" p "} " p " ~ " q
+     :ann
+     "outline"
+     :doc
+     "Syntax := outline{SIDE} CODEPOS ~ MOD.PROC")
 
-(splwhi "splitwhile " p " : (" q ")")
-(splwhi1 "splitwhile{1} " p " : (" q ")")
-(splwhi2 "splitwhile{2} " p " : (" q ")")
+(out1 "outline{1} " p " ~ " q
+      :ann
+      "outline left program"
+      :doc
+      "Syntax := outline{1} CODEPOS ~ MOD.PROC")
+
+(out2 "outline{2} " p " ~ " q
+      :ann
+      "outline right program"
+      :doc
+      "Syntax := outline{2} CODEPOS ~ MOD.PROC")
+
+(outbl "outline{" p "} [" p ".." p "] ~ " q
+       :ann
+       "outline block"
+       :doc
+       "Syntax := outline{SIDE} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
+
+(out1bl "outline{1} [" p ".." p "] ~ " q
+        :ann
+        "outline block left program"
+        :doc
+        "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
+
+(out2bl "outline{2} [" p ".." p "] ~ " q
+        :ann
+        "outline block right program"
+        :doc
+        "Syntax := outline{2} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
+
+(outc "outline{" p "} " p " by { " q " }"
+      :ann
+      "outline code"
+      :doc
+      "Syntax := outline{SIDE} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(out1c "outline{1} " p " by { " q " }"
+       :ann
+       "outline code left program"
+       :doc
+       "Syntax := outline{1} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(out2c "outline{2} " p " by { " q " }"
+       :ann
+       "outline code right program"
+       :doc
+       "Syntax := outline{2} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(outblc "outline{" p "} [" p ".." p "] by { " q " }"
+        :ann
+        "outline block code"
+        :doc
+        "Syntax := outline{SIDE} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(out1blc "outline{1} [" p ".." p "] by { " q " }"
+         :ann
+         "outline block code left program"
+         :doc
+         "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(out2blc "outline{2} [" p ".." p "] by { " q " }"
+         :ann
+         "outline block code right program"
+         :doc
+         "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
+
+(rcot "rcondt " q
+      :ann
+      "rcondt"
+      :doc
+      "Syntax := rcondt CODEPOS-IF-OR-WHILE")
+
+(rcot1 "rcondt{1} " q
+       :ann
+       "rcondt left program"
+       :doc
+       "Syntax := rcondt{1} CODEPOS-IF-OR-WHILE")
+
+(rcot2 "rcondt{2} " q
+       :ann
+       "rcondt right program"
+       :doc
+       "Syntax := rcondt{2} CODEPOS-IF-OR-WHILE")
+
+(rcof "rcondf " q
+      :ann
+      "rcondf"
+      :doc
+      "Syntax := rcondf CODEPOS-IF-OR-WHILE")
+
+(rcof1 "rcondf{1} " q
+       :ann
+       "rcondf left program"
+       :doc
+       "Syntax := rcondf{1} CODEPOS-IF-OR-WHILE")
+
+(rcof2 "rcondf{2} " q
+       :ann
+       "rcondf right program"
+       :doc
+       "Syntax := rcondf{2} CODEPOS-IF-OR-WHILE")
+
+(unr "unroll " q
+     :ann
+     "unroll"
+     :doc
+     "Syntax := unroll CODEPOS-WHILE")
+
+(unr1 "unroll{1} " q
+      :ann
+      "unroll left program"
+      :doc
+      "Syntax := unroll{1} CODEPOS-WHILE")
+
+(unr2 "unroll{2} " q
+      :ann
+      "unroll right program"
+      :doc
+      "Syntax := unroll{2} CODEPOS-WHILE")
+
+(splwhi "splitwhile " p " : (" q ")"
+        :ann
+        "splitwhile"
+        :doc
+        "Syntax := splitwhile CODEPOS-WHILE : (CONDITION-WHILE)")
+
+(splwhi1 "splitwhile{1} " p " : (" q ")"
+         :ann
+         "splitwhile left program"
+         :doc
+         "Syntax := splitwhile{1} CODEPOS-WHILE : (CONDITION-WHILE)")
+
+(splwhi2 "splitwhile{2} " p " : (" q ")"
+         :ann
+         "splitwhile right program"
+         :doc
+         "Syntax := splitwhile{2} CODEPOS-WHILE : (CONDITION-WHILE)")
 
 (fis "fission " p "!" p " @ " p ", " q)
 (fis1 "fission{1} " p "!" p " @ " p ", " q)
