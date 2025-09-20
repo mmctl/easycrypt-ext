@@ -855,6 +855,7 @@ here are some ideas for additional features and improvements:
 - Improve and complete template documentation (many templates
 currently only have a syntax specification).
 - Expand template coverage (e.g., `async while` and the family of `eager` tactics).
-- Improve indentation mechanism (Tree-sitter?).
+- Add automatic folding of certain artifacts (e.g., proofs, items declared as `local`) on load/processing.
+- Improve indentation mechanism (perhaps a more structured approach using, e.g., Tree-sitter).
 - Improve indexing mechanism for Imenu.
 - Add transient menus for specifying options of executable commands.
