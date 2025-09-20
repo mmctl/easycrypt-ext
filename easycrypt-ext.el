@@ -886,7 +886,10 @@ a directory, to be interpreted as above."
     (goto-char (point-max))
     (unless (bobp)
       (newline (if (bolp) 2 3)))
-    (insert (format "Executing command `%s'\nCommand output:\n" command))))
+    (insert (propertize "\n" 'face '(:underline t :height 0.1 :extend t)))
+    (insert (format "Executing command `%s'" command))
+    (unless (eq ?\n (char-before)) (insert "\n"))
+    (insert (propertize "\n" 'face '(:overline t :height 0.1 :extend t)))))
 
 (defun ece--exec-execute (subcommand &optional args sync)
   "Executes SUBCOMMAND of EasyCrypt in a separate process. If SYNC is non-nil
@@ -1237,7 +1240,7 @@ prefix arguments, also asks for a working directory."
 (passing SYNC directly), which see, using WHY3FILE for the `-why3' option
 if its non-nil (and non-empty)."
   (if (or (null why3file) (string-empty-p why3file))
-      (ece--exec-execute "why3config" sync)
+      (ece--exec-execute "why3config" nil sync)
     (ece--exec-execute "why3config" (concat "-why3 " (expand-file-name why3file)) sync)))
 
 ;;;###autoload
