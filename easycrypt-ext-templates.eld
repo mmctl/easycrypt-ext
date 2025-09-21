@@ -100,7 +100,7 @@ import List Distr.")
         :ann
         "require import"
         :doc
-        "Syntax := require import FILE_1 ... FILE_n.
+        "Syntax := require import FILE1 ... FILE_N.
 
 Loads (theory and namespace corresponding to) each FILE_i.
 
@@ -117,7 +117,7 @@ require import AllCore List Distr.")
         :ann
         "from require"
         :doc
-        "Syntax := from LIBRARY require FILE_1 ... FILE_n.
+        "Syntax := from LIBRARY require FILE_1 ... FILE_N.
 
 Loads (theory corresponding to) each FILE_i from library LIBRARY.
 
@@ -133,7 +133,7 @@ from Jasmin require JModel JArray.")
            :ann
            "from require import"
            :doc
-           "Syntax := from LIBRARY require import FILE_1 ... FILE_n.
+           "Syntax := from LIBRARY require import FILE_1 ... FILE_N.
 
 Loads (theory and namespace corresponding to) each FILE_i from library LIBRARY.
 
@@ -415,7 +415,7 @@ clone include KeyedHashFunctions as KHFs with
         :ann
         "hint simplify"
         :doc
-        "Syntax := hint simplify AXLEM_1, ..., AXLEM_n.
+        "Syntax := hint simplify AXLEM_1, ..., AXLEM_N.
 
 Adds each axiom/lemma AXLEM_i as hint for the `simplify' tactic.
 
@@ -487,7 +487,7 @@ Semantically identical to the `typd' template; differs only in formatting. See
     "op (no def)"
     :doc
     "Syntax := OP : TYPE
-Syntax (alternative): OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE.
+Syntax (alternative): OP (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : RESTYPE.
 
 Declares an operator OP without definition. In the first syntax form, TYPE
 is a function type that encodes the types of the parameters and the return type.
@@ -495,7 +495,7 @@ The second syntax form is equivalent, but allows naming parameters explicitly
 for documentation purposes. In this form, successive parameters of the same type
 may be grouped, e.g., (PARAM_1 PARAM_2 PARAM_3 : TYPE).
 
-(N.B. letting TYPE be TYPE_1 -> ... -> TYPE_n -> RESTYPE gives an equivalent
+(N.B. letting TYPE be TYPE_1 -> ... -> TYPE_N -> RESTYPE gives an equivalent
 formalization of the second form in the first.)
 
 Example:
@@ -507,7 +507,7 @@ op h : int -> int -> bool.")
      :ann
      "op (def)"
      :doc
-     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : RESTYPE = EXPR.
 
 Defines an operator OP as EXPR. This operator has n parameters,
 where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
@@ -528,7 +528,7 @@ op g (x y : int) = x + y.")
      :ann
      "op (def + \\n)"
      :doc
-     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := op OP (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : RESTYPE = EXPR.
 
 Defines an operator OP as EXPR. This operator has n parameters,
 where the i-th is of type TYPE_i, and evaluates to a value of type RESTYPE.
@@ -609,7 +609,7 @@ const n : { int | 0 <= n } as ge0_n.")
      :ann
      "abbrev"
      :doc
-     "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+     "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : RESTYPE = EXPR.
 
 Defines an abbreviation ABBREV as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
@@ -631,7 +631,7 @@ Example: abbrev max (x y : int) = if x <= y then y else x.")
       :ann
       "abbrev (\\n)"
       :doc
-      "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : RESTYPE = EXPR.
+      "Syntax := abbrev ABBREV (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : RESTYPE = EXPR.
 
 Defines an abbreviation ABBREV as EXPR. This abbreviation takes n
 parameters, where the i-th has type TYPE_i, and evaluates to a value of type
@@ -761,7 +761,7 @@ section, which can be any sequence of sentences valid in a section.")
     :ann
     "Pr"
     :doc
-    "Syntax := Pr[MOD(MODARG_1, ..., MODARG_n).PROC(ARG_1, ..., ARG_n) @ MEM : EVENT]")
+    "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prn "Pr[" n>
      p " @ " p " :" n>
@@ -769,25 +769,25 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "Pr (\\n)"
      :doc
-     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_n).PROC(ARG_1, ..., ARG_n) @ MEM : EVENT]")
+     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prm "Pr[" p " @ &m : " q "]"
      :ann
      "Pr (&m)"
      :doc
-     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_n).PROC(ARG_1, ..., ARG_n) @ MEM : EVENT]")
+     "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (Prmr "Pr[" q " @ &m : res]"
       :ann
       "Pr (&m + res)"
       :doc
-      "Syntax := Pr[MOD(MODARG_1, ..., MODARG_n).PROC(ARG_1, ..., ARG_n) @ MEM : EVENT]")
+      "Syntax := Pr[MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N) @ MEM : EVENT]")
 
 (hoa "hoare[" p " : " p " ==> " q "]"
      :ann
      "hoare"
      :doc
-     "Syntax := hoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST]")
+     "Syntax := hoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (hoan "hoare[" n>
       p " :" n>
@@ -798,13 +798,13 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "hoare (\\n)"
       :doc
-      "Syntax := hoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST]")
+      "Syntax := hoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (pho "phoare[" p " : " p " ==> " p "] " q
      :ann
      "phoare"
      :doc
-     "Syntax := phoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST] REL VAL")
+     "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] REL VAL")
 
 (phon "phoare[" n>
       p " :" n>
@@ -815,13 +815,13 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "phoare (\\n)"
       :doc
-      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST] REL VAL")
+      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] REL VAL")
 
 (pho1 "phoare[" p " : " p " ==> " q "] = 1%r"
       :ann
       "phoare (=1%r)"
       :doc
-      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST] = 1%r")
+      "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] = 1%r")
 
 (pho1n "phoare[" n>
        p " :" n>
@@ -832,7 +832,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "phoare (=1%r + \\n)"
        :doc
-       "Syntax := phoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST] = 1%r")
+       "Syntax := phoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST] = 1%r")
 
 (equ "equiv[" p " ~ " p " : " p " ==> " q "]"
      :ann
@@ -855,7 +855,7 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "ehoare"
      :doc
-     "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST]")
+     "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (ehon "ehoare[" n>
       p " :" n>
@@ -866,20 +866,20 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "ehoare (\\n)"
       :doc
-      "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST]")
+      "Syntax := ehoare[MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST]")
 
 (axi "axiom " p " : " q "."
      :ann
      "axiom"
      :doc
-     "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
+     "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : STAT.")
 
 (axin "axiom " p " :" n>
       q "." >
       :ann
       "axiom (\\n)"
       :doc
-      "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
+      "Syntax := axiom AXIOM (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : STAT.")
 
 (proof "proof." > n>
        q n>
@@ -900,13 +900,13 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "lemma"
      :doc
-     "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
+     "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : STAT.")
 
 (lemby "lemma " p " : " p " by " q "."
        :ann
        "lemma by"
        :doc
-       "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : LEMMA by PROOFSENT.")
+       "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : LEMMA by PROOFSENT.")
 
 (lemn "lemma " p " :" n>
       p "." n>
@@ -914,21 +914,21 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "lemma (\\n)"
       :doc
-      "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : STAT.")
+      "Syntax := lemma LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : STAT.")
 
 (lemll "lemma " p " : islossless " p "." n>
        (i proof)
        :ann
        "lemma islossless"
        :doc
-       "Syntax := lemma LEMMA : islossless MOD(MODARG_1, ..., MODARG_n).PROC.")
+       "Syntax := lemma LEMMA : islossless MOD(MODARG_1, ..., MODARG_N).PROC.")
 
 (hoal "hoare " p " : " p " : " p " ==> " p "." n>
       (i proof)
       :ann
       "hoare lemma"
       :doc
-      "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+      "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (hoaln "hoare " p " :" n>
        p " : " p " ==> " p "." n>
@@ -936,7 +936,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "hoare lemma (\\n)"
        :doc
-       "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+       "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (hoanln "hoare " p " :" n>
         p " :" n>
@@ -947,14 +947,14 @@ section, which can be any sequence of sentences valid in a section.")
         :ann
         "hoare lemma (\\n x2)"
         :doc
-        "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+        "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (equl "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
       (i proof)
       :ann
       "equiv lemma"
       :doc
-      "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
+      "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
 
 (equln "equiv " p " :" n>
        p " ~ " p " : " p " ==> "p "." n>
@@ -962,7 +962,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "equiv lemma (\\n)"
        :doc
-       "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
+       "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
 
 (equnln "equiv " p " :" n>
         p " ~ " p " :" n>
@@ -973,14 +973,14 @@ section, which can be any sequence of sentences valid in a section.")
         :ann
         "equiv lemma (\\n x2)"
         :doc
-        "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
+        "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
 
 (ehol "ehoare " p " : " p " : " p " ==> " p "." n>
       (i proof)
       :ann
       "ehoare lemma"
       :doc
-      "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+      "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (eholn "ehoare " p " :" n>
        p " : " p " ==> " p "." n>
@@ -988,7 +988,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "ehoare lemma (\\n)"
        :doc
-       "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+       "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (ehonln "ehoare " p " :" n>
         p " :" n>
@@ -999,46 +999,46 @@ section, which can be any sequence of sentences valid in a section.")
         :ann
         "ehoare lemma (\\n x2)"
         :doc
-        "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) : MOD(MODARG_1, ..., MODARG_n).PROC : PRE ==> POST.")
+        "Syntax := ehoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
 (fun "fun " p " => " q
      :ann
      "fun"
      :doc
-     "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => BODY")
+     "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) => BODY")
 
 (funn "fun " p " =>" n>
       q
       :ann
       "fun (\\n)"
       :doc
-      "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n) => BODY")
+      "Syntax := fun (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) => BODY")
 
 (for "forall " p ", " q
      :ann
      "forall"
      :doc
-     "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+     "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N), EXPR")
 
 (forn "forall " p ", " n>
       q
       :ann
       "forall (\\n)"
       :doc
-      "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+      "Syntax := forall (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N), EXPR")
 
 (exi "exists (" p "), " q
      :ann
      "exists"
      :doc
-     "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+     "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N), EXPR")
 
 (exin "exists (" p ")," n>
       q
       :ann
       "exists (\\n)"
       :doc
-      "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_n : TYPE_n), EXPR")
+      "Syntax := exists (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N), EXPR")
 
 (ifte "if " p " then " p " else " q
       :ann
@@ -1109,13 +1109,13 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "proc signature"
       :doc
-      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) : RESTYPE")
+      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) : RESTYPE")
 
 (prosr "proc " p "(" p ") : " p " { " q " }"
        :ann
        "proc signature (restr)"
        :doc
-       "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) : RESTYPE { PROCRESTR }")
+       "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) : RESTYPE { PROCRESTR }")
 
 (var "var " p " : " q
      :ann
@@ -1135,7 +1135,7 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "proc spec"
      :doc
-     "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) = { [BODY] }")
+     "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) = { [BODY] }")
 
 (prot "proc " p "(" p ") : " p " = {" n>
       q n>
@@ -1143,19 +1143,19 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "proc spec (typed)"
       :doc
-      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) : RESTYPE = { [BODY] }")
+      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) : RESTYPE = { [BODY] }")
 
 (prol "proc " p "(" p ") = { " q " }"
       :ann
       "proc spec (one-liner)"
       :doc
-      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) = { [BODY] }")
+      "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) = { [BODY] }")
 
 (protl "proc " p "(" p ") : " p " = { " q " }"
        :ann
        "proc spec (typed + one-liner)"
        :doc
-       "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_n : TYPE_n) : RESTYPE = { [BODY] }")
+       "Syntax := proc PROC (PARAM_1 : TYPE_1, ..., PARAM_N : TYPE_N) : RESTYPE = { [BODY] }")
 
 (proa "proc " p " = " q
       :ann
@@ -1177,7 +1177,7 @@ section, which can be any sequence of sentences valid in a section.")
          :ann
          "module type (param)"
          :doc
-         "Syntax := module type MODTYPE (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_n : MODTYPE_n) = { [BODY] }.")
+         "Syntax := module type MODTYPE (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_N : MODTYPE_N) = { [BODY] }.")
 
 (mod "module " p " = {" n>
      q n>
@@ -1193,7 +1193,7 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "module (param)"
       :doc
-      "Syntax := module MOD (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_n : MODTYPE_n) = { [BODY] }.")
+      "Syntax := module MOD (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_N : MODTYPE_N) = { [BODY] }.")
 
 (modt "module " p " : " p " = {" n>
       q n>
@@ -1209,7 +1209,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "module (typed + param)"
        :doc
-       "Syntax := module MOD (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_n : MODTYPE_n) : MODTYPE = { [BODY] }.")
+       "Syntax := module MOD (MODPARAM_1 : MODTYPE_1) ... (MODPARAM_N : MODTYPE_N) : MODTYPE = { [BODY] }.")
 
 (moda "module " p " = " q "."
       :ann
@@ -1221,7 +1221,7 @@ section, which can be any sequence of sentences valid in a section.")
        :ann
        "module alias (param)"
        :doc
-       "Syntax := module MODALIAS = MODORIG(MODARG_1, ..., MODARG_n).")
+       "Syntax := module MODALIAS = MODORIG(MODARG_1, ..., MODARG_N).")
 
 
 (if "if (" p ") {" n>
@@ -1272,7 +1272,7 @@ section, which can be any sequence of sentences valid in a section.")
       :ann
       "proc call"
       :doc
-      "Syntax := VAR <@ MOD(MODARG_1, ..., MODARG_n).PROC(ARG_1, ..., ARG_n);")
+      "Syntax := VAR <@ MOD(MODARG_1, ..., MODARG_N).PROC(ARG_1, ..., ARG_N);")
 
 (sam p "<$" q ";"
      :ann
@@ -1287,19 +1287,19 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "smt limit"
      :doc
-     "Syntax := smt(Lemma_1|@Theory_1 ... Lemma_n|@Theory_n)")
+     "Syntax := smt(Lemma_1|@Theory_1 ... Lemma_N|@Theory_N)")
 
 (movi "move=> " q
       :ann
       "move (intro)"
       :doc
-      "Syntax :=  move=> INTROPAT_1 ... INTROPAT_n")
+      "Syntax :=  move=> INTROPAT_1 ... INTROPAT_N")
 
 (movg "move: " q
       :ann
       "move (gen)"
       :doc
-      "Syntax :=  move: GENTERM_1 ... GENTERM_n")
+      "Syntax :=  move: GENTERM_1 ... GENTERM_N")
 
 (pos "pose " p " := " q
      :ann
@@ -1311,13 +1311,13 @@ section, which can be any sequence of sentences valid in a section.")
      :ann
      "have"
      :doc
-     "Syntax := have INTROPAT_1 ... INTROPAT_n : BOOLEXPR")
+     "Syntax := have INTROPAT_1 ... INTROPAT_N : BOOLEXPR")
 
 (havby "have " p ": " p " by " q
        :ann
        "have by"
        :doc
-       "Syntax := have INTROPAT_1 ... INTROPAT_n : BOOLEXPR by PROOFSENT")
+       "Syntax := have INTROPAT_1 ... INTROPAT_N : BOOLEXPR by PROOFSENT")
 
 (havr "have ->: " q
       :ann
@@ -1342,7 +1342,7 @@ section, which can be any sequence of sentences valid in a section.")
      "apply"
      :doc
      "Syntax := apply PROOFTERM
-Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
+Syntax := apply /PROOFTERM_1 ... /PROOFTERM_N")
 
 (appin "apply " p " in " q
        :ann
@@ -1354,11 +1354,11 @@ Syntax := apply /PROOFTERM_1 ... /PROOFTERM_n")
      :ann
      "rewrite"
      :doc
-     "Syntax := rewrite REWRPAT_1 ... REWRPAT_n")
+     "Syntax := rewrite REWRPAT_1 ... REWRPAT_N")
 
 (rewin "rewrite " p " in " q
        :ann
-       "Syntax := rewrite REWRPAT_1 ... REWRPAT_n in HYPOTHESIS")
+       "Syntax := rewrite REWRPAT_1 ... REWRPAT_N in HYPOTHESIS")
 
 (rewl "rewrite (: " q ")"
       :ann
@@ -1671,21 +1671,21 @@ Syntax (pHL) := rnd EVENT")
      "inline"
      :doc
      "Syntax := inline CODEPOS-PROC
-Syntax := inline MOD_1.PROC_1, ..., MOD_n.PROC_n")
+Syntax := inline MOD_1.PROC_1, ..., MOD_N.PROC_N")
 
 (inl1 "inline{1} " q
       :ann
       "inline left program"
       :doc
       "Syntax := inline{1} CODEPOS-PROC
-Syntax := inline{1} MOD_1.PROC_1, ..., MOD_n.PROC_n")
+Syntax := inline{1} MOD_1.PROC_1, ..., MOD_N.PROC_N")
 
 (inl2 "inline{2} " q
       :ann
       "inline right program"
       :doc
       "Syntax := inline{2} CODEPOS-PROC
-Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
+Syntax := inline{2} MOD_1.PROC_1 ... MOD_N.PROC_N")
 
 (inls "inline *"
       :ann
@@ -1709,19 +1709,19 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
       :ann
       "inline occs"
       :doc
-      "Syntax := inline (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
+      "Syntax := inline (CODEPOS_1 ... CODEPOS_N) MOD.PROC")
 
 (inl1o "inline{1} (" p ") " q
        :ann
        "inline occs left program"
        :doc
-       "Syntax := inline{1} (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
+       "Syntax := inline{1} (CODEPOS_1 ... CODEPOS_N) MOD.PROC")
 
 (inl2o "inline{2} (" p ") " q
        :ann
        "inline occs right program"
        :doc
-       "Syntax := inline{2} (CODEPOS_1 ... CODEPOS_n) MOD.PROC")
+       "Syntax := inline{2} (CODEPOS_1 ... CODEPOS_N) MOD.PROC")
 
 (out "outline{" p "} " p " ~ " q
      :ann
@@ -1729,71 +1729,23 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
      :doc
      "Syntax := outline{SIDE} CODEPOS ~ MOD.PROC")
 
-(out1 "outline{1} " p " ~ " q
-      :ann
-      "outline left program"
-      :doc
-      "Syntax := outline{1} CODEPOS ~ MOD.PROC")
-
-(out2 "outline{2} " p " ~ " q
-      :ann
-      "outline right program"
-      :doc
-      "Syntax := outline{2} CODEPOS ~ MOD.PROC")
-
 (outbl "outline{" p "} [" p ".." p "] ~ " q
        :ann
        "outline block"
        :doc
        "Syntax := outline{SIDE} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
 
-(out1bl "outline{1} [" p ".." p "] ~ " q
-        :ann
-        "outline block left program"
-        :doc
-        "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
-
-(out2bl "outline{2} [" p ".." p "] ~ " q
-        :ann
-        "outline block right program"
-        :doc
-        "Syntax := outline{2} [CODEPOS-BEGIN .. CODEPOS-END] ~ MOD.PROC")
-
 (outc "outline{" p "} " p " by { " q " }"
       :ann
       "outline code"
       :doc
-      "Syntax := outline{SIDE} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
-
-(out1c "outline{1} " p " by { " q " }"
-       :ann
-       "outline code left program"
-       :doc
-       "Syntax := outline{1} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
-
-(out2c "outline{2} " p " by { " q " }"
-       :ann
-       "outline code right program"
-       :doc
-       "Syntax := outline{2} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_n; }")
+      "Syntax := outline{SIDE} CODEPOS by { PROGSTAT_1; ...; PROGSTAT_N; }")
 
 (outblc "outline{" p "} [" p ".." p "] by { " q " }"
         :ann
         "outline block code"
         :doc
-        "Syntax := outline{SIDE} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
-
-(out1blc "outline{1} [" p ".." p "] by { " q " }"
-         :ann
-         "outline block code left program"
-         :doc
-         "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
-
-(out2blc "outline{2} [" p ".." p "] by { " q " }"
-         :ann
-         "outline block code right program"
-         :doc
-         "Syntax := outline{1} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_n; }")
+        "Syntax := outline{SIDE} [CODEPOS-BEGIN .. CODEPOS-END] by { PROGSTAT_1; ...; PROGSTAT_N; }")
 
 (rcot "rcondt " q
       :ann
@@ -1985,7 +1937,7 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
       :ann
       "transitivity code"
       :doc
-      "Syntax := transitivity{SIDE} { PROGSTAT_1; ...; PROGSTAT_n; } (PRE-LEFT ==> POST-LEFT) (PRE-RIGHT ==> POST-RIGHT)")
+      "Syntax := transitivity{SIDE} { PROGSTAT_1; ...; PROGSTAT_N; } (PRE-LEFT ==> POST-LEFT) (PRE-RIGHT ==> POST-RIGHT)")
 
 (cons "conseq (_: " p " ==> " q ")"
       :ann
@@ -2030,7 +1982,6 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
      :doc
      "Syntax := byequiv (_: PRE ==> POST)")
 
-
 (byept "byequiv (" q ")"
        :ann
        "byequiv proofterm"
@@ -2071,7 +2022,7 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
       :ann
       "exists*"
       :doc
-      "Syntax := exists* EXPR_1, ..., EXPR_n")
+      "Syntax := exists* EXPR_1, ..., EXPR_N")
 
 (elis "elim*"
       :ann
@@ -2083,7 +2034,7 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
       :ann
       "exlim"
       :doc
-      "Syntax := exlim EXPR_1, ..., EXPR_n")
+      "Syntax := exlim EXPR_1, ..., EXPR_N")
 
 (phosplj "phoare split " p " " p " " q
          :ann
@@ -2117,27 +2068,60 @@ Syntax := inline{2} MOD_1.PROC_1 ... MOD_n.PROC_n")
 
 (simpi "sim " p " / " p " : (" q ")"
        :ann
-       "sim invariant "
+       "sim procs invariant"
        :doc
-       "Syntax := sim (MOD_11.PROC_11 ~ MOD_12.PROC_12 : GLOB-VAR-EQUALITIES_1) ... (MOD_n1.PROC_n1 ~ MOD_n2.PROC_n2 : GLOB-VAR-EQUALITIES_n) / INVARIANT-GLOB-VARS : (VAR-EQUALITIES)")
+       "Syntax := sim (MOD_11.PROC_11 ~ MOD_12.PROC_12 : GLOB-VAR-EQUALITIES_1) ... (MOD_N1.PROC_N1 ~ MOD_N2.PROC_N2 : GLOB-VAR-EQUALITIES_N) / INVARIANT-GLOB-VARS : (VAR-EQUALITIES)")
 
 (fel "fel " p " (" p ") (" p ") (" p ") (" p ") [" p "] (" q ")"
      :ann
      "fel (failure event lemma)"
      :doc
-     "Syntax := fel CODEPOS-INIT-END (COUNTER-EXPR) (UPPERBOUND-STEP-FUNCTION) (UPPERBOUND-COUNTER) (BADEVENT) [ MOD_1.PROC_1 : PRE_1; ...; MOD_n.PROC_n : PRE_n] INVARIANT")
+     "Syntax := fel CODEPOS-INIT-END (COUNTER-EXPR) (UPPERBOUND-STEP-FUNCTION) (UPPERBOUND-COUNTER) (BADEVENT) [ MOD_1.PROC_1 : PRE_1; ...; MOD_N.PROC_N : PRE_N] INVARIANT")
 
-(rewequ "rewrite equiv [{" p "} " q "]")
-(rewequ1 "rewrite equiv [{1} " q "]")
-(rewequ2 "rewrite equiv [{2} " q "]")
-(rewequrv "rewrite equiv [{" p "} " p " (" p " :@ " q ")]")
-(rewequ1rv "rewrite equiv [{1} " p " (" p " :@ " q ")]")
-(rewequ2rv "rewrite equiv [{2} " p " (" p " :@ " q ")]")
+(rewequ "rewrite equiv [{" p "} " q "]"
+        :ann
+        "rewrite equiv"
+        :doc
+        "Syntax := rewrite equiv [{SIDE} CODEPOS-PROC PROOFTERM-EQUIV]")
 
-(proccha "proc change " p " : " q)
-(proccha1 "proc change{1} " p " : " q)
-(proccha2 "proc change{2} " p " : " q)
+(rewequrv "rewrite equiv [{" p "} " p " (" p " :@ " q ")]"
+          :ann
+          "rewrite equiv"
+          :doc
+          "Syntax := rewrite equiv [{SIDE} CODEPOS-PROC PROOFTERM-EQUIV (ARG_1, ..., ARG_N :@ RETURN-VAR)]")
 
-(procrew "proc rewrite " q)
-(procrew1 "proc rewrite{1} " q)
-(procrew2 "proc rewrite{2} " q)
+(proccha "proc change " p " : " q
+         :ann
+         "proc change"
+         :doc
+         "Syntax := proc change CODEPOS : EXPR")
+
+(proccha1 "proc change{1} " p " : " q
+          :ann
+          "proc change left program"
+          :doc
+          "Syntax := proc change{1} CODEPOS : EXPR")
+
+(proccha2 "proc change{2} " p " : " q
+          :ann
+          "proc change right program"
+          :doc
+          "Syntax := proc change{2} CODEPOS : EXPR")
+
+(procrew "proc rewrite " q
+         :ann
+         "proc rewrite"
+         :doc
+         "Syntax := proc rewrite CODEPOS : PROOFTERM")
+
+(procrew1 "proc rewrite{1} " q
+          :ann
+          "proc rewrite left program"
+          :doc
+          "Syntax := proc rewrite{1} CODEPOS : REWRPAT")
+
+(procrew2 "proc rewrite{2} " q
+          :ann
+          "proc rewrite right program"
+          :doc
+          "Syntax := proc rewrite{2} CODEPOS : REWRPAT")
