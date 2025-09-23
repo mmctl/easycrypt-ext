@@ -489,7 +489,7 @@ into your proof script, process them like any other proof step, and remove them
 again (or leave them in, cluttering your script). EasyCrypt Ext streamlines this
 by providing dedicated commands that (1) directly print/search/locate the
 highlighted item, the item at point, or the item you click with the mouse, or
-(2) prompt you for the item to use print/search/locate, or the pragma to set.
+(2) prompt you for the item to print/search/locate, or the pragma to set.
 When prompting for a pragma, EasyCrypt Ext provides possible completions based
 on a set of known pragmas.
 
@@ -673,7 +673,7 @@ with their associated commands. As you can imagine, this is generally useful,
 not just for EasyCrypt Ext.
 
 The following `use-package` declaration enables Which-Key globally. The defaults
-work well in most casees, but you can further configure its behavior via the
+work well in most cases, but you can further configure its behavior via the
 provided customization options.
 
 ```emacs-lisp
@@ -681,7 +681,7 @@ provided customization options.
   :ensure t
 
   :config
-  ;; Activation
+  ;; Activate Which-Key (globally)
   (which-key-mode 1))
 ```
 
