@@ -65,6 +65,7 @@ Specifically, these features are the following.
   - [Acting From a Distance](#acting-from-a-distance)
   - [Miscellaneous](#miscellaneous)
 - [Tips and Tricks](#tips-and-tricks)
+  - [Keybinding Reminders (Which-Key)](#keybinding-reminders-which-key) 
   - [Automatic Completion Popup (Corfu)](#automatic-completion-popup-corfu)
   - [Documentation Popup (Corfu)](#documentation-popup-corfu)
   - [Additional Completion Functions (Cape)](#additional-completion-functions-cape)
