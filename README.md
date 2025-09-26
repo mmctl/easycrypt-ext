@@ -186,7 +186,7 @@ This is your initialization file.
 
 3. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs launches without
-   errors, you should be good to go.
+   errors, you should be good to go (warnings are usually fine).
 
 ## Basics
 
@@ -224,10 +224,10 @@ This is your initialization file.
 
 2. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs starts without errors,
-   you should be good to go.
+   you should be good to go (warnings are usually fine).
 
 That’s it! EasyCrypt Ext should now load automatically with EasyCrypt (e.g.,
-when you open an `.ec` or `.eca` file). To get familiar with the available
+when you open a `.ec` or `.eca` file). To get familiar with the available
 features, see [Features, Commands, and
 Keybindings](#features-commands-and-keybindings). Alternatively, check out
 [Extras](#extras), [Enhancements](#enhancements), or [Tips and
@@ -322,7 +322,7 @@ experience!
 
 3. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs starts without errors,
-   you should be good to go.
+   you should be good to go (warnings are usually fine).
 
 And you're done! The extra integration features should now load automatically
 alongside EasyCrypt Ext and work out of the box. The available featuresare
@@ -344,7 +344,7 @@ but you may prefer a smoother and more user-friendly experience. For that, we
 recommend two lightweight external packages:
 [Corfu](https://github.com/minad/corfu) (for an in-buffer completion pop-up) and
 [Vertico](https://github.com/minad/vertico) (for a minibuffer completion
-interface). [^2]
+interface).[^2]
 
 [^2]: Both are by the same author as Cape and Tempel, ensuring great interoperability.
 
@@ -385,7 +385,7 @@ interface). [^2]
 
 2. **Restart Emacs**  
    Restart Emacs for the changes to take effect. If Emacs starts without errors,
-   you should be good to go.
+   you should be good to go (warnings are usually fine).
 
 Done! Corfu and Vertico should now be up-and-running from launch.
 To test them right away, try the following:
