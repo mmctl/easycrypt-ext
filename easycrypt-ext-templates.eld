@@ -949,7 +949,7 @@ section, which can be any sequence of sentences valid in a section.")
         :doc
         "Syntax := hoare LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD(MODARG_1, ..., MODARG_N).PROC : PRE ==> POST.")
 
-(equl "equiv " p " : " p " ~ " p " : " p " ==> "p "." n>
+(equl "equiv " p " : " p " ~ " p " : " p " ==> " p "." n>
       (i proof)
       :ann
       "equiv lemma"
@@ -957,7 +957,7 @@ section, which can be any sequence of sentences valid in a section.")
       "Syntax := equiv LEMMA (PARAM_1 : TYPE_1) ... (PARAM_N : TYPE_N) : MOD_1(MODARG_11, ..., MODARG_1n).PROC_1 ~ MOD_2(MODARG_21, ..., MODARG_2n).PROC_2 : PRE ==> POST.")
 
 (equln "equiv " p " :" n>
-       p " ~ " p " : " p " ==> "p "." n>
+       p " ~ " p " : " p " ==> " p "." n>
        (i proof)
        :ann
        "equiv lemma (\\n)"

@@ -79,8 +79,10 @@ per `key-valid-p', which see."
   "Defines `include' element (taken and slightly adjusted from TempEL github repo)
 that allows to include other templates by their name."
   (when (eq (car-safe elt) 'i)
-    (when-let (template (alist-get (cadr elt) (tempel--templates)))
-      (cons 'l template))))
+    (when-let ((template (alist-get (cadr elt) (tempel--templates)))
+               (templatenp (cl-loop for elt in template until (keywordp elt)
+                                    collect elt)))
+      (cons 'l templatenp))))
 
 
 ;;; Parsing
