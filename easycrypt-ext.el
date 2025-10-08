@@ -1271,9 +1271,13 @@ prefix arguments, also asks for a working directory."
 option if its non-nil (and non-empty). If SUPPRESS is nil, output is
 sent to a buffer which is displayed; if SUPPRESS is non-nil, output is
 suppressed"
-  (if (or (null why3file) (string-empty-p why3file))
-      (ece--exec-execute "why3config" nil sync)
-    (ece--exec-execute "why3config" (concat "-why3 " (expand-file-name why3file)) sync suppress)))
+  (let ((buf (if (or (null why3file) (string-empty-p why3file))
+                 (ece--exec-execute "why3config" nil sync suppress)
+               (ece--exec-execute "why3config"
+                                  (concat "-why3 " (expand-file-name why3file))
+                                  sync
+                                  suppress))))
+    (unless suppress (display-buffer buf))))
 
 ;;;###autoload
 (defun ece-exec-why3config (&optional why3file)
