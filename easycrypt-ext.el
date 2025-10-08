@@ -891,35 +891,44 @@ a directory, to be interpreted as above."
     (unless (eq ?\n (char-before)) (insert "\n"))
     (insert (propertize "\n" 'face '(:overline t :height 0.1 :extend t)))))
 
-(defun ece--exec-execute (subcommand &optional args sync)
+(defun ece--exec-execute (subcommand &optional args sync suppress)
   "Executes SUBCOMMAND of EasyCrypt in a separate process. If SYNC is non-nil
 (resp. `nil'), the process is executed synchronously (resp. asynchronously).
 ARGS is a string that is concatenated to SUBCOMMAND (separated by a space) as
-is."
+is. If SUPPRESS is nil, output of process is sent to a buffer, and this buffer
+is returned; if SUPPRESS is non-nil, output of process is suppressed (and
+you shouldn't use the return value)."
   (unless (or (null args) (stringp args))
     (error "ece--exec-execute: ARGS (%s) should be nil or a string" args))
   (ece--exec-validate-subcommand subcommand)
   (unless (bound-and-true-p easycrypt-prog-name)
     (user-error "EasyCrypt executable name not found in expected place. Make sure to load Proof General in EasyCrypt mode"))
-  (let* ((bufnm (format "*EasyCrypt subcommand: %s (%s)*" subcommand (if sync "sync" "async")))
-         (buf (get-buffer-create bufnm))
-         (fcom (concat easycrypt-prog-name " " subcommand (when args (format " %s" args))))
+  (let* ((fcom (concat easycrypt-prog-name " " subcommand (when args (format " %s" args))))
          (sargs (when args (split-string-shell-command args))))
-    (display-buffer buf)
     (if (not sync)
-        (apply #'start-process fcom buf easycrypt-prog-name (cons subcommand sargs))
-      (ece--insert-command-header-in-buffer buf fcom)
-      (apply #'call-process easycrypt-prog-name nil buf t (cons subcommand sargs)))))
+        (if suppress
+            (apply #'start-process fcom nil easycrypt-prog-name (cons subcommand sargs))
+          (apply #'make-comint fcom easycrypt-prog-name nil (cons subcommand sargs)))
+      ;; (let ((proc (apply #'start-process fcom buf easycrypt-prog-name (cons subcommand sargs))))
+      ;; (set-process-filter proc 'comint-output-filter))
+      (if suppress
+          (apply #'call-process easycrypt-prog-name nil nil t (cons subcommand sargs))
+        (let ((buf (get-buffer-create (format "%s (sync)" fcom))))
+          (ece--insert-command-header-in-buffer buf fcom)
+          (apply #'call-process easycrypt-prog-name nil buf t (cons subcommand sargs))
+          buf)))))
 
 ;; Subcommand: compile
-(defun ece--exec-compile-internal (srcs &optional subdirs options sync)
-  "Executes `easycrypt compile' using `ece--execute-subcommand' (passing
+(defun ece--exec-compile-internal (srcs &optional subdirs options sync suppress)
+  "Executes `easycrypt compile' using `ece--exec-execute' (passing
 SYNC directly), which see, checking the EasyCrypt file SRCS or, if SRCS
 is a directory, EasyCrypt files in (sub-directories of) SRCS. In the
 latter case, sub-directories are considered if SUBDIRS is non-nil. SRCS
 can be absolute or relative. A relative path (for SRCS) is interpreted
 with respect to `default-directory'. OPTIONS, if non-nil, should be a
-string and is concatenated to the command as is."
+string and is concatenated to the command as is. If SUPPRESS is nil,
+output is sent to buffer(s) and last buffer is displayed; if SUPPRESS is
+non-nil, output is suppressed."
   (unless (or (null options) (stringp options))
     (error "ece--exec-compile-internal: OPTIONS (%s) should be nil or a string" options))
   (let ((esrc (expand-file-name srcs)))
@@ -931,28 +940,37 @@ string and is concatenated to the command as is."
                   srcs esrc))
     (cond
      ((file-regular-p esrc)
-      (ece--exec-execute "compile"
-                         (if (and options (not (string-empty-p options)))
-                             (concat esrc " " options)
-                           esrc)
-                         sync))
+      (let ((buf (ece--exec-execute "compile"
+                                    (if (and options (not (string-empty-p options)))
+                                        (concat esrc " " options)
+                                      esrc)
+                                    sync
+                                    suppress)))
+        (unless suppress (display-buffer buf))))
      ((and (file-directory-p esrc) (not subdirs))
       (let ((srcl (directory-files esrc t "^[^.].*\\.eca?$")))
         (if srcl
-            (dolist (src srcl) (ece--exec-execute "compile"
-                                                  (if (and options (not (string-empty-p options)))
-                                                      (concat src " " options)
-                                                    src)
-                                                  sync))
+            (let (buf)
+              (dolist (src srcl) (ece--exec-execute "compile"
+                                                    (if (and options (not (string-empty-p options)))
+                                                        (concat src " " options)
+                                                      src)
+                                                    sync
+                                                    suppress))
+              (unless suppress (display-buffer buf)))
           (user-error "No EasyCrypt source files found in `%s' (resolved as `%s')" srcs esrc))))
      ((and (file-directory-p esrc) subdirs)
       (let ((srcl (directory-files-recursively esrc "^[^.].*\\.eca?$" nil t t)))
         (if srcl
-            (dolist (src srcl) (ece--exec-execute "compile"
-                                              (if (and options (not (string-empty-p options)))
-                                                  (concat src " " options)
-                                                src)
-                                              sync))
+            (let (buf)
+              (dolist (src srcl buf)
+                (setq buf (ece--exec-execute "compile"
+                                             (if (and options (not (string-empty-p options)))
+                                                 (concat src " " options)
+                                               src)
+                                             sync
+                                             suppress)))
+              (unless suppress (display-buffer buf)))
           (user-error "No EasyCrypt source files found in `%s' (resolved as `%s') or its sub-directories" srcs esrc))))
      (t
       (user-error "`%s' (resolved as `%s') not a regular file nor a directory" srcs esrc)))))
@@ -1018,16 +1036,19 @@ root, then the default output directory is
       (read-directory-name (format-prompt "Output directory" default)
                            dir default nil)))))
 
-(defun ece--exec-docgen-internal (srcs &optional outdir subdirs sync)
+(defun ece--exec-docgen-internal (srcs &optional outdir subdirs sync suppress)
   "Executes `easycrypt docgen' using `ece--execute-subcommand' (passing SYNC
-directly), which see, generating documentation file(s) for the EasyCrypt file
-SRCS or, if SRCS is a directory, EasyCrypt files in SRCS. In the latter case,
-sub-directories are considered is SUBDIRS is non-nil. The generated files are
-stored in OUTDIR; if SUBDIRS is non-nil, documentation files generated for
-source files found in sub-directories are stored in identically named
-sub-directories relative to OUTDIR. Both SRCS and OUTDIR can be absolute or
-relative. Relative paths are with respect to `default-directory', which is also
-the default value for the output directory (if OUTDIR is nil)."
+directly), which see, generating documentation file(s) for the EasyCrypt
+file SRCS or, if SRCS is a directory, EasyCrypt files in SRCS. In the
+latter case, sub-directories are considered is SUBDIRS is non-nil. The
+generated files are stored in OUTDIR; if SUBDIRS is non-nil,
+documentation files generated for source files found in sub-directories
+are stored in identically named sub-directories relative to OUTDIR. Both
+SRCS and OUTDIR can be absolute or relative. Relative paths are with
+respect to `default-directory', which is also the default value for the
+output directory (if OUTDIR is nil). If SUPPRESS is nil, output is sent
+to buffer(s) and last buffer is displayed; if SUPPRESS is non-nil,
+output is suppressed."
   (let ((esrc (expand-file-name srcs))
         (eodr (if outdir
                   (file-name-as-directory (expand-file-name outdir))
@@ -1040,7 +1061,8 @@ the default value for the output directory (if OUTDIR is nil)."
         (when (not (string-match-p "^[^.].*\\.eca?$" (file-name-nondirectory esrc)))
           (user-error "`%s' (resolved as %s) not recognized as an EasyCrypt source file: extension should be `.ec' or `.eca'"
                       srcs esrc))
-        (ece--exec-execute "docgen" (concat esrc " -outdir " eodr) sync)))
+        (let ((buf (ece--exec-execute "docgen" (concat esrc " -outdir " eodr) sync suppress)))
+          (unless suppress (display-buffer buf)))))
      ((and (file-directory-p esrc) (not subdirs))
       (let ((srcl (directory-files esrc t "^[^.].*\\.eca?$")))
         (when (null srcl)
@@ -1049,7 +1071,9 @@ the default value for the output directory (if OUTDIR is nil)."
             (when (not (and (file-directory-p eodr) (file-writable-p eodr)))
               (user-error "`%s' exists but not a writable directory" outdir))
           (make-directory eodr t))
-        (dolist (src srcl) (ece--exec-execute "docgen" (concat src " -outdir " eodr) sync))))
+        (let (buf)
+          (dolist (src srcl buf) (setq buf (ece--exec-execute "docgen" (concat src " -outdir " eodr) sync suppress)))
+          (unless suppress (display-buffer buf)))))
      ((and (file-directory-p esrc) subdirs)
       (let ((srcl (directory-files-recursively esrc "^[^.].*\\.eca?$" nil t t)))
         (when (null srcl)
@@ -1058,13 +1082,15 @@ the default value for the output directory (if OUTDIR is nil)."
             (when (not (and (file-directory-p eodr) (file-writable-p eodr)))
               (user-error "`%s' exists but not a writable directory" outdir))
           (make-directory eodr t))
-        (dolist (src srcl)
-          (let* ((pardir (file-name-parent-directory src))
-                 (reldir (file-relative-name pardir esrc))
-                 (eodrc (file-name-as-directory (expand-file-name reldir eodr))))
-            (unless (file-directory-p eodrc)
-              (make-directory eodrc t))
-            (ece--exec-execute "docgen" (concat src " -outdir " eodrc) sync)))))
+        (let (buf)
+          (dolist (src srcl buf)
+            (let* ((pardir (file-name-parent-directory src))
+                   (reldir (file-relative-name pardir esrc))
+                   (eodrc (file-name-as-directory (expand-file-name reldir eodr))))
+              (unless (file-directory-p eodrc)
+                (make-directory eodrc t))
+              (setq buf (ece--exec-execute "docgen" (concat src " -outdir " eodrc) sync suppress))))
+          (unless suppress (display-buffer buf)))))
      (t
       (user-error "`%s' not a regular file nor a directory" srcs)))))
 
@@ -1125,7 +1151,7 @@ directory instead."
 (defun ece--exec-help-internal (&optional sync)
   "Executes `easycrypt --help' using `ece--exec-execute', which see,
 passing SYNC directly."
-  (ece--exec-execute "--help" sync))
+  (display-buffer (ece--exec-execute "--help" sync)))
 
 ;;;###autoload
 (defun ece-exec-help ()
@@ -1136,7 +1162,7 @@ passing SYNC directly."
 (defalias 'ece-exec---help #'ece-exec-help "Alias for `ece-exec-help', which see")
 
 ;; Subcommand: runtest
-(defun ece--exec-runtest-internal (testfile scenario &optional jobs report options workdir sync)
+(defun ece--exec-runtest-internal (testfile scenario &optional jobs report options workdir sync suppress)
   "Executes `easycrypt runtest' using `ece--exec-execute' (passing
 SYNC directly), which see, performing the test SCENARIO specified in
 TESTFILE using JOBS concurrent processes, writing a final report to
@@ -1145,7 +1171,9 @@ TESTFILE) is interpreted with respect to `default-directory'. OPTIONS,
 if non-nil, should be a string and is concatenated to the command as is.
 WORKDIR, if non-nil, should be a string that specifies the working
 directory for the command (this is relevant because relative paths in
-the test file are interpreted with respect to the working directory)."
+the test file are interpreted with respect to the working directory). If
+SUPPRESS is nil, output is sent to a buffer which is displayed; if
+SUPPRESS is non-nil, output is suppressed."
   (unless (or (null options) (stringp options))
     (error "ece--exec-compile-internal: OPTIONS (%s) should be nil or a string" options))
   (let ((etf (expand-file-name testfile))
@@ -1162,20 +1190,22 @@ the test file are interpreted with respect to the working directory)."
           (make-directory repd t))))
     ;; Set process-connection-type to nil to get a pipe instead of a pty
     ;; (current EasyCrypt runtest errors out with the latter)
-    (let ((process-connection-type nil)
-          (default-directory (or ewd default-directory))) ; default-directory determines working directory
-      (ece--exec-execute "runtest"
-                         (concat etf
-                                 " "
-                                 (if (or (null scenario) (string-empty-p scenario))
-                                     ece-exec-runtest-default-scenario
-                                   scenario)
-                                 (when (and (integerp jobs) (< 0 jobs))
-                                   (concat " -jobs " (number-to-string jobs)))
-                                 (unless (or (null report) (string-empty-p report))
-                                   (concat " -report " (expand-file-name report)))
-                                 options)
-                         sync))))
+    (let* ((process-connection-type nil)
+           (default-directory (or ewd default-directory)) ; default-directory determines working directory
+           (buf (ece--exec-execute "runtest"
+                                   (concat etf
+                                           " "
+                                           (if (or (null scenario) (string-empty-p scenario))
+                                               ece-exec-runtest-default-scenario
+                                             scenario)
+                                           (when (and (integerp jobs) (< 0 jobs))
+                                             (concat " -jobs " (number-to-string jobs)))
+                                           (unless (or (null report) (string-empty-p report))
+                                             (concat " -report " (expand-file-name report)))
+                                           options)
+                                   sync
+                                   suppress)))
+      (unless suppress (display-buffer buf)))))
 
 ;;;###autoload
 (defun ece-exec-runtest (testfile scenario &optional jobs report options workdir)
@@ -1235,13 +1265,15 @@ prefix arguments, also asks for a working directory."
     (ece--exec-runtest-internal testfile scenario 0 report nil workdir)))
 
 ;; Subcommand: why3config
-(defun ece--exec-why3config-internal (&optional why3file sync)
+(defun ece--exec-why3config-internal (&optional why3file sync suppress)
   "Executes `easycrypt why3config' using `ece--exec-execute'
-(passing SYNC directly), which see, using WHY3FILE for the `-why3' option
-if its non-nil (and non-empty)."
+(passing SYNC directly), which see, using WHY3FILE for the `-why3'
+option if its non-nil (and non-empty). If SUPPRESS is nil, output is
+sent to a buffer which is displayed; if SUPPRESS is non-nil, output is
+suppressed"
   (if (or (null why3file) (string-empty-p why3file))
       (ece--exec-execute "why3config" nil sync)
-    (ece--exec-execute "why3config" (concat "-why3 " (expand-file-name why3file)) sync)))
+    (ece--exec-execute "why3config" (concat "-why3 " (expand-file-name why3file)) sync suppress)))
 
 ;;;###autoload
 (defun ece-exec-why3config (&optional why3file)
