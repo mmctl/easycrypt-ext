@@ -440,7 +440,7 @@ Alternatively, you can search and set these variables through
 > command `ece-print` (provided by EasyCrypt Ext) to `C-c C-p`, you could add
 > the following to the `use-package` declaration for `easycrypt-ext`:
 > ```emacs-lisp
-> (keymap-set easycrypt-ext-general-map`"C-c C-p" #'ece-print)
+> (keymap-set easycrypt-ext-general-map "C-c C-p" #'ece-print)
 > ```
 > (`easycrypt-ext-general-map` is the keymap where EasyCrypt Ext binds most of
 > its commands.)
