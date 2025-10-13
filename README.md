@@ -15,8 +15,8 @@ Basic/standalone features include the following.
   Supported commands are `compile`, `docgen`, `runtest`, `why3config`,
   and `--help` (which is actually an option, but you get the point).
   Where relevant, this functionality is extended to the directory/project
-  level, enabling you to execute a (sub)commands for each EasyCrypt
-  file in a project or directory (tree).
+  level, enabling you to execute (sub)commands for each EasyCrypt
+  file in a project or directory tree.
 - Imenu integration; i.e., proper indexing of items (like
   axioms, lemmas, types, operators, theorems) to allow for
   quick navigation through Imenu.
