@@ -1,7 +1,7 @@
 # EasyCrypt Extensions for Emacs (Proof General)
 
 [EasyCrypt](https://www.easycrypt.info/) is a toolset primarily designed for the
-formal verification of code-based, game-playing crytpographic proofs. At its
+formal verification of code-based, game-playing cryptographic proofs. At its
 core, it features an interactive theorem prover with a front-end implemented in
 [Proof General](https://proofgeneral.github.io/).
 
