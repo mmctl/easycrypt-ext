@@ -93,6 +93,22 @@
   :prefix "ece-"
   :group 'easycrypt)
 
+;; Paths/locations
+(defcustom ece-standard-library-path
+  (file-name-as-directory
+   (expand-file-name
+    "theories/"
+    (file-name-parent-directory
+     (file-name-parent-directory
+      (file-truename (executable-find easycrypt-prog-name))))))
+  "Path to (root of) standard library of EasyCrypt. This can be a
+(literal) directory path, in which case it should be absolute, or a
+function (taking no arguments) that returns the directory path."
+  :type '(choice (directory :must-match t)
+                 function)
+  :group 'easycrypt-ext)
+
+;; Executable (sub)commands
 (defcustom ece-exec-runtest-default-test-file "tests.config"
   "Default file name to consider for test configuration files
 used with EasyCrypt's `runtest' subcommand. These should be relative
@@ -801,25 +817,6 @@ result is used as an argument to the COMMAND command of EasyCrypt. If nothing
                  (list nil nil)))
   (ece--proofshell-command "locate" event noregion))
 
-;;;###autoload
-(defun ece-bufhist-prev (&optional n)
-  "Browses back N buffer history items (for the
-goals and response buffer) by wrapping `bufhist-prev',
-which see. Allows binding to a mouse-based key
-(e.g., `<wheel-up>') and have it effect the window
-that the mouse is hovering, not necessarily the active one."
-  (interactive "@")
-  (bufhist-prev n))
-
-(defun ece-bufhist-next (&optional n)
-  "Browses back N buffer history items (for the
-goals and response buffer) by wrapping `bufhist-next',
-which see. Allows binding to a mouse-based key
-(e.g., `<wheel-down>') and have it effect the window
-that the mouse is hovering, not necessarily the active one."
-  (interactive "@")
-  (bufhist-next n))
-
 
 ;;; Executable (sub)commands
 (defconst ece--exec-supported-subcommands
@@ -1362,8 +1359,41 @@ command corresponding to the choice upon confirmation."
     (setq-local original-imenu-state nil)))
 
 
-;;; Keymaps
-;; Executable (subcommands)
+;;; Keybindings
+;; Buffer history
+;;;###autoload
+(defun ece-bufhist-prev (&optional n)
+  "Browses back N buffer history items (for the
+goals and response buffer) by wrapping `bufhist-prev',
+which see. Allows binding to a mouse-based key
+(e.g., `<wheel-up>') and have it effect the window
+that the mouse is hovering, not necessarily the active one."
+  (interactive "@")
+  (bufhist-prev n))
+
+(defun ece-bufhist-next (&optional n)
+  "Browses back N buffer history items (for the
+goals and response buffer) by wrapping `bufhist-next',
+which see. Allows binding to a mouse-based key
+(e.g., `<wheel-down>') and have it effect the window
+that the mouse is hovering, not necessarily the active one."
+  (interactive "@")
+  (bufhist-next n))
+
+;; Standard library
+(defun ece-find-file-standard-library ()
+  "Find file in standard library (as specified or returned by
+`ece-standard-library-path', which see) using `find-file'."
+  (interactive)
+  (when-let* ((stdlibroot (if (functionp ece-standard-library-path)
+                              (funcall ece-standard-library-path)
+                            ece-standard-library-path))
+              ((or (and (file-directory-p stdlibroot) (file-readable-p stdlibroot))
+                   (user-error "Standard library (root) path `%s' non-existent or not readable" stdlibroot)))
+              (default-directory (expand-file-name stdlibroot)))
+    (call-interactively #'find-file)))
+
+;; Executable keymap (subcommands)
 (defvar-keymap ece-exec-map
   :doc "Keymap for executing EasyCrypt (command line) subcommands."
   :prefix 'ece-exec-map-prefix
@@ -1385,6 +1415,7 @@ command corresponding to the choice upon confirmation."
 of EasyCrypt Ext modes. Meant to be used as `parent' keymap for
 mode-specific maps."
   "C-c C-y e" 'ece-exec-map-prefix
+  "C-c C-y f" #'ece-find-file-standard-library
   "C-c C-y p" #'ece-proofshell-print
   "C-c C-y P" #'ece-proofshell-prompt-print
   "C-c =" #'ece-proofshell-prompt-print
