@@ -1613,6 +1613,8 @@ Meant for `proof-shell-handle-delayed-output-hook'."
     :visible t
     :active t
     :help "Menu exposing selected funcitonality for using and managing EasyCrypt Ext."
+    ["Find file (standard library)" ece-find-file-standard-library
+     :help "Find (and open) a file from the standard library."]
     ["Locate (prompt)" ece-proofshell-prompt-locate
      :help "Locate an item of choice in the current EasyCrypt context."]
     ["Print (prompt)" ece-proofshell-prompt-print

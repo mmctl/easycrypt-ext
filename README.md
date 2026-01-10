@@ -20,6 +20,7 @@ Basic/standalone features include the following.
 - Imenu integration; i.e., proper indexing of items (like
   axioms, lemmas, types, operators, theorems) to allow for
   quick navigation through Imenu.
+- Commands to find and open files from EasyCrypt's standard library.
 - Automatic "smart" centering of goal buffer and echoing of remaining goals.
   This tries to minimize the need for scrolling each time you process
   a command, especially when dealing with larger goals.
@@ -451,6 +452,13 @@ Alternatively, you can search and set these variables through
 > [Keybinding Reminders (Which-Key)](#keybinding-reminders-which-key) for
 > details).
 
+| Command                          | Keybinding  | Description                                            |
+|----------------------------------|-------------|--------------------------------------------------------|
+| `ece-find-file-standard-library` | `C-c C-y f` | Find (and open) a file from EasyCrypt's standard library |
+
+| Customization variable      | Value                    | Description                          |
+|-----------------------------|--------------------------|--------------------------------------|
+| `ece-standard-library-root` | Derived from binary path | Root of EasyCrypt's standard library |
 
 ## Indentation
 As you would expect, indentation is mostly automatic with EasyCrypt Ext: It
