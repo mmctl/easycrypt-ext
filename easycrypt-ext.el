@@ -94,7 +94,7 @@
   :group 'easycrypt)
 
 ;; Paths/locations
-(defcustom ece-standard-library-path
+(defcustom ece-standard-library-root
   (file-name-as-directory
    (expand-file-name
     "theories/"
@@ -150,6 +150,16 @@ contains at that time)."
                 (and (not (eq buf (current-buffer)))
                      (with-current-buffer buf (symbol-value mode))))
             (buffer-list)))
+
+(defun ece--standard-library-root-canonical ()
+  "Get standard library root, as specified or returned by
+`ece-standard-library-root' (which see), in canonical form."
+  (let ((stdlibroot (if (functionp ece-standard-library-root)
+                              (funcall ece-standard-library-root)
+                      ece-standard-library-root)))
+    (unless (and (file-directory-p stdlibroot) (file-readable-p stdlibroot))
+      (error "Standard library root directory `%s' non-existent or not readable" stdlibroot))
+    (expand-file-name stdlibroot)))
 
 
 ;;; Indentation
@@ -1383,14 +1393,9 @@ that the mouse is hovering, not necessarily the active one."
 ;; Standard library
 (defun ece-find-file-standard-library ()
   "Find file in standard library (as specified or returned by
-`ece-standard-library-path', which see) using `find-file'."
+`ece-standard-library-root', which see) using `find-file'."
   (interactive)
-  (when-let* ((stdlibroot (if (functionp ece-standard-library-path)
-                              (funcall ece-standard-library-path)
-                            ece-standard-library-path))
-              ((or (and (file-directory-p stdlibroot) (file-readable-p stdlibroot))
-                   (user-error "Standard library (root) path `%s' non-existent or not readable" stdlibroot)))
-              (default-directory (expand-file-name stdlibroot)))
+  (let ((default-directory (ece--standard-library-root-canonical)))
     (call-interactively #'find-file)))
 
 ;; Executable keymap (subcommands)
