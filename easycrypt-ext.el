@@ -41,6 +41,7 @@
 ;; - Imenu integration; i.e., proper indexing of items (like
 ;;   axioms, lemmas, types, operators, theorems) to allow for
 ;;   quick navigation through Imenu.
+;; - Commands to find and open files from EasyCrypt's standard library.
 ;; - Automatic "smart" centering of goal buffer and echoing of remaining goals.
 ;;   This tries to minimize the need for scrolling each time you processing
 ;;   a command when dealing with larger goals.
