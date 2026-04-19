@@ -100,7 +100,7 @@
     "theories/"
     (file-name-parent-directory
      (file-name-parent-directory
-      (file-truename (executable-find (or easycrypt-prog-name "easycrypt")))))))
+      (file-truename (executable-find (or (bound-and-true-p easycrypt-prog-name) "easycrypt")))))))
   "Path to (root of) standard library of EasyCrypt. This can be a
 (literal) directory path, in which case it should be absolute, or a
 function (taking no arguments) that returns the directory path."
