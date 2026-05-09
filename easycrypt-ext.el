@@ -95,12 +95,12 @@
 
 ;; Paths/locations
 (defcustom ece-standard-library-root
-  (file-name-as-directory
-   (expand-file-name
-    "theories/"
-    (file-name-parent-directory
-     (file-name-parent-directory
-      (file-truename (executable-find (or (bound-and-true-p easycrypt-prog-name) "easycrypt")))))))
+  (when-let* ((ecbin (executable-find (or (bound-and-true-p easycrypt-prog-name) "easycrypt"))))
+    (file-name-as-directory
+     (expand-file-name "theories/"
+                       (file-name-parent-directory
+                        (file-name-parent-directory
+                         (file-truename ecbin))))))
   "Path to (root of) standard library of EasyCrypt. This can be a
 (literal) directory path, in which case it should be absolute, or a
 function (taking no arguments) that returns the directory path."
@@ -155,10 +155,10 @@ contains at that time)."
   "Get standard library root, as specified or returned by
 `ece-standard-library-root' (which see), in canonical form."
   (let ((stdlibroot (if (functionp ece-standard-library-root)
-                              (funcall ece-standard-library-root)
+                        (funcall ece-standard-library-root)
                       ece-standard-library-root)))
     (unless (and (file-directory-p stdlibroot) (file-readable-p stdlibroot))
-      (error "Standard library root directory `%s' non-existent or not readable" stdlibroot))
+      (user-error "Standard library root directory `%s' non-existent or not readable; please set `ece-standard-library-root', which see" stdlibroot))
     (expand-file-name stdlibroot)))
 
 
